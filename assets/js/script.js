@@ -1,5 +1,9 @@
 const contentEl = document.querySelector("#content"); 
-const gifBtnEl = document.querySelector("#gif-btn"); 
+const gifBtnEl = document.querySelector("#gif-btn");
+const nextBtnEl = document.querySelector("#next-btn"); 
+const gifModalEl = document.querySelector("#gifModal"); 
+const gifChooseBtnEl = document.querySelector("#gif-choose-btn");
+const gifSearchBtnEl = document.querySelector("#gif-search-btn");   
 
 const selectRandom = function(array,numItems) {
     let random = [];
@@ -17,17 +21,17 @@ const displayGifs = function(gifArray) {
     contentEl.textContent = ""; 
     // Create div to contain grid of 4 columns , thus '3 rows' for 12 items
     const gridEl = document.createElement("div"); 
-    gridEl.classList = "grid grid-cols-4 justify-items-center gap-5";
+    gridEl.classList = "grid grid-cols-4 justify-items-center gap-5 bg-green-50";
     // Populate grid of taken in array
     for(let i=0; i < gifArray.length; i++) {
         // Create div to hold each gif img element
         const imgWrapperEl = document.createElement("div"); 
-        imgWrapperEl.classList = "col-span-1"; 
+        imgWrapperEl.classList = "col-span-1 p-8 bg-green-200 rounded"; 
         // Create image for each gif and add to img-wrapper
         const imgEl = document.createElement("img"); 
         imgEl.setAttribute("src",gifArray[i].images.original.url); 
         imgEl.setAttribute("alt","");
-        imgEl.classList = "w-96 h-96"; 
+        imgEl.classList = "w-80 h-80 rounded"; 
         imgWrapperEl.appendChild(imgEl);
         // Add image-wrapper to grid
         gridEl.appendChild(imgWrapperEl); 
@@ -50,6 +54,7 @@ const getGifs = function() {
                 // Grab 10 random gifs from the retrieved gif array 
                 const numGifs = 12; 
                 const retrievedGifs = data.data; 
+                console.log(retrievedGifs); 
                 const selectedGifs = selectRandom(retrievedGifs, numGifs); 
                 // Returned object is contains a "data" key that is an array of 50 gifs
                 // Grab numGifs from that array, maybe randomize
@@ -65,6 +70,13 @@ const getGifs = function() {
 
 const gifBtnHandler = function(event) {
     getGifs();
+    gifModalEl.style.display= "none"; 
 }
 
-gifBtnEl.addEventListener("click", gifBtnHandler); 
+const gifModalHandler = function(event) {
+    gifModalEl.style.display = "block"; 
+}
+
+//gifBtnEl.addEventListener("click", gifBtnHandler); 
+gifBtnEl.addEventListener("click",gifModalHandler); 
+gifChooseBtnEl.addEventListener("click",gifBtnHandler); 

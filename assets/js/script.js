@@ -3,7 +3,9 @@ const gifBtnEl = document.querySelector("#gif-btn");
 const nextBtnEl = document.querySelector("#next-btn"); 
 const gifModalEl = document.querySelector("#gifModal"); 
 const gifChooseBtnEl = document.querySelector("#gif-choose-btn");
-const gifSearchBtnEl = document.querySelector("#gif-search-btn");   
+const gifSearchBtnEl = document.querySelector("#gif-search-btn"); 
+const gifSearchFormEl = document.querySelector("#gif-search-form");  
+ 
 
 const selectRandom = function(array,numItems) {
     let random = [];
@@ -40,13 +42,8 @@ const displayGifs = function(gifArray) {
     contentEl.appendChild(gridEl); 
 }
 
-const getGifs = function() {
-    // Set potential tags that could be searched
-    const potentialTags = ["kittens", "cats", "dogs", "puppies", "cute", "bees"];
-    // Select a random tag from potential tags
-    const randomTag = selectRandom(potentialTags,1); 
-    console.log(randomTag); 
-    const apiUrl = `https://api.giphy.com/v1/gifs/search?q=${randomTag}&api_key=8uu014p8mspMOtSIJu7z8PtcUxdwsM9x`;
+const getGifs = function(searchTag) {
+    const apiUrl = `https://api.giphy.com/v1/gifs/search?q=${searchTag}&api_key=8uu014p8mspMOtSIJu7z8PtcUxdwsM9x`;
 
     fetch(apiUrl).then(function (response) {
         if(response.ok) {
@@ -68,8 +65,14 @@ const getGifs = function() {
     });
 }
 
-const gifBtnHandler = function(event) {
-    getGifs();
+
+
+const gifChooseBtnHandler = function(event) {
+    // Set potential tags that could be searched
+    const potentialTags = ["kittens", "cats", "dogs", "puppies", "cute", "bees"];
+    // Select a random tag from potential tags
+    const randomSearchTag = selectRandom(potentialTags,1); 
+    getGifs(randomSearchTag); 
     gifModalEl.style.display= "none"; 
 }
 
@@ -77,6 +80,24 @@ const gifModalHandler = function(event) {
     gifModalEl.style.display = "block"; 
 }
 
-//gifBtnEl.addEventListener("click", gifBtnHandler); 
+const gifInputHandler = function(event) {
+    event.preventDefault();
+    // const searchTag = gifSearchInputEl.value.trim(); 
+    // console.log(searchTag); 
+    // getGifs(searchTag); 
+    //gifModalEl.style.display= "none"; 
+}
+
+const gifSearchHandler = function(event) {
+    event.preventDefault(); 
+    const gifSearchInputEl = document.querySelector("#gif-search-input");  
+    const searchTag = gifSearchInputEl.value.trim(); 
+    getGifs(searchTag); 
+    gifModalEl.style.display = "none"; 
+    gifSearchFormEl.reset(); 
+}
+
+
 gifBtnEl.addEventListener("click",gifModalHandler); 
-gifChooseBtnEl.addEventListener("click",gifBtnHandler); 
+gifChooseBtnEl.addEventListener("click",gifChooseBtnHandler);
+gifSearchFormEl.addEventListener("submit", gifSearchHandler);  

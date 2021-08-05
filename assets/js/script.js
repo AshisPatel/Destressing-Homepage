@@ -1,15 +1,20 @@
-const contentEl = document.querySelector("#content"); 
-const gifBtnEl = document.querySelector("#gif-btn");
+// General Variables
+const contentEl = document.querySelector("#content");
 const nextBtnEl = document.querySelector("#next-btn"); 
 const gifModalEl = document.querySelector("#gifModal"); 
 const closeModalBtnEl = document.querySelector("#close-modal-btn"); 
+let nextBtnType = ""; 
+// Variables for Welcome Page 
+const logoBtnEl = document.querySelector("#logo-btn");
+
+// Variables for gif generation 
+const gifBtnEl = document.querySelector("#gif-btn");
 const gifChooseBtnEl = document.querySelector("#gif-choose-btn");
 const gifSearchBtnEl = document.querySelector("#gif-search-btn"); 
 const gifSearchFormEl = document.querySelector("#gif-search-form");  
-let nextBtnType = "";
 let prevGifTag = ""; 
 
- 
+//  Utility functions
 
 const selectRandom = function(array,numItems) {
     let random = [];
@@ -21,6 +26,15 @@ const selectRandom = function(array,numItems) {
     }
     return random; 
 }
+
+// Functions related to welcome page generation
+
+const getCurrentTime = function() {
+    const currentTime = dayjs().hour(); 
+    console.log(currentTime);
+}
+
+// Functions related to gif generation 
 
 const displayGifs = function(gifArray) {
     nextBtnType = "gif"; 
@@ -70,7 +84,11 @@ const getGifs = function(searchTag) {
         }
     });
 }
-
+// Handler functions regarding welcome page generation
+const welcomePageLoad = function(event) {
+    getCurrentTime(); 
+}
+// Handler functions regarding gifs
 
 const gifChooseBtnHandler = function(event) {
     // Set potential tags that could be searched
@@ -97,6 +115,11 @@ const gifSearchHandler = function(event) {
     gifSearchFormEl.reset(); 
 }
 
+const closeModalBtnHandler = function(event) {
+    gifModalEl.style.display= "none"; 
+}
+
+// Function to handle displaying more of currently selected content 
 const nextBtnHandler = function(event) {
 
     if (nextBtnType === "gif") {
@@ -116,13 +139,16 @@ const nextBtnHandler = function(event) {
     }
 }
 
-const closeModalBtnHandler = function(event) {
-    gifModalEl.style.display= "none"; 
-}
 
-
+// Event Listeners for gif generation & modals
 gifBtnEl.addEventListener("click",gifModalHandler); 
 gifChooseBtnEl.addEventListener("click", gifChooseBtnHandler);
 gifSearchFormEl.addEventListener("submit", gifSearchHandler);
-nextBtnEl.addEventListener("click", nextBtnHandler);   
 closeModalBtnEl.addEventListener("click",closeModalBtnHandler); 
+
+// Event Listener for welcome page generation
+logoBtnEl.addEventListener("click",welcomePageLoad);
+
+// Event Listener for Next Button (utility handler)
+nextBtnEl.addEventListener("click", nextBtnHandler);   
+

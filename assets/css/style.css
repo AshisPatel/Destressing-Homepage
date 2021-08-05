@@ -24,20 +24,27 @@
     position: relative; 
     margin: auto;
     width: 30%;  
-    padding: 20px;
+    padding: 5px 10px 10px 10px;
     border: 1px solid #888; 
+    box-shadow: 0 0 5px black; 
     animation-name: modalSlideIn; 
     animation-duration: 0.4s; 
+}
+/* Style for modal buttons */
+#gif-search-btn:hover, #gif-choose-btn:hover {
+    background-color: rgb(5,150,105); 
 }
 
 /* Style for close modal button */
 #close-modal-btn {
     font-size: 24pt; 
+    font-weight:bold; 
     color: white; 
 }
 
 #close-modal-btn:hover, #close-modal-btn:focus {
     color: black; 
+    cursor: pointer; 
 }
 
 /* Add animation for modal slidein */

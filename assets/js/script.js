@@ -1,5 +1,7 @@
 const contentEl = document.querySelector("#content"); 
 const gifBtnEl = document.querySelector("#gif-btn");
+const museumBtnEl = document.querySelector("#museum-btn");
+
 const nextBtnEl = document.querySelector("#next-btn"); 
 const gifModalEl = document.querySelector("#gifModal"); 
 const closeModalBtnEl = document.querySelector("#close-modal-btn"); 
@@ -71,7 +73,6 @@ const getGifs = function(searchTag) {
     });
 }
 
-
 const gifChooseBtnHandler = function(event) {
     // Set potential tags that could be searched
     const potentialTags = ["kitten", "cat", "dog", "puppy", "cute", "wholesome"];
@@ -96,6 +97,36 @@ const gifSearchHandler = function(event) {
     gifModalEl.style.display = "none"; 
     gifSearchFormEl.reset(); 
 }
+    
+const getMuseum = async function() {
+
+    contentEl.innerHTML = '';
+
+    // Get all objects that have an image and matches the query 'Painting'
+    const allMuseumResponse = await fetch(
+        `https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=Painting`
+    );
+    const museumData = await allMuseumResponse.json();
+
+    // Get IDs of the objects
+    const museumArray = museumData.objectIDs;
+    
+    // Get random ID from that array
+    const museumId = museumArray[Math.floor((Math.random()*museumArray.length))];
+
+    // Get object matching that ID
+    const artResponse = await fetch(
+        `https://collectionapi.metmuseum.org/public/collection/v1/objects/${museumId}`
+    );
+    const artData = await artResponse.json();
+
+    const artSource = artData.primaryImageSmall;
+
+    const artImg = document.createElement("img");
+    artImg.src = artSource;
+    contentEl.appendChild(artImg);
+}
+
 
 const nextBtnHandler = function(event) {
 
@@ -108,7 +139,8 @@ const nextBtnHandler = function(event) {
     }
 
     if (nextBtnType === "museum") {
-        // Insert function to get museum fact
+        // Placeholder
+        // getMuseum();
     }
 
     if (nextBtnType === "quote") {
@@ -122,6 +154,7 @@ const closeModalBtnHandler = function(event) {
 
 
 gifBtnEl.addEventListener("click",gifModalHandler); 
+museumBtnEl.addEventListener("click", getMuseum);
 gifChooseBtnEl.addEventListener("click", gifChooseBtnHandler);
 gifSearchFormEl.addEventListener("submit", gifSearchHandler);
 nextBtnEl.addEventListener("click", nextBtnHandler);   

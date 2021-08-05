@@ -2,9 +2,13 @@ const contentEl = document.querySelector("#content");
 const gifBtnEl = document.querySelector("#gif-btn");
 const nextBtnEl = document.querySelector("#next-btn"); 
 const gifModalEl = document.querySelector("#gifModal"); 
+const closeModalBtnEl = document.querySelector("#close-modal-btn"); 
 const gifChooseBtnEl = document.querySelector("#gif-choose-btn");
 const gifSearchBtnEl = document.querySelector("#gif-search-btn"); 
 const gifSearchFormEl = document.querySelector("#gif-search-form");  
+let nextBtnType = "";
+let prevGifTag = ""; 
+
  
 
 const selectRandom = function(array,numItems) {
@@ -19,6 +23,7 @@ const selectRandom = function(array,numItems) {
 }
 
 const displayGifs = function(gifArray) {
+    nextBtnType = "gif"; 
     // Delete old content in content section
     contentEl.textContent = ""; 
     // Create div to contain grid of 4 columns , thus '3 rows' for 12 items
@@ -43,13 +48,14 @@ const displayGifs = function(gifArray) {
 }
 
 const getGifs = function(searchTag) {
+    nextBtnEl.textContent = `More ${searchTag} gifs`;
     const apiUrl = `https://api.giphy.com/v1/gifs/search?q=${searchTag}&api_key=8uu014p8mspMOtSIJu7z8PtcUxdwsM9x`;
 
     fetch(apiUrl).then(function (response) {
         if(response.ok) {
             response.json().then(function(data){
-                // Grab 10 random gifs from the retrieved gif array 
-                const numGifs = 12; 
+                // Grab 4 random gifs from the retrieved gif array 
+                const numGifs = 4; 
                 const retrievedGifs = data.data; 
                 console.log(retrievedGifs); 
                 const selectedGifs = selectRandom(retrievedGifs, numGifs); 
@@ -66,12 +72,12 @@ const getGifs = function(searchTag) {
 }
 
 
-
 const gifChooseBtnHandler = function(event) {
     // Set potential tags that could be searched
-    const potentialTags = ["kittens", "cats", "dogs", "puppies", "cute", "bees"];
+    const potentialTags = ["kitten", "cat", "dog", "puppy", "cute", "wholesome"];
     // Select a random tag from potential tags
-    const randomSearchTag = selectRandom(potentialTags,1); 
+    const randomSearchTag = selectRandom(potentialTags,1);
+    prevGifTag = randomSearchTag;  
     getGifs(randomSearchTag); 
     gifModalEl.style.display= "none"; 
 }
@@ -80,24 +86,43 @@ const gifModalHandler = function(event) {
     gifModalEl.style.display = "block"; 
 }
 
-const gifInputHandler = function(event) {
-    event.preventDefault();
-    // const searchTag = gifSearchInputEl.value.trim(); 
-    // console.log(searchTag); 
-    // getGifs(searchTag); 
-    //gifModalEl.style.display= "none"; 
-}
-
 const gifSearchHandler = function(event) {
     event.preventDefault(); 
-    const gifSearchInputEl = document.querySelector("#gif-search-input");  
+    const gifSearchInputEl = document.querySelector("#gif-search-input"); 
+    // Insert something to verify if the search is blank 
     const searchTag = gifSearchInputEl.value.trim(); 
+    prevGifTag = searchTag; 
     getGifs(searchTag); 
     gifModalEl.style.display = "none"; 
     gifSearchFormEl.reset(); 
 }
 
+const nextBtnHandler = function(event) {
+
+    if (nextBtnType === "gif") {
+        getGifs(prevGifTag); 
+    }
+
+    if (nextBtnType === "joke") {
+        // Insert function to fetch joke
+    }
+
+    if (nextBtnType === "museum") {
+        // Insert function to get museum fact
+    }
+
+    if (nextBtnType === "quote") {
+        // Insert function to get quote 
+    }
+}
+
+const closeModalBtnHandler = function(event) {
+    gifModalEl.style.display= "none"; 
+}
+
 
 gifBtnEl.addEventListener("click",gifModalHandler); 
-gifChooseBtnEl.addEventListener("click",gifChooseBtnHandler);
-gifSearchFormEl.addEventListener("submit", gifSearchHandler);  
+gifChooseBtnEl.addEventListener("click", gifChooseBtnHandler);
+gifSearchFormEl.addEventListener("submit", gifSearchHandler);
+nextBtnEl.addEventListener("click", nextBtnHandler);   
+closeModalBtnEl.addEventListener("click",closeModalBtnHandler); 

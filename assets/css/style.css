@@ -20,7 +20,7 @@
     background-color: rgba(0,0,0,0.4); 
 }
 
-.gif-modal-content {
+.modal-content {
     position: relative; 
     margin: auto;
     width: 30%;  
@@ -28,6 +28,16 @@
     border: 1px solid #888; 
     animation-name: modalSlideIn; 
     animation-duration: 0.4s; 
+}
+
+/* Style for close modal button */
+#close-modal-btn {
+    font-size: 24pt; 
+    color: white; 
+}
+
+#close-modal-btn:hover, #close-modal-btn:focus {
+    color: black; 
 }
 
 /* Add animation for modal slidein */

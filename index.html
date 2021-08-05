@@ -25,9 +25,16 @@
     <main>
         <!-- Modal for Gif search -->
         <div id="gifModal" class="modal">
+            <!-- Gif Modal Header -->
+                
             <!-- Gif Modal content -->
-            <div class="gif-modal-content bg-green-200 rounded-lg">
-                <form id="gif-search-form">
+            <!-- grid grid-cols-3 gap-4 -->
+            <div class="modal-content bg-green-200 rounded-lg "> 
+                <div class="grid grid-cols-3">
+                    <h2 class="col-start-1 col-span-2">Search For A Gif or Have Me Choose!</h2>
+                    <span id="close-modal-btn" class = "col-end-4 mb-10 p-0">&times;</span>
+                </div>
+                <form id="gif-search-form" class = "col-start-1 col-span-3">
                     <label for="gif-search">Enter Tag(s) to Search: </label>
                     <input type="text" placeholder="Search tag" id="gif-search-input" name="gif-search"/>
                     <button type="submit" id="gif-search-btn" class="bg-green-300 rounded-lg p-2">Search</button>
@@ -45,7 +52,7 @@
             <!-- Returns to welcome page -->
             <button type="button" id="home-btn">home</button>
             <!-- Shows your next version of content -->
-            <button type="button" id="next-btn">next</button>
+            <button type="button" id="next-btn" class="bg-green-300 rounded-lg p-2">next</button>
         </section>
     </main>
     <script src="./assets/js/script.js"></script>

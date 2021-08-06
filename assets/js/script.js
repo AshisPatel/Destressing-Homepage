@@ -133,32 +133,31 @@ const startQuotes = function(event){
             // alert("quotes Working!")
             // console.log(data.content)
             
-             const quoteArea = document.createElement("div");
-             quoteArea.classList = "card";
+             const quoteCard = document.createElement("div");
+             quoteCard.classList = "w-full mx-auto rounded-lg bg-white shadow-lg px-5 pt-5 pb-10 text-gray-800";
+             quoteCard.setAttribute("style","max-width: 500px")
 
-             const quoteTitle = document.createElement("div");
-             quoteTitle.classList="card-header";
-             quoteTitle.textContent="Destressing Quotes";
-             quoteArea.appendChild(quoteTitle);
-
-             const cardBody =document.createElement("div");
-             cardBody.classList ="card-body";
-             
-             const blockQuote = document.createElement("blockquote");
-             blockQuote.classList="blockquote mb-0";
+             const quoteTextArea = document.createElement("div");
+             quoteTextArea.classList="w-full mb-10";
+             quoteCard.appendChild(quoteTextArea);
 
              const randomQuote= document.createElement("p")
-             randomQuote.textContent = data.content;
-             blockQuote.appendChild(randomQuote);
+             randomQuote.classList="text-sm text-gray-600 text-center px-5"
+             randomQuote.textContent = '"'+ data.content+ '"';
+             quoteTextArea.appendChild(randomQuote);
             
-             const footerQuote = document.createElement("footer");
-             footerQuote.classList ="blockquote-footer";
-             footerQuote.textContent = data.author;
-             blockQuote.appendChild(footerQuote);
+             const autorArea =document.createElement("div");
+             autorArea.classList ="w-full";
+             quoteCard.appendChild(autorArea)
+             
+             const autorName = document.createElement("p");
+             autorName.classList ="text-md text-indigo-500 font-bold text-center";
+             autorName.textContent = data.author;
+             autorArea.appendChild(autorName);
 
-             cardBody.appendChild(blockQuote);
-             quoteArea.appendChild(cardBody);
-             contentEl.appendChild(quoteArea);
+             contentEl.appendChild(quoteCard);
+
+             nextBtnEl.textContent="Next Quote";
             })
         }else{
         alert("link not working")

@@ -9,9 +9,7 @@ var startQuotes = function(event){
         if(response.ok){
             response.json().then(function(data){
              console.log(data);
-             
-
-
+            
             })
         }else{
         alert("link not working")

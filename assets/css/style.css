@@ -1,3 +1,92 @@
+:root {
+    --background: #FBF7F2;
+    --accent: #F5D8B4;
+    --primary: #46413E;
+}
+
+body {
+    background-color: var(--background);
+}
+
+h1, h2, p, label, button, select {
+    font-family: 'Lexend', sans-serif;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+h1 {
+    font-size: 5em; 
+    line-height: 1em;
+    text-align: center;
+}
+
+h2 {
+    font-weight: 400;
+    font-size: 4em; 
+    line-height: 1em;
+    text-align: center;
+}
+
+.dropdown-container {
+    margin-right: 2.75rem;
+}
+
+select:focus {
+    outline: 2px solid var(--accent);
+}
+
+.blob-container {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+.blob1 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 756px;
+    height: 805px;
+    margin-right: -280px; 
+    margin-top: -290px; 
+}
+
+.blob2 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 757px;
+    height: 805px;
+    margin-left: -280px; 
+    margin-bottom: -290px; 
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+}
+
+button {
+ border-color: var(--primary);
+}
+
+.another-button {
+    visibility: hidden;
+}
+
+.image-mask {
+    -webkit-mask-image: url(../img/mask.png);
+    mask-image: url(../img/mask.png);
+}
+
 .gif-size {
     height: 300px;
     width: 300px; 
@@ -62,9 +151,9 @@
     display:none; 
 }
 
-.show {
+/* .show {
     display:block; 
-}
+} */
 
 /* Welcome Page Classes */
 
@@ -74,4 +163,16 @@
 
 .welcome-msg {
     font-size: 24pt; 
+}
+/* Helper classes */
+.show {
+    visibility: initial;
+}
+
+.space-top-text {
+    margin-top: 20vh;
+}
+
+.space-top-image {
+    margin-top: 8vh;
 }

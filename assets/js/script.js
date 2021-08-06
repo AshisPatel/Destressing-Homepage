@@ -72,23 +72,17 @@ const getWelcomeMessage = function (hour) {
 
 const displayWelcomeMessage = function(headerText,msgText) {
     contentEl.textContent = "";
-    const gridEl = document.createElement("div");
-    gridEl.classList = "grid grid-cols-6 h-60";
-    
-    const welcomeHeaderEl = document.createElement("div");
-    welcomeHeaderEl.classList = "welcome-header col-start-1 col-end-7 place-self-center font-extrabold";
+
+    const welcomeHeaderEl = document.createElement("h1");
+    welcomeHeaderEl.classList = "space-top-text";
     welcomeHeaderEl.textContent = headerText;
 
-    const welcomeMsgEl = document.createElement("div");
-    welcomeMsgEl.classList = "welcome-msg col-start-2 col-end-6 place-self-center mt-3 font-bold"
+    const welcomeMsgEl = document.createElement("h2");
+    welcomeMsgEl.classList = "pt-2"
     welcomeMsgEl.textContent = msgText;
 
-    console.log(welcomeHeaderEl);
-    console.log(welcomeMsgEl);
-
-    gridEl.appendChild(welcomeHeaderEl);
-    gridEl.appendChild(welcomeMsgEl);
-    contentEl.appendChild(gridEl);
+    contentEl.appendChild(welcomeHeaderEl);
+    contentEl.appendChild(welcomeMsgEl);
 }
 // Functions related to gif generation 
 
@@ -141,7 +135,8 @@ const getGifs = function (searchTag) {
     });
 }
 // Handler functions regarding welcome page generation
-const welcomePageLoad = function (event) {
+const logoBtnHandler = function (event) {
+    console.log("This is working!"); 
     getCurrentTime();
 }
 // Handler functions regarding gifs
@@ -225,11 +220,6 @@ const getArt = async function() {
     nextBtnEl.classList.add("show", "my-10");
 }
 
-
-const closeModalBtnHandler = function (event) {
-    gifModalEl.style.display = "none";
-}
-
 // Function to handle displaying more of currently selected content 
 const nextBtnHandler = function (event) {
 
@@ -256,11 +246,6 @@ const closeModalBtnHandler = function(event) {
     gifModalEl.style.display= "none"; 
 }
 
-const reset = function(event) {
-    //Placeholder to reset back to the homepage
-}
-
-
 //gifBtnEl.addEventListener("click",gifModalHandler); 
 
 // Run the function based on the value in the dropdown
@@ -275,4 +260,11 @@ gifChooseBtnEl.addEventListener("click", gifChooseBtnHandler);
 gifSearchFormEl.addEventListener("submit", gifSearchHandler);
 nextBtnEl.addEventListener("click", nextBtnHandler);   
 closeModalBtnEl.addEventListener("click",closeModalBtnHandler); 
-logoBtnEl.addEventListener("click", reset);
+logoBtnEl.addEventListener("click",logoBtnHandler);
+
+
+// On load, generate welcome message
+
+window.onload = function() {
+    logoBtnHandler(); 
+}

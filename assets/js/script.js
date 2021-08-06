@@ -40,24 +40,28 @@ const getWelcomeMessage = function (hour) {
     let headerText = "";
     let msgText = ""; 
 
-    // Early-hours 
+    //Early-hours 
     if (hour >= 0 && hour < 6) {
+        console.log("Early-hours"); 
         headerText = "Night Owl or Early Bird?";
         msgText = "Stay Awhile and Relax 😊";
     }
     // Morning-hours
     if (hour >= 6 && hour < 12) {
+        console.log("Morning");
         headerText = "Good Morning";
         msgText = "Stay Awhile and Relax 😊";
     }
     // Afternoon-hours
     if (hour >= 12 && hour < 18) {
+        console.log("Afternoon"); 
         headerText = "Good Afternoon";
         msgText = "Stay Awhile and Relax 😊";
     }
+    
     // Evenning-hours
     if (hour >= 18 && hour < 24) {
-        console.log("ARE YOU IN HERE?");
+        console.log("Evenning");
         headerText = "Good Evenning";
         msgText = "Stay Awhile and Relax 😊";
     }
@@ -138,7 +142,6 @@ const getGifs = function (searchTag) {
 // Handler functions regarding welcome page generation
 const welcomePageLoad = function (event) {
     getCurrentTime();
-    getWelcomeMessage();
 }
 // Handler functions regarding gifs
 

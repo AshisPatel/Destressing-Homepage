@@ -11,7 +11,8 @@ const logoBtnEl = document.querySelector("#logo-btn");
 const gifBtnEl = document.querySelector("#gif-btn");
 const gifChooseBtnEl = document.querySelector("#gif-choose-btn");
 const gifSearchBtnEl = document.querySelector("#gif-search-btn"); 
-const gifSearchFormEl = document.querySelector("#gif-search-form");  
+const gifSearchFormEl = document.querySelector("#gif-search-form"); 
+const warningEl = document.querySelector(".warning-text"); 
 let prevGifTag = ""; 
 
 //  Utility functions
@@ -30,8 +31,12 @@ const selectRandom = function(array,numItems) {
 // Functions related to welcome page generation
 
 const getCurrentTime = function() {
-    const currentTime = dayjs().hour(); 
-    console.log(currentTime);
+    const currentDate = new Date(); 
+    const hour = currentDate.getHours();
+    console.log(hour);  
+
+
+ 
 }
 
 // Functions related to gif generation 
@@ -101,14 +106,26 @@ const gifChooseBtnHandler = function(event) {
 }
 
 const gifModalHandler = function(event) {
+    warningEl.classList.add("hide");
+    warningEl.classList.remove("show");  
     gifModalEl.style.display = "block"; 
 }
 
 const gifSearchHandler = function(event) {
+    // Make sure there's text in the submit
     event.preventDefault(); 
     const gifSearchInputEl = document.querySelector("#gif-search-input"); 
     // Insert something to verify if the search is blank 
     const searchTag = gifSearchInputEl.value.trim(); 
+    
+    // Check if text input is blank
+    if(searchTag === "") {
+        const warningEl = document.querySelector(".warning-text");
+        warningEl.classList.remove("hide"); 
+        warningEl.classList.add("show");
+        return; 
+    }
+
     prevGifTag = searchTag; 
     getGifs(searchTag); 
     gifModalEl.style.display = "none"; 

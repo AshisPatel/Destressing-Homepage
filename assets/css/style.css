@@ -1,0 +1,47 @@
+.gif-size {
+    height: 300px;
+    width: 300px; 
+}
+
+#gifModal {
+    /* Hide Modal by default */
+    display:none; 
+    /* Keep Modal in same position */
+    position:fixed;
+    /* Make sure Modal will be displayed on top of other content */
+    z-index: 1;
+    /* Position that modal will slide down */
+    padding-top: 200px; 
+    left: 0;
+    top: 0;
+    width:100%;
+    height:100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.modal-content {
+    position: relative; 
+    margin: auto;
+    width: 30%;  
+    padding: 20px;
+    border: 1px solid #888; 
+    animation-name: modalSlideIn; 
+    animation-duration: 0.4s; 
+}
+
+/* Style for close modal button */
+#close-modal-btn {
+    font-size: 24pt; 
+    color: white; 
+}
+
+#close-modal-btn:hover, #close-modal-btn:focus {
+    color: black; 
+}
+
+/* Add animation for modal slidein */
+@keyframes modalSlideIn {
+    from {top:-300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}

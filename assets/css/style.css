@@ -65,3 +65,13 @@
 .show {
     display:block; 
 }
+
+/* Welcome Page Classes */
+
+.welcome-header {
+    font-size: 50pt; 
+}
+
+.welcome-msg {
+    font-size: 24pt; 
+}

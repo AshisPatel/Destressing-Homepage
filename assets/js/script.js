@@ -1,6 +1,10 @@
 const contentEl = document.querySelector("#content"); 
+const blobContainerEl = document.querySelector("#blobContainer");
+const logoBtnEl = document.querySelector("#logo-btn")
+
 const gifBtnEl = document.querySelector("#gif-btn");
-const museumBtnEl = document.querySelector("#museum-btn");
+// const museumBtnEl = document.querySelector("#museum-btn");
+const contentOptionsEl = document.querySelector('#content-options');
 
 const nextBtnEl = document.querySelector("#next-btn"); 
 const gifModalEl = document.querySelector("#gifModal"); 
@@ -98,9 +102,13 @@ const gifSearchHandler = function(event) {
     gifSearchFormEl.reset(); 
 }
     
-const getMuseum = async function() {
+const getArt = async function() {
+
+    //To do: Need to add loader
 
     contentEl.innerHTML = '';
+    nextBtnType = "painting"; 
+    blobContainerEl.classList.remove("show");
 
     // Get all objects that have an image and matches the query 'Painting'
     const allMuseumResponse = await fetch(
@@ -122,9 +130,18 @@ const getMuseum = async function() {
 
     const artSource = artData.primaryImageSmall;
 
+    const artWrapper = document.createElement("div");
     const artImg = document.createElement("img");
     artImg.src = artSource;
-    contentEl.appendChild(artImg);
+    artWrapper.setAttribute('style','width:800px;height:550px');
+
+    contentEl.appendChild(artWrapper);
+    artWrapper.appendChild(artImg);
+    contentEl.classList.add("space-top-image");
+    artImg.classList.add("image-mask");
+
+    // Show the next buttona and hide the blobs
+    nextBtnEl.classList.add("show", "my-10");
 }
 
 
@@ -138,9 +155,10 @@ const nextBtnHandler = function(event) {
         // Insert function to fetch joke
     }
 
-    if (nextBtnType === "museum") {
-        // Placeholder
-        // getMuseum();
+    if (nextBtnType === "painting") {
+        getArt();
+        // Hide the button while it's grabbing the response and show in the function
+        nextBtnEl.classList.remove("show"); 
     }
 
     if (nextBtnType === "quote") {
@@ -152,10 +170,23 @@ const closeModalBtnHandler = function(event) {
     gifModalEl.style.display= "none"; 
 }
 
+const reset = function(event) {
+    //Placeholder to reset back to the homepage
+}
 
-gifBtnEl.addEventListener("click",gifModalHandler); 
-museumBtnEl.addEventListener("click", getMuseum);
+
+//gifBtnEl.addEventListener("click",gifModalHandler); 
+
+// Run the function based on the value in the dropdown
+contentOptionsEl.addEventListener('change', function() {
+    if (contentOptionsEl.value === 'painting') {
+        getArt();
+    }
+    // Add the other conditionals here
+})
+
 gifChooseBtnEl.addEventListener("click", gifChooseBtnHandler);
 gifSearchFormEl.addEventListener("submit", gifSearchHandler);
 nextBtnEl.addEventListener("click", nextBtnHandler);   
 closeModalBtnEl.addEventListener("click",closeModalBtnHandler); 
+logoBtnEl.addEventListener("click", reset);

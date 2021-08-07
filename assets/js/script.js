@@ -8,11 +8,11 @@ const contentOptionsEl = document.querySelector('#content-options');
 
 const nextBtnEl = document.querySelector("#next-btn");
 const searchBtnEl = document.querySelector("#search-btn");  
-const gifModalEl = document.querySelector("#gifModal"); 
+const searchModalEl = document.querySelector("#searchModal"); 
 const closeModalBtnEl = document.querySelector("#close-modal-btn"); 
-const gifChooseBtnEl = document.querySelector("#gif-choose-btn");
-const gifSearchBtnEl = document.querySelector("#gif-search-btn");
-const gifSearchFormEl = document.querySelector("#gif-search-form");
+const modalChooseBtnEl = document.querySelector("#modal-choose-btn");
+const modalSearchBtnEl = document.querySelector("#modal-search-btn");
+const modalSearchFormEl = document.querySelector("#modal-search-form");
 const warningEl = document.querySelector(".warning-text");
 let prevGifTag = "";
 
@@ -149,22 +149,14 @@ const logoBtnHandler = function (event) {
     // Reset selected menu to default option
     contentOptionsEl.selectedIndex = 0; 
 }
-// Handler functions regarding gifs
 
-const gifChooseBtnHandler = function(event) {
-    // Set potential tags that could be searched
-    const potentialTags = ["kitten", "cat", "dog", "puppy", "cute", "wholesome"];
-    // Select a random tag from potential tags
-    const randomSearchTag = selectRandom(potentialTags, 1);
-    prevGifTag = randomSearchTag;
-    getGifs(randomSearchTag);
-    gifModalEl.style.display = "none";
-}
 
-const gifModalHandler = function (event) {
+// Functions regarding modals 
+
+const searchBtnHandler = function (event) {
     warningEl.classList.add("hide");
     warningEl.classList.remove("show");
-    gifModalEl.style.display = "block";
+    searchModalEl.style.display = "block";
 }
 
 const gifSearchHandler = function (event) {
@@ -187,6 +179,18 @@ const gifSearchHandler = function (event) {
     gifModalEl.style.display = "none";
     gifSearchFormEl.reset();
 }
+
+const gifChooseBtnHandler = function(event) {
+    // Set potential tags that could be searched
+    const potentialTags = ["kitten", "cat", "dog", "puppy", "cute", "wholesome"];
+    // Select a random tag from potential tags
+    const randomSearchTag = selectRandom(potentialTags, 1);
+    prevGifTag = randomSearchTag;
+    getGifs(randomSearchTag);
+    gifModalEl.style.display = "none";
+}
+
+// Functions regarding artwork generation 
     
 const getArt = async function() {
     // Hide the button while it's grabbing the response and show in the function
@@ -260,7 +264,7 @@ const nextBtnHandler = function (event) {
 }
 
 const closeModalBtnHandler = function(event) {
-    gifModalEl.style.display= "none"; 
+    searchModalEl.style.display= "none"; 
 }
 
 //gifBtnEl.addEventListener("click",gifModalHandler); 
@@ -276,8 +280,9 @@ contentOptionsEl.addEventListener('change', function() {
     }
 })
 
-gifChooseBtnEl.addEventListener("click", gifChooseBtnHandler);
-gifSearchFormEl.addEventListener("submit", gifSearchHandler);
+searchBtnEl.addEventListener("click", searchBtnHandler); 
+//gifChooseBtnEl.addEventListener("click", gifChooseBtnHandler);
+//gifSearchFormEl.addEventListener("submit", gifSearchHandler);
 nextBtnEl.addEventListener("click", nextBtnHandler);   
 closeModalBtnEl.addEventListener("click",closeModalBtnHandler); 
 logoBtnEl.addEventListener("click",logoBtnHandler);

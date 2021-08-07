@@ -8,7 +8,7 @@ body {
     background-color: var(--background);
 }
 
-h1, h2, p, label, button, select {
+h1, h2, h3, h4, h5, p, label, button, select {
     font-family: 'Lexend', sans-serif;
     color: var(--primary);
     font-weight: 600;
@@ -26,6 +26,28 @@ h2 {
     line-height: 1em;
     text-align: center;
 }
+
+h3 {
+    font-weight: 400;
+    font-size: 3em; 
+    line-height: 1em;
+    text-align: center;
+}
+
+h4 {
+    font-weight: 400;
+    font-size: 2em; 
+    line-height: 1em;
+    text-align: center;
+}
+
+h5 {
+    font-weight: 600;
+    font-size: 1.25em; 
+    line-height: 1em;
+    text-align: center;
+}
+
 
 .dropdown-container {
     margin-right: 2.75rem;
@@ -96,7 +118,7 @@ button {
     width: 300px; 
 }
 
-#gifModal {
+#searchModal {
     /* Hide Modal by default */
     display:none; 
     /* Keep Modal in same position */
@@ -120,23 +142,25 @@ button {
     padding: 5px 10px 10px 10px;
     border: 1px solid #888; 
     box-shadow: 0 0 5px black; 
+    background-color: var(--background); 
     animation-name: modalSlideIn; 
     animation-duration: 0.4s; 
 }
-/* Style for modal buttons */
-#gif-search-btn:hover, #gif-choose-btn:hover {
-    background-color: rgb(5,150,105); 
+
+.modal-content button {
+    border: 2px solid var(--primary); 
 }
+/* Style for modal buttons */
+
 
 /* Style for close modal button */
 #close-modal-btn {
     font-size: 24pt; 
     font-weight:bold; 
-    color: white; 
+    color: var(--primary); 
 }
 
 #close-modal-btn:hover, #close-modal-btn:focus {
-    color: black; 
     cursor: pointer; 
 }
 

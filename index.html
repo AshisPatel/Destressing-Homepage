@@ -43,21 +43,21 @@
     
     <main>
         <!-- Modal for Gif search -->
-        <div id="gifModal" class="modal">
+        <div id="searchModal" class="modal">
             <!-- Gif Modal Header -->
             <!-- Gif Modal content -->
             <!-- grid grid-cols-3 gap-4 -->
-            <div class="modal-content bg-green-300 rounded-lg p-0 text-white"> 
+            <div class="modal-content p-0"> 
                 <div class="grid grid-cols-3 justify-items-stretch mb-3">
-                    <h2 class="col-start-1 col-end-3 pt-5 font-bold">Search For A Gif or Have Me Choose!</h2>  
+                    <h5 class="col-start-1 col-end-3 pt-5 text-left">Search For A <span id="search-category"></span> or Have Me Choose!</h5>  
                     <span id="close-modal-btn" class = "col-start-3 col-end-4 justify-self-end">&times;</span>
                 </div>
-                <form id="gif-search-form" class = "grid grid-cols-3">
-                    <label for="gif-search"></label>
-                    <input type="text" placeholder="Search tag" id="gif-search-input" name="gif-search" class="col-start-1 col-end-3 rounded-l-lg pl-1 text-black"/>
-                    <button type="submit" id="gif-search-btn" class="bg-green-400 rounded-r-lg p-1">Search</button>
+                <form id="search-form" class = "grid grid-cols-3">
+                    <label for="modal-search"></label>
+                    <input type="text" placeholder="Search Here..." id="modal-search-input" name="modal-search" class="col-start-1 col-end-3 pl-1 text-black"/>
+                    <button type="submit" id="modal-search-btn" class="p-2">Search<i class="ml-2 fas fa-search"></i></button>
                     <p class="warning-text col-start-1 col-end-4 place-self-center mt-2 hide">Please enter a search tag!</p>
-                    <button type="button" id="gif-choose-btn" class="col-start-2 col-end-3 bg-green-400 rounded-lg p-2 mt-3">Choose For Me</button>
+                    <button type="button" id="modal-choose-btn" class="col-start-2 col-end-3 p-2 mt-3">Choose For Me</button>
                     
                 </form>
             </div>

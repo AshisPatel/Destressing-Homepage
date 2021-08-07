@@ -82,6 +82,10 @@ button {
     visibility: hidden;
 }
 
+.search-button {
+    visibility: hidden; 
+}
+
 .image-mask {
     -webkit-mask-image: url(../img/mask.png);
     mask-image: url(../img/mask.png);

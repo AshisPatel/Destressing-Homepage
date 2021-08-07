@@ -6,7 +6,8 @@ const gifBtnEl = document.querySelector("#gif-btn");
 // const museumBtnEl = document.querySelector("#museum-btn");
 const contentOptionsEl = document.querySelector('#content-options');
 
-const nextBtnEl = document.querySelector("#next-btn"); 
+const nextBtnEl = document.querySelector("#next-btn");
+const searchBtnEl = document.querySelector("#search-btn");  
 const gifModalEl = document.querySelector("#gifModal"); 
 const closeModalBtnEl = document.querySelector("#close-modal-btn"); 
 const gifChooseBtnEl = document.querySelector("#gif-choose-btn");
@@ -75,7 +76,8 @@ const displayWelcomeMessage = function(headerText,msgText) {
     blobContainerEl.classList.remove("hide");  
     blobContainerEl.classList.add("show"); 
 
-    nextBtnEl.classList.remove("show","my-10"); 
+    nextBtnEl.classList.remove("show","my-10");
+    searchBtnEl.classList.remove("show","my-10");  
 
     contentEl.classList.remove("space-top-image");
     contentEl.textContent = "";
@@ -136,7 +138,8 @@ const displayGifs = function (gif) {
     gifWrapper.appendChild(gifImg);
     contentEl.appendChild(gifWrapper); 
 
-    nextBtnEl.classList.add("show","my-10"); 
+    nextBtnEl.classList.add("show","my-10");
+    searchBtnEl.classList.add("show","my-10");  
 }
 
 // Handler functions regarding welcome page generation
@@ -186,6 +189,9 @@ const gifSearchHandler = function (event) {
 }
     
 const getArt = async function() {
+    // Hide the button while it's grabbing the response and show in the function
+    nextBtnEl.classList.remove("show");
+    searchBtnEl.classList.remove("show");  
 
     //To do: Need to add loader
 
@@ -226,6 +232,8 @@ const getArt = async function() {
     // Show the next buttona and hide the blobs
     nextBtnEl.classList.add("show", "my-10");
     nextBtnEl.textContent = `More artwork`;
+
+    searchBtnEl.classList.add("show","my-10"); 
 }
 
 // Function to handle displaying more of currently selected content 
@@ -233,6 +241,7 @@ const nextBtnHandler = function (event) {
 
     if (nextBtnType === "gif") {
         getGifs(prevGifTag);
+
     }
 
     if (nextBtnType === "joke") {
@@ -241,8 +250,8 @@ const nextBtnHandler = function (event) {
 
     if (nextBtnType === "painting") {
         getArt();
-        // Hide the button while it's grabbing the response and show in the function
-        nextBtnEl.classList.remove("show"); 
+        
+ 
     }
 
     if (nextBtnType === "quote") {

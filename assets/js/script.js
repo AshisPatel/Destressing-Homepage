@@ -231,6 +231,7 @@ const displayGifs = function (gif) {
     contentEl.appendChild(gifWrapper); 
 
     nextBtnEl.classList.add("show","my-10");
+    searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show","my-10");  
 }
 
@@ -282,7 +283,8 @@ const getArt = async function() {
     nextBtnEl.classList.add("show", "my-10");
 
     nextBtnEl.textContent = `More artwork`;
-
+    
+    searchBtnEl.classList.remove("hide"); 
     searchBtnEl.classList.add("show","my-10"); 
 }
 
@@ -300,12 +302,10 @@ const nextBtnHandler = function (event) {
 
     if (currentContent === "painting") {
         getArt();
-        
- 
     }
 
 
-    if (nextBtnType === "quote") {
+    if (currentContent === "quote") {
         startQuotes();
     }
 }
@@ -320,8 +320,12 @@ const startQuotes = function(event){
     fetch("https://api.quotable.io/random").then(function(response){
         
         if(response.ok){
+            blobContainerEl.classList.remove("hide");
+            blobContainerEl.classList.add("show"); 
+            searchBtnEl.classList.remove("show","my-10");
+            searchBtnEl.classList.add("hide"); 
             contentEl.textContent = ""; 
-            nextBtnType = "quote";
+            currentContent = "quote";
             response.json().then(function(data){
             //  console.log(data);
             // alert("quotes Working!")
@@ -351,7 +355,8 @@ const startQuotes = function(event){
 
              contentEl.appendChild(quoteCard);
 
-             nextBtnEl.textContent="Next Quote";
+             nextBtnEl.textContent="More quotes";
+             nextBtnEl.classList.add("show","my-10");
             })
         }else{
         alert("link not working")
@@ -364,10 +369,12 @@ const startQuotes = function(event){
 contentOptionsEl.addEventListener('change', function() {
     if (contentOptionsEl.value === 'painting') {
         getArt();
-    }else if(contentOptionsEl.value ==='quote'){
+    }
+    
+    if(contentOptionsEl.value ==='quote'){
         startQuotes();
     }
-    // Add the other conditionals here
+
     if (contentOptionsEl.value === 'gif') {
         getRandomGif(); 
     }

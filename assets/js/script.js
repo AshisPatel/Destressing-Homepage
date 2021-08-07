@@ -1,6 +1,12 @@
 const quoteEl = document.querySelector("#quote-btn");
 const contentEl = document.querySelector("#content"); 
+const blobContainerEl = document.querySelector("#blobContainer");
+const logoBtnEl = document.querySelector("#logo-btn")
+
 const gifBtnEl = document.querySelector("#gif-btn");
+// const museumBtnEl = document.querySelector("#museum-btn");
+const contentOptionsEl = document.querySelector('#content-options');
+
 const nextBtnEl = document.querySelector("#next-btn"); 
 const gifModalEl = document.querySelector("#gifModal"); 
 const closeModalBtnEl = document.querySelector("#close-modal-btn"); 
@@ -72,7 +78,6 @@ const getGifs = function(searchTag) {
     });
 }
 
-
 const gifChooseBtnHandler = function(event) {
     // Set potential tags that could be searched
     const potentialTags = ["kitten", "cat", "dog", "puppy", "cute", "wholesome"];
@@ -97,6 +102,52 @@ const gifSearchHandler = function(event) {
     gifModalEl.style.display = "none"; 
     gifSearchFormEl.reset(); 
 }
+    
+const getArt = async function() {
+
+    //To do: Need to add loader
+
+    contentEl.innerHTML = '';
+    nextBtnType = "painting"; 
+    blobContainerEl.classList.remove("show");
+
+    // Get all objects that have an image and matches the query 'Painting'
+    const allMuseumResponse = await fetch(
+        `https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=Painting`
+    );
+    const museumData = await allMuseumResponse.json();
+
+    // Get IDs of the objects
+    const museumArray = museumData.objectIDs;
+    
+    // Get random ID from that array
+    const museumId = museumArray[Math.floor((Math.random()*museumArray.length))];
+
+    // Get object matching that ID
+    const artResponse = await fetch(
+        `https://collectionapi.metmuseum.org/public/collection/v1/objects/${museumId}`
+    );
+    const artData = await artResponse.json();
+
+    const artSource = artData.primaryImageSmall;
+
+    const artWrapper = document.createElement("div");
+    const artImg = document.createElement("img");
+    artImg.src = artSource;
+    artWrapper.setAttribute('style','width:800px;height:550px');
+
+    contentEl.appendChild(artWrapper);
+    artWrapper.appendChild(artImg);
+    contentEl.classList.add("space-top-image");
+    artImg.classList.add("image-mask");
+
+    // Show the next buttona and hide the blobs
+    nextBtnEl.classList.add("show", "my-10");
+
+
+    nextBtnEl.textContent="Next Painting!"
+}
+
 
 const nextBtnHandler = function(event) {
 
@@ -108,8 +159,10 @@ const nextBtnHandler = function(event) {
         // Insert function to fetch joke
     }
 
-    if (nextBtnType === "museum") {
-        // Insert function to get museum fact
+    if (nextBtnType === "painting") {
+        getArt();
+        // Hide the button while it's grabbing the response and show in the function
+        nextBtnEl.classList.remove("show"); 
     }
 
     if (nextBtnType === "quote") {
@@ -166,10 +219,26 @@ const startQuotes = function(event){
 };
 
 
+const reset = function(event) {
+    //Placeholder to reset back to the homepage
+}
 
-gifBtnEl.addEventListener("click",gifModalHandler); 
+
+//gifBtnEl.addEventListener("click",gifModalHandler); 
+
+// Run the function based on the value in the dropdown
+contentOptionsEl.addEventListener('change', function() {
+    if (contentOptionsEl.value === 'painting') {
+        getArt();
+    }else if(contentOptionsEl.value ==='quote'){
+        startQuotes();
+    }
+    // Add the other conditionals here
+})
+
 gifChooseBtnEl.addEventListener("click", gifChooseBtnHandler);
 gifSearchFormEl.addEventListener("submit", gifSearchHandler);
 nextBtnEl.addEventListener("click", nextBtnHandler);   
 closeModalBtnEl.addEventListener("click",closeModalBtnHandler); 
-quoteEl.addEventListener("click", startQuotes);
+//quoteEl.addEventListener("click", startQuotes);
+logoBtnEl.addEventListener("click", reset);

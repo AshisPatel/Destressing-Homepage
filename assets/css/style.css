@@ -113,11 +113,6 @@ button {
     mask-image: url(../img/mask.png);
 }
 
-.gif-size {
-    height: 300px;
-    width: 300px; 
-}
-
 #searchModal {
     /* Hide Modal by default */
     display:none; 
@@ -179,10 +174,6 @@ button {
     display:none; 
 }
 
-/* .show {
-    display:block; 
-} */
-
 /* Welcome Page Classes */
 
 .welcome-header {
@@ -204,3 +195,38 @@ button {
 .space-top-image {
     margin-top: 8vh;
 }
+
+/* Sound button classes */
+
+.sound-dropdown {
+    display: inline-block; 
+}
+
+.sound-btn {
+    transition: color 250ms ease-in; 
+     
+}
+
+.sound-dropdown-content {
+   display: none; 
+   z-index: 1; 
+   box-shadow: 0px 8px 16px rgba(0,0,0,0.2); 
+}
+
+.sound-dropdown-content button {
+    display: block;
+    padding: 0.5rem;
+    transition: color 250ms ease-in; 
+
+}
+
+
+.sound-btn:hover, .sound-dropdown-content button:hover {
+    color: var(--accent); 
+    cursor: pointer;
+}
+
+.sound-dropdown:hover .sound-dropdown-content {
+display:block; 
+}
+

@@ -86,31 +86,6 @@ const displayWelcomeMessage = function(headerText,msgText) {
 }
 // Functions related to gif generation 
 
-const displayGifs = function (gifArray) {
-    nextBtnType = "gif";
-    // Delete old content in content section
-    contentEl.textContent = "";
-    // Create div to contain grid of 4 columns , thus '3 rows' for 12 items
-    const gridEl = document.createElement("div");
-    gridEl.classList = "grid grid-cols-4 justify-items-center gap-5 bg-green-50";
-    // Populate grid of taken in array
-    for (let i = 0; i < gifArray.length; i++) {
-        // Create div to hold each gif img element
-        const imgWrapperEl = document.createElement("div");
-        imgWrapperEl.classList = "col-span-1 p-8 bg-green-200 rounded";
-        // Create image for each gif and add to img-wrapper
-        const imgEl = document.createElement("img");
-        imgEl.setAttribute("src", gifArray[i].images.original.url);
-        imgEl.setAttribute("alt", "");
-        imgEl.classList = "w-80 h-80 rounded";
-        imgWrapperEl.appendChild(imgEl);
-        // Add image-wrapper to grid
-        gridEl.appendChild(imgWrapperEl);
-    }
-    // Add grid to content section
-    contentEl.appendChild(gridEl);
-}
-
 const getGifs = function (searchTag) {
     nextBtnEl.textContent = `More ${searchTag} gifs`;
     const apiUrl = `https://api.giphy.com/v1/gifs/search?q=${searchTag}&api_key=8uu014p8mspMOtSIJu7z8PtcUxdwsM9x`;
@@ -118,15 +93,16 @@ const getGifs = function (searchTag) {
     fetch(apiUrl).then(function (response) {
         if (response.ok) {
             response.json().then(function (data) {
-                // Grab 4 random gifs from the retrieved gif array 
-                const numGifs = 4;
+                // Grab a random gifs from the retrieved gif array 
+                const numGifs = 1;
                 const retrievedGifs = data.data;
                 console.log(retrievedGifs);
                 const selectedGifs = selectRandom(retrievedGifs, numGifs);
                 // Returned object is contains a "data" key that is an array of 50 gifs
                 // Grab numGifs from that array, maybe randomize
+               
                 displayGifs(selectedGifs);
-                console.log(selectedGifs);
+               
             })
         }
         else {
@@ -134,10 +110,32 @@ const getGifs = function (searchTag) {
         }
     });
 }
+
+const displayGifs = function (gif) {
+    nextBtnType = "gif";
+    // Delete old content in content section
+    contentEl.textContent = "";
+    contentEl.classList.add("space-top-image");
+  
+    const gifWrapper = document.createElement("div");
+    gifWrapper.setAttribute("style","width:800px;height:550px"); 
+    gifWrapper.classList = "flex justify-center";
+    const gifImg = document.createElement("img"); 
+    gifImg.classList.add("image-mask"); 
+    gifImg.setAttribute("style","width:480px;height:480px"); 
+    gifImg.setAttribute("src",gif[0].images.original.url); 
+    gifWrapper.appendChild(gifImg);
+    contentEl.appendChild(gifWrapper); 
+
+    nextBtnEl.classList.add("show","my-10"); 
+}
+
 // Handler functions regarding welcome page generation
 const logoBtnHandler = function (event) {
-    console.log("This is working!"); 
+    // Grab time and message based on time
     getCurrentTime();
+    // Reset selected menu to default option
+    contentOptionsEl.selectedIndex = 0; 
 }
 // Handler functions regarding gifs
 
@@ -254,6 +252,9 @@ contentOptionsEl.addEventListener('change', function() {
         getArt();
     }
     // Add the other conditionals here
+    if (contentOptionsEl.value === 'gif') {
+        gifChooseBtnHandler(); 
+    }
 })
 
 gifChooseBtnEl.addEventListener("click", gifChooseBtnHandler);

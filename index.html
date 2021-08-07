@@ -6,19 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet"> 
     <title>Destressing Homepage</title>
 </head>
 <body>
     <header>
-        <nav>
+        <nav class="flex items-center justify-between mx-11 my-5">
             <button type="button" id="logo-btn">Home</button>
+        <!-- 
             <ul></ul>
+
             <ul id="content-options">
                 <li><button type="button" id="gif-btn">gif</button></li>
                 <li><button type="button" id="museum-btn">museum</button></li>
                 <li><button type="button" id="quote-btn">quote</button></li>
                 <li><button type="button" id="joke-btn">joke</button></li>
             </ul>
+            -->
+
+            <div class="dropdown-container absolute right-0">
+                <label for="content-options" class="pr-1">Show me a...</label>
+                <select name="content-options" id="content-options" class="pl-2 py-2 rounded-sm">
+                    <option value="" selected disabled hidden>choose</option>
+                    <option value="gif">gif</option>
+                    <option value="painting">painting</option>
+                    <option value="quote">quote</option>
+                    <option value="joke">joke</option>
+                    <option value="surprise">surprise</option>
+                </select>
+            </div>
         <nav>
     </header>
     
@@ -43,7 +61,7 @@
             </div>
         </div>
 
-        <section id="content">
+        <section id="content" class="flex flex-col items-center">
             <!-- Dynamically generate your content here -->
             <div class="joke-container" id="joke-container">
                 <form id="joke-form" class="joke-form">
@@ -58,14 +76,21 @@
                 </div>
 
             </div>
+            <!-- Static greeting to be replaced based on time of day -->
+            <h1 class="space-top-text">Good afternoon</h1>
+            <h2 class="pt-2">Take a deep breath</h2>
         </section>
 
-        <section id="navigation-options">
-            <!-- Returns to welcome page -->
-            <button type="button" id="home-btn">home</button>
+        <section id="navigation-options" class="flex justify-center">
             <!-- Shows your next version of content -->
-            <button type="button" id="next-btn" class="bg-green-300 rounded-lg p-2">next</button>
+            <button type="button" id="next-btn" class="bg-transparent border-2 p-2 another-button">Show another!</button>
         </section>
+
+        <!-- Blobs -->
+        <div class="blob-container show" id="blobContainer">
+            <img class="blob1" src="assets/img/blob1.svg">
+            <img class="blob2" src="assets/img/blob2.svg">
+        </div>
     </main>
 
     <script src="./assets/js/script.js"></script>

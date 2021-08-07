@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
-    <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <link href="./assets/css/style.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet"> 
@@ -42,21 +43,22 @@
     
     <main>
         <!-- Modal for Gif search -->
-        <div id="gifModal" class="modal">
+        <div id="searchModal" class="modal">
             <!-- Gif Modal Header -->
-                
             <!-- Gif Modal content -->
             <!-- grid grid-cols-3 gap-4 -->
-            <div class="modal-content bg-green-200 rounded-lg "> 
-                <div class="grid grid-cols-3">
-                    <h2 class="col-start-1 col-span-2">Search For A Gif or Have Me Choose!</h2>
-                    <span id="close-modal-btn" class = "col-end-4 mb-10 p-0">&times;</span>
+            <div class="modal-content p-0"> 
+                <div class="grid grid-cols-3 justify-items-stretch mb-3">
+                    <h5 class="col-start-1 col-end-3 pt-5 text-left">Search For A <span id="search-category"></span> or Have Me Choose!</h5>  
+                    <span id="close-modal-btn" class = "col-start-3 col-end-4 justify-self-end">&times;</span>
                 </div>
-                <form id="gif-search-form" class = "col-start-1 col-span-3">
-                    <label for="gif-search">Enter Tag(s) to Search: </label>
-                    <input type="text" placeholder="Search tag" id="gif-search-input" name="gif-search"/>
-                    <button type="submit" id="gif-search-btn" class="bg-green-300 rounded-lg p-2">Search</button>
-                    <button type="button" id="gif-choose-btn" class="bg-green-300 rounded-lg p-2">Choose For Me</button>
+                <form id="modal-search-form" class = "grid grid-cols-3">
+                    <label for="modal-search"></label>
+                    <input type="text" placeholder="Search Here..." id="modal-search-input" name="modal-search" class="col-start-1 col-end-3 pl-1 text-black"/>
+                    <button type="submit" id="modal-search-btn" class="p-2">Search<i class="ml-2 fas fa-search"></i></button>
+                    <p class="warning-text col-start-1 col-end-4 place-self-center mt-2 hide">Please enter a search tag!</p>
+                    <button type="button" id="modal-choose-btn" class="col-start-2 col-end-3 p-2 mt-3">Choose For Me</button>
+                    
                 </form>
             </div>
         </div>
@@ -64,19 +66,18 @@
         <section id="content" class="flex flex-col items-center">
             <!-- Dynamically generate your content here -->
             <!-- Static greeting to be replaced based on time of day -->
-            <h1 class="space-top-text">Good afternoon</h1>
-            <h2 class="pt-2">Take a deep breath</h2>
         </section>
 
         <section id="navigation-options" class="flex justify-center">
             <!-- Shows your next version of content -->
             <button type="button" id="next-btn" class="bg-transparent border-2 p-2 another-button">Show another!</button>
+            <button type="button" id="search-btn" class="ml-4 bg-transparent border-2 p-2 search-button">Search<i class="ml-2 fas fa-search"></i></button>
         </section>
 
         <!-- Blobs -->
         <div class="blob-container show" id="blobContainer">
-            <img class="blob1" src="assets/img/blob1.svg">
-            <img class="blob2" src="assets/img/blob2.svg">
+            <img class="blob1" src="./assets/img/blob1.svg">
+            <img class="blob2" src="./assets/img/blob2.svg">
         </div>
     </main>
     <script src="./assets/js/script.js"></script>

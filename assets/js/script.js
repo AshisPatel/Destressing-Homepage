@@ -71,6 +71,13 @@ const getWelcomeMessage = function (hour) {
 }
 
 const displayWelcomeMessage = function(headerText,msgText) {
+    // Reset home page 
+    blobContainerEl.classList.remove("hide");  
+    blobContainerEl.classList.add("show"); 
+
+    nextBtnEl.classList.remove("show","my-10"); 
+
+    contentEl.classList.remove("space-top-image");
     contentEl.textContent = "";
 
     const welcomeHeaderEl = document.createElement("h1");
@@ -114,6 +121,8 @@ const getGifs = function (searchTag) {
 const displayGifs = function (gif) {
     nextBtnType = "gif";
     // Delete old content in content section
+    blobContainerEl.classList.remove("show");
+    blobContainerEl.classList.add("hide");  
     contentEl.textContent = "";
     contentEl.classList.add("space-top-image");
   
@@ -216,6 +225,7 @@ const getArt = async function() {
 
     // Show the next buttona and hide the blobs
     nextBtnEl.classList.add("show", "my-10");
+    nextBtnEl.textContent = `More artwork`;
 }
 
 // Function to handle displaying more of currently selected content 

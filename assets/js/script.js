@@ -15,7 +15,7 @@ const modalSearchBtnEl = document.querySelector("#modal-search-btn");
 const modalSearchFormEl = document.querySelector("#modal-search-form");
 const warningEl = document.querySelector(".warning-text");
 let prevGifTag = "";
-
+let currentContent = ""; 
 //  Utility functions
 
 const selectRandom = function (array, numItems) {
@@ -93,7 +93,98 @@ const displayWelcomeMessage = function(headerText,msgText) {
     contentEl.appendChild(welcomeHeaderEl);
     contentEl.appendChild(welcomeMsgEl);
 }
+
+// Handler functions regarding welcome page generation
+const logoBtnHandler = function (event) {
+    // Grab time and message based on time
+    getCurrentTime();
+    // Reset selected menu to default option
+    contentOptionsEl.selectedIndex = 0; 
+}
+
+
+// Functions regarding modals 
+
+const searchBtnHandler = function (event) {
+    warningEl.classList.add("hide");
+    warningEl.classList.remove("show");
+    searchModalEl.style.display = "block";
+}
+
+const modalChooseBtnHandler = function(event) {
+    
+    // Hide modal 
+    searchModalEl.style.display = "none";
+    // Check which display is on the screen 
+    
+    if (currentContent === "gif") {
+        getRandomGif(); 
+    }
+
+    if (currentContent === "painting"){
+        // Insert function to call random painting
+        getArt(); 
+    }
+
+    if (currentContent === "quote"){
+        // Insert function to call random quote
+    }
+
+    if (currentContent === "joke"){
+        // Insert function to call random joke 
+    }
+}
+
+const modalSearchHandler = function (event) {
+    event.preventDefault();
+    
+    const modalSearchInputEl = document.querySelector("#modal-search-input");
+    const searchTag = modalSearchInputEl.value.trim();
+
+    // Check if text input is blank
+    if (searchTag === "") {
+        const warningEl = document.querySelector(".warning-text");
+        warningEl.classList.remove("hide");
+        warningEl.classList.add("show");
+        return;
+    }
+
+    // Hide Modal
+    searchModalEl.style.display = "none";
+
+    // Check for content of search 
+    if (currentContent === "gif") {
+        prevGifTag = searchTag;
+        getGifs(searchTag);
+        
+        modalSearchFormEl.reset();
+    }
+
+    if (currentContent === "painting"){
+        // Insert function to call random painting
+        console.log("Painting Search Test"); 
+    }
+
+    if (currentContent === "quote"){
+        // Insert function to call random quote
+    }
+
+    if (currentContent === "joke"){
+        // Insert function to call random joke 
+    }
+}
+
 // Functions related to gif generation 
+
+const getRandomGif = function(event) {
+    // Set potential tags that could be searched
+    const potentialTags = ["kitten", "cat", "dog", "puppy", "cute", "wholesome"];
+    // Select a random tag from potential tags
+    const randomSearchTag = selectRandom(potentialTags, 1);
+    prevGifTag = randomSearchTag;
+    getGifs(randomSearchTag);
+    searchModalEl.style.display = "none";
+}
 
 const getGifs = function (searchTag) {
     nextBtnEl.textContent = `More ${searchTag} gifs`;
@@ -121,7 +212,7 @@ const getGifs = function (searchTag) {
 }
 
 const displayGifs = function (gif) {
-    nextBtnType = "gif";
+    currentContent = "gif";
     // Delete old content in content section
     blobContainerEl.classList.remove("show");
     blobContainerEl.classList.add("hide");  
@@ -142,53 +233,6 @@ const displayGifs = function (gif) {
     searchBtnEl.classList.add("show","my-10");  
 }
 
-// Handler functions regarding welcome page generation
-const logoBtnHandler = function (event) {
-    // Grab time and message based on time
-    getCurrentTime();
-    // Reset selected menu to default option
-    contentOptionsEl.selectedIndex = 0; 
-}
-
-
-// Functions regarding modals 
-
-const searchBtnHandler = function (event) {
-    warningEl.classList.add("hide");
-    warningEl.classList.remove("show");
-    searchModalEl.style.display = "block";
-}
-
-const gifSearchHandler = function (event) {
-    // Make sure there's text in the submit
-    event.preventDefault();
-    const gifSearchInputEl = document.querySelector("#gif-search-input");
-    // Insert something to verify if the search is blank 
-    const searchTag = gifSearchInputEl.value.trim();
-
-    // Check if text input is blank
-    if (searchTag === "") {
-        const warningEl = document.querySelector(".warning-text");
-        warningEl.classList.remove("hide");
-        warningEl.classList.add("show");
-        return;
-    }
-
-    prevGifTag = searchTag;
-    getGifs(searchTag);
-    gifModalEl.style.display = "none";
-    gifSearchFormEl.reset();
-}
-
-const gifChooseBtnHandler = function(event) {
-    // Set potential tags that could be searched
-    const potentialTags = ["kitten", "cat", "dog", "puppy", "cute", "wholesome"];
-    // Select a random tag from potential tags
-    const randomSearchTag = selectRandom(potentialTags, 1);
-    prevGifTag = randomSearchTag;
-    getGifs(randomSearchTag);
-    gifModalEl.style.display = "none";
-}
 
 // Functions regarding artwork generation 
     
@@ -200,7 +244,7 @@ const getArt = async function() {
     //To do: Need to add loader
 
     contentEl.innerHTML = '';
-    nextBtnType = "painting"; 
+    currentContent = "painting"; 
     blobContainerEl.classList.remove("show");
 
     // Get all objects that have an image and matches the query 'Painting'
@@ -243,22 +287,22 @@ const getArt = async function() {
 // Function to handle displaying more of currently selected content 
 const nextBtnHandler = function (event) {
 
-    if (nextBtnType === "gif") {
+    if (currentContent === "gif") {
         getGifs(prevGifTag);
 
     }
 
-    if (nextBtnType === "joke") {
+    if (currentContent === "joke") {
         // Insert function to fetch joke
     }
 
-    if (nextBtnType === "painting") {
+    if (currentContent === "painting") {
         getArt();
         
  
     }
 
-    if (nextBtnType === "quote") {
+    if (currentContent === "quote") {
         // Insert function to get quote 
     }
 }
@@ -267,7 +311,7 @@ const closeModalBtnHandler = function(event) {
     searchModalEl.style.display= "none"; 
 }
 
-//gifBtnEl.addEventListener("click",gifModalHandler); 
+
 
 // Run the function based on the value in the dropdown
 contentOptionsEl.addEventListener('change', function() {
@@ -276,13 +320,13 @@ contentOptionsEl.addEventListener('change', function() {
     }
     // Add the other conditionals here
     if (contentOptionsEl.value === 'gif') {
-        gifChooseBtnHandler(); 
+        getRandomGif(); 
     }
 })
 
 searchBtnEl.addEventListener("click", searchBtnHandler); 
-//gifChooseBtnEl.addEventListener("click", gifChooseBtnHandler);
-//gifSearchFormEl.addEventListener("submit", gifSearchHandler);
+modalChooseBtnEl.addEventListener("click", modalChooseBtnHandler);
+modalSearchFormEl.addEventListener("submit", modalSearchHandler);
 nextBtnEl.addEventListener("click", nextBtnHandler);   
 closeModalBtnEl.addEventListener("click",closeModalBtnHandler); 
 logoBtnEl.addEventListener("click",logoBtnHandler);

@@ -1,3 +1,4 @@
+const quoteEl = document.querySelector("#quote-btn");
 const contentEl = document.querySelector("#content"); 
 const blobContainerEl = document.querySelector("#blobContainer");
 const logoBtnEl = document.querySelector("#logo-btn")
@@ -279,6 +280,7 @@ const getArt = async function() {
 
     // Show the next buttona and hide the blobs
     nextBtnEl.classList.add("show", "my-10");
+
     nextBtnEl.textContent = `More artwork`;
 
     searchBtnEl.classList.add("show","my-10"); 
@@ -302,21 +304,68 @@ const nextBtnHandler = function (event) {
  
     }
 
-    if (currentContent === "quote") {
-        // Insert function to get quote 
+
+    if (nextBtnType === "quote") {
+        startQuotes();
     }
 }
 
 const closeModalBtnHandler = function(event) {
-    searchModalEl.style.display= "none"; 
+      searchModalEl.style.display= "none"; 
+
 }
 
+const startQuotes = function(event){
+    
+    fetch("https://api.quotable.io/random").then(function(response){
+        
+        if(response.ok){
+            contentEl.textContent = ""; 
+            nextBtnType = "quote";
+            response.json().then(function(data){
+            //  console.log(data);
+            // alert("quotes Working!")
+            // console.log(data.content)
+            
+             const quoteCard = document.createElement("div");
+             quoteCard.classList = "w-full mx-auto rounded-lg bg-white shadow-lg px-5 pt-5 pb-10 text-gray-800";
+             quoteCard.setAttribute("style","max-width: 500px")
+
+             const quoteTextArea = document.createElement("div");
+             quoteTextArea.classList="w-full mb-10";
+             quoteCard.appendChild(quoteTextArea);
+
+             const randomQuote= document.createElement("p")
+             randomQuote.classList="text-sm text-gray-600 text-center px-5"
+             randomQuote.textContent = '"'+ data.content+ '"';
+             quoteTextArea.appendChild(randomQuote);
+            
+             const autorArea =document.createElement("div");
+             autorArea.classList ="w-full";
+             quoteCard.appendChild(autorArea)
+             
+             const autorName = document.createElement("p");
+             autorName.classList ="text-md text-indigo-500 font-bold text-center";
+             autorName.textContent = data.author;
+             autorArea.appendChild(autorName);
+
+             contentEl.appendChild(quoteCard);
+
+             nextBtnEl.textContent="Next Quote";
+            })
+        }else{
+        alert("link not working")
+        }
+    });
+};
 
 
 // Run the function based on the value in the dropdown
 contentOptionsEl.addEventListener('change', function() {
     if (contentOptionsEl.value === 'painting') {
         getArt();
+    }else if(contentOptionsEl.value ==='quote'){
+        startQuotes();
     }
     // Add the other conditionals here
     if (contentOptionsEl.value === 'gif') {
@@ -329,8 +378,8 @@ modalChooseBtnEl.addEventListener("click", modalChooseBtnHandler);
 modalSearchFormEl.addEventListener("submit", modalSearchHandler);
 nextBtnEl.addEventListener("click", nextBtnHandler);   
 closeModalBtnEl.addEventListener("click",closeModalBtnHandler); 
-logoBtnEl.addEventListener("click",logoBtnHandler);
 
+logoBtnEl.addEventListener("click",logoBtnHandler);
 
 // On load, generate welcome message
 

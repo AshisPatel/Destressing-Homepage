@@ -220,7 +220,6 @@ button {
 
 }
 
-
 .sound-btn:hover, .sound-dropdown-content button:hover {
     color: var(--accent); 
     cursor: pointer;
@@ -228,5 +227,9 @@ button {
 
 .sound-dropdown:hover .sound-dropdown-content {
 display:block; 
+}
+
+.play {
+    color: red; 
 }
 

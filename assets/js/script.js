@@ -17,6 +17,9 @@ const modalSearchFormEl = document.querySelector("#modal-search-form");
 const warningEl = document.querySelector(".warning-text");
 let prevGifTag = "";
 let currentContent = ""; 
+
+// DOM elements related to sound
+const rainButtonEl = document.querySelector("#rain-btn"); 
 //  Utility functions
 
 const selectRandom = function (array, numItems) {
@@ -384,6 +387,37 @@ contentOptionsEl.addEventListener('change', function() {
     }
 })
 
+// Function Handlers that will play audio on button click 
+
+const rainButtonHandler = function(event) {
+    const rainAudioEl = document.querySelector("#rain-audio");
+    
+    // Check if the sound is already playing
+
+    // If sound is not playing, start sound and color button 
+
+    if(!rainButtonEl.classList.contains("play")) {
+        // Play audio
+        rainAudioEl.play();
+        // Loop audio
+        rainAudioEl.loop = true; 
+        // Add play class  
+        rainButtonEl.classList.add("play"); 
+    }
+
+    // If sound is playing, stop sound un-color button
+    else {
+        // Stop audio
+        rainAudioEl.pause();
+        // Stop loop
+        rainAudioEl.loop = false; 
+        // Remove play class
+        rainButtonEl.classList.remove("play");
+    }
+    
+}
+
+
 searchBtnEl.addEventListener("click", searchBtnHandler); 
 modalChooseBtnEl.addEventListener("click", modalChooseBtnHandler);
 modalSearchFormEl.addEventListener("submit", modalSearchHandler);
@@ -391,6 +425,8 @@ nextBtnEl.addEventListener("click", nextBtnHandler);
 closeModalBtnEl.addEventListener("click",closeModalBtnHandler); 
 
 logoBtnEl.addEventListener("click",logoBtnHandler);
+
+rainButtonEl.addEventListener("click", rainButtonHandler); 
 
 // On load, generate welcome message
 

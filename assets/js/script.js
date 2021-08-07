@@ -109,6 +109,10 @@ const logoBtnHandler = function (event) {
 const searchBtnHandler = function (event) {
     warningEl.classList.add("hide");
     warningEl.classList.remove("show");
+
+    const searchCategoryEl = document.querySelector("#search-category");
+    // Add current category to search header in modal 
+    searchCategoryEl.textContent = currentContent.charAt(0).toUpperCase() + currentContent.slice(1); 
     searchModalEl.style.display = "block";
 }
 

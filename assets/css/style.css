@@ -50,7 +50,7 @@ h5 {
 
 
 .dropdown-container {
-    margin-right: 2.75rem;
+    /* margin-right: 2.75rem; */
 }
 
 select:focus {
@@ -199,7 +199,7 @@ button {
 /* Sound button classes */
 
 .sound-dropdown {
-    display: inline-block; 
+    /* display:inline-block */
 }
 
 .sound-btn {
@@ -215,10 +215,9 @@ button {
 }
 
 .sound-dropdown-content button {
-    display: block;
-    margin: 0.5rem; 
+    /* display:block;  */
+    margin: 0.4rem;  
     transition: color 250ms ease-in; 
-
 }
 
 .sound-btn:hover, .sound-dropdown-content button:hover {
@@ -227,7 +226,7 @@ button {
 }
 
 .sound-dropdown:hover .sound-dropdown-content {
-display:block; 
+display: block; 
 }
 
 .play {

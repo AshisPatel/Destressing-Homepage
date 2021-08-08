@@ -177,7 +177,6 @@ const modalSearchHandler = function (event) {
 
     if (currentContent === "joke"){
         // Insert function to call random joke
-       
         searchJoke(searchTag); 
         modalSearchFormEl.reset();
     }
@@ -421,10 +420,10 @@ const getjoke = async function(){
    
 }
 //call for search
-async function searchJoke(jokesearchvalue){
+async function searchJoke(searchTag){
     
     //call Api
-    const jokefetch= await fetch('https://icanhazdadjoke.com/search?term='+jokesearchvalue,{
+    const jokefetch= await fetch('https://icanhazdadjoke.com/search?term=' +searchTag,{
         headers:{
             'Accept': 'application/json'
         }
@@ -432,7 +431,7 @@ async function searchJoke(jokesearchvalue){
 
     const jokeContent =await jokefetch.json();
 
-    console.log(jokeContent.joke);
+  
     //Passing joke on screen
     jokeContentEL.innerHTML=jokeContent.joke;  
 }

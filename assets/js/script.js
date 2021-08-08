@@ -176,7 +176,8 @@ const modalSearchHandler = function (event) {
     }
 
     if (currentContent === "joke"){
-        // Insert function to call random joke 
+        // Insert function to call random joke
+        searchJoke(searchTag); 
     }
 }
 
@@ -408,9 +409,31 @@ const getjoke = async function(){
 
     console.log(jokeContent.joke);
     //Passing joke on screen
-    jokeContentEL.innerHTML=jokeContent.joke;  
+    jokeContentEL.innerHTML=jokeContent.joke; 
+    
+    searchBtnEl.classList.remove("hide"); 
+    searchBtnEl.classList.add("show","my-10"); 
    
 }
+
+async function searchJoke(jokesearchvalue){
+    const jokeContentEL= document.getElementById("joke-content");
+    //call Api
+    const jokefetch= await fetch('https://icanhazdadjoke.com/search?term='+jokesearchvalue,{
+        headers:{
+            'Accept': 'application/json'
+        }
+    });
+
+    const jokeContent =await jokefetch.json();
+
+    console.log(jokeContent.joke);
+    //Passing joke on screen
+    jokeContentEL.innerHTML=jokeContent.joke;  
+}
+
+//call for search 
+
 
 
 

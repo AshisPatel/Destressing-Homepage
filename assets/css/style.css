@@ -2,6 +2,7 @@
     --background: #FBF7F2;
     --accent: #F5D8B4;
     --primary: #46413E;
+    --red: #F1381B;
 }
 
 body {
@@ -47,7 +48,6 @@ h5 {
     line-height: 1em;
     text-align: center;
 }
-
 
 .dropdown-container {
     margin-right: 2.75rem;
@@ -97,15 +97,74 @@ img {
 }
 
 button {
- border-color: var(--primary);
+    border: 2px solid var(--primary); 
+    position: relative;
+    overflow: hidden;
+    transition: background-color 400ms;
 }
 
-.another-button {
+/* Used for the ripple when buttons are clicked */
+span.ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 500ms linear;
+    background-color: rgba(70,65,62,0.5);
+}
+
+span.light-ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 500ms linear;
+    background-color: rgba(255,255,255,0.5);
+}
+
+@keyframes ripple {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+}
+
+button:hover, button:focus {
+    cursor: pointer; 
+}
+
+button:hover {
+    /* opacity: 0.8;*/
+    transition: opacity 0.25s; 
+    background-color: rgba(70,65,62,0.05);
+}
+
+.home-btn {
+    border: initial;
+    width: 28px;
+    height: 28px;
+}
+
+.home-btn:hover  {
+    opacity: 0.8;
+    background-color: transparent;
+    transition: opacity 0.25s; 
+}
+
+.close-modal-btn:hover {
+    background-color: transparent;
+}
+
+.modal-search-btn:hover {
+    background-color: var(--primary);
+    opacity: 0.85;
+    transition: opacity 0.25s; 
+}
+
+button:focus {
+    outline: 1px solid var(--accent);
+}
+
+.another-button, .search-button  {
     visibility: hidden;
-}
-
-.search-button {
-    visibility: hidden; 
 }
 
 .image-mask {
@@ -118,9 +177,9 @@ button {
     width: 300px; 
 }
 
-#searchModal {
+.search-modal {
     /* Hide Modal by default */
-    display:none; 
+    visibility: hidden;
     /* Keep Modal in same position */
     position:fixed;
     /* Make sure Modal will be displayed on top of other content */
@@ -133,35 +192,82 @@ button {
     height:100%;
     overflow: auto;
     background-color: rgba(0,0,0,0.4); 
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.search-modal.show {
+    visibility: visible;
+    opacity: 1;
 }
 
 .modal-content {
     position: relative; 
+    top: 0;
     margin: auto;
-    width: 30%;  
-    padding: 5px 10px 10px 10px;
-    border: 1px solid #888; 
-    box-shadow: 0 0 5px black; 
+    width: 100%;  
     background-color: var(--background); 
+}
+
+.modal-slide-in {
     animation-name: modalSlideIn; 
+    animation-duration: 0.4s; 
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-slide-out {
+    animation-name: modalSlideOut; 
     animation-duration: 0.4s; 
 }
 
-.modal-content button {
-    border: 2px solid var(--primary); 
-}
-/* Style for modal buttons */
-
-
 /* Style for close modal button */
-#close-modal-btn {
-    font-size: 24pt; 
-    font-weight:bold; 
-    color: var(--primary); 
+.close-modal-btn {
+    height: 20px;
+    width: 20px;
+    border: initial;
 }
 
-#close-modal-btn:hover, #close-modal-btn:focus {
-    cursor: pointer; 
+.modal-or::before, .modal-or::after {
+    display: inline-block;
+    background-color: rgba(0,0,0,0.35);
+    content: '';
+    height: 1px;
+    flex: 1;
+}
+
+.modal-or::before{
+    margin: 0 .4em 0 0;
+}
+
+.modal-or::after{
+    margin: 0 0 0 .4em;
+}
+
+.modal-or {
+    justify-content: center;
+    align-items: center;
+    line-height: 1.42857;
+    color: rgba(0,0,0,0.6);
+}
+
+input {
+    border: 2px solid rgba(70,65,62,0.4);
+    transition: all 0.15s;
+}
+
+input:focus {
+    outline: none;
+    border: 2px solid var(--primary);
+}
+
+.modal-search-btn {
+    background-color: var(--primary);
+    color: #fff;
+}
+
+#modal-choose-btn {
+    width: 100%;
 }
 
 /* Add animation for modal slidein */
@@ -169,30 +275,21 @@ button {
     from {top:-300px; opacity: 0}
     to {top: 0; opacity: 1}
 }
+/* Add animation for modal slideout */
+@keyframes modalSlideOut {
+    from {top: 0; opacity: 1}
+    to {top:-300px; opacity: 0}
+}
 
 /* Utility Classes */
 .warning-text {
-    color: red;
+    color: var(--red);
 }
 
 .hide {
     display:none; 
 }
 
-/* .show {
-    display:block; 
-} */
-
-/* Welcome Page Classes */
-
-.welcome-header {
-    font-size: 50pt; 
-}
-
-.welcome-msg {
-    font-size: 24pt; 
-}
-/* Helper classes */
 .show {
     visibility: initial;
 }
@@ -203,4 +300,21 @@ button {
 
 .space-top-image {
     margin-top: 8vh;
+}
+
+/* Welcome Page Classes */
+
+.welcome-header {
+    font-size: 50pt; 
+}
+
+.welcome-msg {
+    font-size: 24pt; 
+}
+
+/* Media Queries */
+@media screen and (min-width: 700px) {
+    .modal-content {
+        width: 40%;  
+    }
 }

@@ -215,7 +215,7 @@ button {
 }
 
 .sound-dropdown-content button {
-    /* display:block;  */
+    display:block; 
     margin: 0.4rem;  
     transition: color 250ms ease-in; 
 }

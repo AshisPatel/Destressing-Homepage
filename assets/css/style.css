@@ -8,7 +8,7 @@ body {
     background-color: var(--background);
 }
 
-h1, h2, p, label, button, select {
+h1, h2, h3, h4, h5, p, label, button, select {
     font-family: 'Lexend', sans-serif;
     color: var(--primary);
     font-weight: 600;
@@ -26,6 +26,28 @@ h2 {
     line-height: 1em;
     text-align: center;
 }
+
+h3 {
+    font-weight: 400;
+    font-size: 3em; 
+    line-height: 1em;
+    text-align: center;
+}
+
+h4 {
+    font-weight: 400;
+    font-size: 2em; 
+    line-height: 1em;
+    text-align: center;
+}
+
+h5 {
+    font-weight: 600;
+    font-size: 1.25em; 
+    line-height: 1em;
+    text-align: center;
+}
+
 
 .dropdown-container {
     margin-right: 2.75rem;
@@ -82,6 +104,10 @@ button {
     visibility: hidden;
 }
 
+.search-button {
+    visibility: hidden; 
+}
+
 .image-mask {
     -webkit-mask-image: url(../img/mask.png);
     mask-image: url(../img/mask.png);
@@ -92,7 +118,7 @@ button {
     width: 300px; 
 }
 
-#gifModal {
+#searchModal {
     /* Hide Modal by default */
     display:none; 
     /* Keep Modal in same position */
@@ -113,20 +139,29 @@ button {
     position: relative; 
     margin: auto;
     width: 30%;  
-    padding: 20px;
+    padding: 5px 10px 10px 10px;
     border: 1px solid #888; 
+    box-shadow: 0 0 5px black; 
+    background-color: var(--background); 
     animation-name: modalSlideIn; 
     animation-duration: 0.4s; 
 }
 
+.modal-content button {
+    border: 2px solid var(--primary); 
+}
+/* Style for modal buttons */
+
+
 /* Style for close modal button */
 #close-modal-btn {
     font-size: 24pt; 
-    color: white; 
+    font-weight:bold; 
+    color: var(--primary); 
 }
 
 #close-modal-btn:hover, #close-modal-btn:focus {
-    color: black; 
+    cursor: pointer; 
 }
 
 /* Add animation for modal slidein */
@@ -135,6 +170,28 @@ button {
     to {top: 0; opacity: 1}
 }
 
+/* Utility Classes */
+.warning-text {
+    color: red;
+}
+
+.hide {
+    display:none; 
+}
+
+/* .show {
+    display:block; 
+} */
+
+/* Welcome Page Classes */
+
+.welcome-header {
+    font-size: 50pt; 
+}
+
+.welcome-msg {
+    font-size: 24pt; 
+}
 /* Helper classes */
 .show {
     visibility: initial;

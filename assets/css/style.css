@@ -234,3 +234,15 @@ display:block;
     color: red; 
 }
 
+/* Styling for volume slider */
+input[type="range"] {
+
+}
+
+input[type="range"]::-webkit-slider-thumb{
+
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    
+}

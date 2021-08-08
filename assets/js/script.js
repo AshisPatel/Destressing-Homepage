@@ -233,7 +233,7 @@ const displayGifs = function (gif) {
     gifWrapper.classList = "flex justify-center";
     const gifImg = document.createElement("img");
     gifImg.classList.add("image-mask");
-    gifImg.setAttribute("style", "width:480px;height:480px");
+    //gifImg.setAttribute("style", "width:480px;height:480px");
     gifImg.setAttribute("src", gif[0].images.original.url);
     gifWrapper.appendChild(gifImg);
     contentEl.appendChild(gifWrapper);

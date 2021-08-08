@@ -196,13 +196,31 @@ button {
     margin-top: 8vh;
 }
 
-/* Sound button classes */
-
-.sound-dropdown {
-    /* display:inline-block */
+/* Make box appear in its contents from 0 to 100% width in 2 seconds over 60 steps */
+.appear-header {
+    opacity: 0; 
+    animation: appear-header 1.5s linear forwards; 
 }
 
+@keyframes appear-header {
+    from{opacity: 0; }
+    to{opacity: 1; }
+}
+
+.appear-msg {
+    opacity: 0;
+    animation: appear-msg 1.5s linear 1.5s forwards; 
+}
+
+@keyframes appear-msg {
+    from{opacity:0; }
+    to{opacity: 1; }
+}
+
+/* Sound button classes */
+
 .sound-btn {
+    color: var(--primary); 
     transition: color 250ms ease-in; 
      
 }
@@ -216,11 +234,17 @@ button {
 
 .sound-dropdown-content button {
     display:block; 
-    margin: 0.4rem;  
+    color: var(--primary);
+    margin: 0.8rem 0.4rem;   
     transition: color 250ms ease-in; 
 }
 
-.sound-btn:hover, .sound-dropdown-content button:hover {
+.sound-btn:hover {
+    color: var(--background); 
+    cursor: pointer; 
+}
+
+.sound-dropdown-content button:hover {
     color: var(--accent); 
     cursor: pointer;
 }
@@ -230,18 +254,39 @@ display: block;
 }
 
 .play {
-    color: red; 
+    color: red !important; 
 }
 
 /* Styling for volume slider */
+/* Style for entire general input */
 input[type="range"] {
-
+    -webkit-appearance: none; 
 }
 
+/* Styling the "thumb" or movable object on the slider */
 input[type="range"]::-webkit-slider-thumb{
-
+    -webkit-appearance: none; 
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: var(--primary); 
+    /* Moves thumb over the center of the track */
+    margin-top: -4.5px; 
 }
 
+/* Styling the track that the user moves the thumb on */
 input[type="range"]::-webkit-slider-runnable-track {
-    
+    height: 5px;
+    width: 300px; 
+    background-color: var(--primary); 
+    border: none;
+    border-radius: 0.5rem; 
 }
+
+/* Interaction styles for slider */
+input[type="range"]::-webkit-slider-runnable-track:hover,
+input[type="range"]::-webkit-slider-thumb:hover {
+    cursor:pointer; 
+}
+

@@ -88,11 +88,11 @@ const displayWelcomeMessage = function (headerText, msgText) {
     contentEl.textContent = "";
 
     const welcomeHeaderEl = document.createElement("h1");
-    welcomeHeaderEl.classList = "space-top-text";
+    welcomeHeaderEl.classList = "space-top-text appear-header";
     welcomeHeaderEl.textContent = headerText;
 
     const welcomeMsgEl = document.createElement("h2");
-    welcomeMsgEl.classList = "pt-2"
+    welcomeMsgEl.classList = "pt-2 appear-msg"
     welcomeMsgEl.textContent = msgText;
 
     contentEl.appendChild(welcomeHeaderEl);

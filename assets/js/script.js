@@ -177,7 +177,9 @@ const modalSearchHandler = function (event) {
 
     if (currentContent === "joke"){
         // Insert function to call random joke
+       
         searchJoke(searchTag); 
+        modalSearchFormEl.reset();
     }
 }
 
@@ -372,12 +374,14 @@ const startQuotes = function(event){
 };
 
 //Joke section
-const jokeContentEL= document.getElementById("joke-content");
-const jokeRandombtnEl=document.getElementById("joke-randombtn");
+const jokeContainer = document.createElement ("div");   
+const jokeContentEL = document.createElement ("div");
+jokeContainer.appendChild (jokeContentEL);
+
 const getjoke = async function(){
-
+    
     currentContent="joke";
-
+    
     blobContainerEl.classList.remove("hide");  
     blobContainerEl.classList.add("show"); 
     nextBtnEl.classList.remove("show","my-10");
@@ -386,14 +390,15 @@ const getjoke = async function(){
     contentEl.textContent = "";
 
     const jokeContainer = document.createElement ("div");
-    jokeContainer.classList= "w-full mx-auto rounded-lg bg-white shadow-lg px-5 pt-5 pb-10 text-gray-800";
+    jokeContainer.classList= "jokeContainer w-full mx-auto rounded-lg bg-white shadow-lg px-5 pt-5 pb-10 text-gray-800";
     jokeContainer.setAttribute("style","max-width: 500px");
 
-    const jokeContentEL = document.createElement ("div");
+    
     jokeContentEL.classList="w-full mb-10";
     jokeContainer.appendChild (jokeContentEL);
     contentEl.appendChild(jokeContainer);
 
+    
     nextBtnEl.textContent="More joke";
     nextBtnEl.classList.add("show","my-10");
     
@@ -415,9 +420,9 @@ const getjoke = async function(){
     searchBtnEl.classList.add("show","my-10"); 
    
 }
-
+//call for search
 async function searchJoke(jokesearchvalue){
-    const jokeContentEL= document.getElementById("joke-content");
+    
     //call Api
     const jokefetch= await fetch('https://icanhazdadjoke.com/search?term='+jokesearchvalue,{
         headers:{
@@ -432,7 +437,7 @@ async function searchJoke(jokesearchvalue){
     jokeContentEL.innerHTML=jokeContent.joke;  
 }
 
-//call for search 
+ 
 
 
 

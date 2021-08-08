@@ -391,16 +391,14 @@ contentOptionsEl.addEventListener('change', function () {
 // Function Handlers that will play audio on button click 
 
 const setVolume = function () {
-    // Get volume
+    // Get volume from slider value 
     const newVolume = volumeControlEl.value / 100;
-    // Grab all audio elementss that are currently playing 
-    audios = document.getElementsByClassName("play");
-    // Go through each audio that in the playingAudio array and set the volume
-    console.log(audios[0]);
-
-    // audios.forEach(function(audio){
-    //     audio.volume = newVolume
-    // });
+    // Grab all sounds buttons that are currently playing 
+    const playingSounds = document.querySelectorAll(".play");
+    // Go through each sound in the playing sounds array and set their volume 
+    playingSounds.forEach(function(playingSound) {
+        playingSound.querySelector("audio").volume = newVolume; 
+    })
 }
 
 const soundBtnHandler = function (event) {
@@ -408,9 +406,9 @@ const soundBtnHandler = function (event) {
     const selectedSoundBtnEl = event.target.closest("button");
     // Grab the audio of the icon that was clicked IF a valid button was found
     if (!selectedSoundBtnEl) {
-        return; 
+        return;
     }
-    
+
     const selectedSoundAudioEl = selectedSoundBtnEl.querySelector("audio");
 
     // Check to see if audio is already playing or not 

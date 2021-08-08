@@ -22,7 +22,7 @@ var generatejoke = async function(){
     //Passing joke on screen
     jokeContentEL.innerHTML=jokeContent.joke;  
 }
-generatejoke();
+
 
 //search bar 
 const jokeSearchBar= function(val){
@@ -356,6 +356,7 @@ const nextBtnHandler = function (event) {
 
     if (currentContent === "joke") {
         // Insert function to fetch joke
+        generatejoke();
     }
 
     if (currentContent === "painting") {

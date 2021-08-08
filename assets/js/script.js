@@ -1,57 +1,3 @@
-const jokeContentEL= document.getElementById("joke-content");
-const jokeSubmitbtnEl=document.getElementById("joke-submitbtn");
-const jokeRandombtnEl=document.getElementById("joke-randombtn");
-const jokeSearchEl= document.getElementById("joke-search").value;
-
-
-
-
-jokeRandombtnEl.addEventListener('click',generatejoke);
-
-var generatejoke = async function(){
-    //call Api
-    const jokefetch= await fetch('https://icanhazdadjoke.com/',{
-        headers:{
-            'Accept': 'application/json'
-        }
-    });
-
-    const jokeContent =await jokefetch.json();
-
-    console.log(jokeContent.joke);
-    //Passing joke on screen
-    jokeContentEL.innerHTML=jokeContent.joke;  
-}
-
-
-//search bar 
-const jokeSearchBar= function(val){
-    val.preventDefault()
-    const searchvalue= val.target.value;
-    generatesearchjoke(searchvalue)
-        
-
-}
-const generatesearchjoke=async function (searchvalue){
-    const jokefetch= await fetch('https://icanhazdadjoke.com/search?term='+searchvalue,{
-        headers:{
-            'Accept': 'application/json'
-        }
-    });
-
-    const jokeContent =await jokefetch.json();
-
-    console.log(jokeContent.joke);
-    //Passing joke on screen
-    jokeContentEL.innerHTML=jokeContent.joke;  
-
-}
-
-
-
-
-
-
 const quoteEl = document.querySelector("#quote-btn");
 const contentEl = document.querySelector("#content"); 
 const blobContainerEl = document.querySelector("#blobContainer");
@@ -191,6 +137,7 @@ const modalChooseBtnHandler = function(event) {
 
     if (currentContent === "joke"){
         // Insert function to call random joke 
+        getjoke();
     }
 }
 
@@ -356,7 +303,7 @@ const nextBtnHandler = function (event) {
 
     if (currentContent === "joke") {
         // Insert function to fetch joke
-        generatejoke();
+        getjoke();
     }
 
     if (currentContent === "painting") {
@@ -423,6 +370,49 @@ const startQuotes = function(event){
     });
 };
 
+//Joke section
+const jokeContentEL= document.getElementById("joke-content");
+const jokeRandombtnEl=document.getElementById("joke-randombtn");
+const getjoke = async function(){
+
+    currentContent="joke";
+
+    blobContainerEl.classList.remove("hide");  
+    blobContainerEl.classList.add("show"); 
+    nextBtnEl.classList.remove("show","my-10");
+    searchBtnEl.classList.remove("show","my-10");  
+    contentEl.classList.remove("space-top-image");
+    contentEl.textContent = "";
+
+    const jokeContainer = document.createElement ("div");
+    jokeContainer.classList= "w-full mx-auto rounded-lg bg-white shadow-lg px-5 pt-5 pb-10 text-gray-800";
+    jokeContainer.setAttribute("style","max-width: 500px");
+
+    const jokeContentEL = document.createElement ("div");
+    jokeContentEL.classList="w-full mb-10";
+    jokeContainer.appendChild (jokeContentEL);
+    contentEl.appendChild(jokeContainer);
+
+    nextBtnEl.textContent="More joke";
+    nextBtnEl.classList.add("show","my-10");
+    
+
+     //call Api
+     const jokefetch= await fetch('https://icanhazdadjoke.com/',{
+        headers:{
+            'Accept': 'application/json'
+        }
+    });
+
+    const jokeContent =await jokefetch.json();
+
+    console.log(jokeContent.joke);
+    //Passing joke on screen
+    jokeContentEL.innerHTML=jokeContent.joke;  
+   
+}
+
+
 
 // Run the function based on the value in the dropdown
 contentOptionsEl.addEventListener('change', function() {
@@ -436,6 +426,10 @@ contentOptionsEl.addEventListener('change', function() {
 
     if (contentOptionsEl.value === 'gif') {
         getRandomGif(); 
+    }
+
+    if (contentOptionsEl.value === 'joke') {
+       getjoke();
     }
 })
 

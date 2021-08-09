@@ -144,7 +144,7 @@ const modalChooseBtnHandler = function (event) {
 
     if (currentContent === "painting") {
         // Insert function to call random painting
-        getArt();
+        getArt("Painting");
     }
 
     if (currentContent === "quote") {
@@ -187,7 +187,8 @@ const modalSearchHandler = function (event) {
 
     if (currentContent === "painting") {
         // Insert function to call random painting
-        console.log("Painting Search Test");
+        getArt(searchTag);
+        modalSearchFormEl.reset();
     }
 
     if (currentContent === "quote") {
@@ -265,20 +266,25 @@ const displayGifs = function (gif) {
 
 // Functions regarding artwork generation 
 
-const getArt = async function () {
+const getArt = async function (searchTag) {
     // Hide the button while it's grabbing the response and show in the function
     nextBtnEl.classList.remove("show");
     searchBtnEl.classList.remove("show");
 
-    //To do: Need to add loader
+    // Create loader
+    const loader = document.createElement("img");
+    loader.src = "assets/img/loader.gif";
+    loader.setAttribute("style", "width:350px;height:350px");
 
     contentEl.innerHTML = '';
     currentContent = "painting";
     blobContainerEl.classList.remove("show");
 
+    contentEl.appendChild(loader);
+
     // Get all objects that have an image and matches the query 'Painting'
     const allMuseumResponse = await fetch(
-        `https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=Painting`
+        `https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=${searchTag}`
     );
     const museumData = await allMuseumResponse.json();
 
@@ -293,6 +299,9 @@ const getArt = async function () {
         `https://collectionapi.metmuseum.org/public/collection/v1/objects/${museumId}`
     );
     const artData = await artResponse.json();
+
+    // Remove loader to show image
+    contentEl.removeChild(loader);
 
     const artSource = artData.primaryImageSmall;
 
@@ -520,7 +529,7 @@ async function searchJoke(searchTag) {
 // Run the function based on the value in the dropdown
 contentOptionsEl.addEventListener('change', function () {
     if (contentOptionsEl.value === 'painting') {
-        getArt();
+        getArt("Painting");
     }
 
     if (contentOptionsEl.value === 'quote') {

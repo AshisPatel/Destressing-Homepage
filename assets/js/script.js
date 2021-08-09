@@ -21,6 +21,7 @@ let currentContent = "";
 // DOM elements related to sound
 const soundDropDownEl = document.querySelector(".sound-dropdown-content");
 const volumeControlEl = document.querySelector("#volume-slider");
+
 //  Utility functions
 
 const selectRandom = function (array, numItems) {
@@ -141,6 +142,7 @@ const modalChooseBtnHandler = function (event) {
 
     if (currentContent === "joke") {
         // Insert function to call random joke 
+        getjoke();
     }
 }
 
@@ -179,7 +181,9 @@ const modalSearchHandler = function (event) {
     }
 
     if (currentContent === "joke") {
-        // Insert function to call random joke 
+        // Insert function to call random joke
+        searchJoke(searchTag);
+        modalSearchFormEl.reset();
     }
 }
 
@@ -205,7 +209,6 @@ const getGifs = function (searchTag) {
                 // Grab a random gifs from the retrieved gif array 
                 const numGifs = 1;
                 const retrievedGifs = data.data;
-                console.log(retrievedGifs);
                 const selectedGifs = selectRandom(retrievedGifs, numGifs);
                 // Returned object is contains a "data" key that is an array of 50 gifs
                 // Grab numGifs from that array, maybe randomize
@@ -233,7 +236,9 @@ const displayGifs = function (gif) {
     gifWrapper.classList = "flex justify-center";
     const gifImg = document.createElement("img");
     gifImg.classList.add("image-mask");
+
     //gifImg.setAttribute("style", "width:480px;height:480px");
+
     gifImg.setAttribute("src", gif[0].images.original.url);
     gifWrapper.appendChild(gifImg);
     contentEl.appendChild(gifWrapper);
@@ -306,6 +311,7 @@ const nextBtnHandler = function (event) {
 
     if (currentContent === "joke") {
         // Insert function to fetch joke
+        getjoke();
     }
 
     if (currentContent === "painting") {
@@ -372,6 +378,98 @@ const startQuotes = function (event) {
     });
 };
 
+//Joke section
+// const jokeContainer = document.createElement ("div");   
+// const jokeContentEL = document.createElement ("div");
+// jokeContainer.appendChild (jokeContentEL);
+
+const getjoke = async function () {
+
+    currentContent = "joke";
+
+
+    //call Api
+    const jokefetch = await fetch('https://icanhazdadjoke.com/', {
+        headers: {
+            'Accept': 'application/json'
+        }
+    });
+
+    const jokeContent = await jokefetch.json();
+
+    //console.log(jokeContent.joke);
+    //Passing joke on screen
+    blobContainerEl.classList.remove("hide");
+    blobContainerEl.classList.add("show");
+    nextBtnEl.classList.remove("show", "my-10");
+    searchBtnEl.classList.remove("show", "my-10");
+    contentEl.classList.remove("space-top-image");
+    contentEl.textContent = "";
+
+    const jokeContainer = document.createElement("div");
+    jokeContainer.classList = "jokeContainer w-full mx-auto rounded-lg bg-white shadow-lg px-5 pt-5 pb-10 text-gray-800";
+    jokeContainer.setAttribute("style", "max-width: 500px");
+
+    const jokeContentEL = document.createElement("div");
+    jokeContentEL.classList = "w-full mb-10";
+    jokeContainer.appendChild(jokeContentEL);
+    contentEl.appendChild(jokeContainer);
+
+    jokeContentEL.innerHTML = jokeContent.joke;
+
+    nextBtnEl.textContent = "More jokes";
+    nextBtnEl.classList.add("show", "my-10");
+
+    searchBtnEl.classList.remove("hide");
+    searchBtnEl.classList.add("show", "my-10");
+
+}
+//call for search
+async function searchJoke(searchTag) {
+
+    //call Api
+    const jokefetch = await fetch('https://icanhazdadjoke.com/search?term=' + searchTag, {
+        headers: {
+            'Accept': 'application/json'
+        }
+    });
+
+    const jokeContent = await jokefetch.json();
+    console.log(jokeContent.results[0].joke); 
+
+
+    blobContainerEl.classList.remove("hide");
+    blobContainerEl.classList.add("show");
+    nextBtnEl.classList.remove("show", "my-10");
+    searchBtnEl.classList.remove("show", "my-10");
+    contentEl.classList.remove("space-top-image");
+    contentEl.textContent = "";
+
+    const jokeContainer = document.createElement("div");
+    jokeContainer.classList = "jokeContainer w-full mx-auto rounded-lg bg-white shadow-lg px-5 pt-5 pb-10 text-gray-800";
+    jokeContainer.setAttribute("style", "max-width: 500px");
+
+    const jokeContentEL = document.createElement("div");
+    jokeContentEL.classList = "w-full mb-10";
+    jokeContainer.appendChild(jokeContentEL);
+    contentEl.appendChild(jokeContainer);
+    
+    //Passing joke on screen
+    jokeContentEL.innerHTML = jokeContent.results[0].joke;
+
+    nextBtnEl.textContent = "More jokes";
+    nextBtnEl.classList.add("show", "my-10");
+
+    searchBtnEl.classList.remove("hide");
+    searchBtnEl.classList.add("show", "my-10");
+
+    //Passing joke on screen
+}
+
+
+
+
+
 
 // Run the function based on the value in the dropdown
 contentOptionsEl.addEventListener('change', function () {
@@ -385,6 +483,10 @@ contentOptionsEl.addEventListener('change', function () {
 
     if (contentOptionsEl.value === 'gif') {
         getRandomGif();
+    }
+  
+      if (contentOptionsEl.value === 'joke') {
+        getjoke();
     }
 })
 
@@ -429,7 +531,6 @@ const soundBtnHandler = function (event) {
     }
 
 }
-
 
 searchBtnEl.addEventListener("click", searchBtnHandler);
 modalChooseBtnEl.addEventListener("click", modalChooseBtnHandler);

@@ -17,6 +17,11 @@ const modalSearchFormEl = document.querySelector("#modal-search-form");
 const warningEl = document.querySelector(".warning-text");
 let prevGifTag = "";
 let currentContent = "";
+
+// DOM elements related to sound
+const soundDropDownEl = document.querySelector(".sound-dropdown-content");
+const volumeControlEl = document.querySelector("#volume-slider");
+
 //  Utility functions
 
 const selectRandom = function (array, numItems) {
@@ -84,11 +89,11 @@ const displayWelcomeMessage = function (headerText, msgText) {
     contentEl.textContent = "";
 
     const welcomeHeaderEl = document.createElement("h1");
-    welcomeHeaderEl.classList = "space-top-text";
+    welcomeHeaderEl.classList = "space-top-text appear-header";
     welcomeHeaderEl.textContent = headerText;
 
     const welcomeMsgEl = document.createElement("h2");
-    welcomeMsgEl.classList = "pt-2"
+    welcomeMsgEl.classList = "pt-2 appear-msg"
     welcomeMsgEl.textContent = msgText;
 
     contentEl.appendChild(welcomeHeaderEl);
@@ -231,7 +236,9 @@ const displayGifs = function (gif) {
     gifWrapper.classList = "flex justify-center";
     const gifImg = document.createElement("img");
     gifImg.classList.add("image-mask");
-    gifImg.setAttribute("style", "width:480px;height:480px");
+
+    //gifImg.setAttribute("style", "width:480px;height:480px");
+
     gifImg.setAttribute("src", gif[0].images.original.url);
     gifWrapper.appendChild(gifImg);
     contentEl.appendChild(gifWrapper);
@@ -477,11 +484,53 @@ contentOptionsEl.addEventListener('change', function () {
     if (contentOptionsEl.value === 'gif') {
         getRandomGif();
     }
-
-    if (contentOptionsEl.value === 'joke') {
+  
+      if (contentOptionsEl.value === 'joke') {
         getjoke();
     }
 })
+
+// Function Handlers that will play audio on button click 
+
+const setVolume = function () {
+    // Get volume from slider value 
+    const newVolume = volumeControlEl.value / 100;
+    // Grab all sounds buttons that are currently playing 
+    const playingSounds = document.querySelectorAll(".play");
+    // Go through each sound in the playing sounds array and set their volume 
+    playingSounds.forEach(function(playingSound) {
+        playingSound.querySelector("audio").volume = newVolume; 
+    })
+}
+
+const soundBtnHandler = function (event) {
+    // Grab the sound button of the icon that was clicked
+    const selectedSoundBtnEl = event.target.closest("button");
+    // Grab the audio of the icon that was clicked IF a valid button was found
+    if (!selectedSoundBtnEl) {
+        return;
+    }
+
+    const selectedSoundAudioEl = selectedSoundBtnEl.querySelector("audio");
+
+    // Check to see if audio is already playing or not 
+    if (!selectedSoundBtnEl.classList.contains("play")) {
+        // Add play class to the button to update button visual
+        selectedSoundBtnEl.classList.add("play");
+        // Start playing audio associated with icon and loop
+        selectedSoundAudioEl.play();
+        selectedSoundAudioEl.loop = true;
+    }
+
+    else {
+        // Remove play class to visually show sound is no longer being played
+        selectedSoundBtnEl.classList.remove("play");
+        // Stop selected audio and loop 
+        selectedSoundAudioEl.pause();
+        selectedSoundAudioEl.loop = false;
+    }
+
+}
 
 searchBtnEl.addEventListener("click", searchBtnHandler);
 modalChooseBtnEl.addEventListener("click", modalChooseBtnHandler);
@@ -491,6 +540,9 @@ closeModalBtnEl.addEventListener("click", closeModalBtnHandler);
 
 logoBtnEl.addEventListener("click", logoBtnHandler);
 
+soundDropDownEl.addEventListener("click", soundBtnHandler);
+volumeControlEl.addEventListener("change", setVolume);
+volumeControlEl.addEventListener("input", setVolume);
 // On load, generate welcome message
 
 window.onload = function () {

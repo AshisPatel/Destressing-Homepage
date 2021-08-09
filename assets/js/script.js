@@ -509,6 +509,31 @@ async function searchJoke(searchTag) {
     //Passing joke on screen
 }
 
+// Function for suprise option
+
+const getSuprise = function() {
+    const options = ["gif","painting", "quote", "joke"];
+
+    const selected = selectRandom(options, 1)[0]; 
+
+    switch(selected) {
+        case "gif":
+            console.log("1");
+            getRandomGif();
+            break;
+         case "painting":
+             console.log("2");
+             getArt();
+             break;
+         case "quote":
+             console.log("3");
+             startQuotes();
+             break;
+         case "joke":
+             console.log("4");
+             getjoke();
+    }
+}
 
 // Run the function based on the value in the dropdown
 contentOptionsEl.addEventListener('change', function () {
@@ -526,6 +551,10 @@ contentOptionsEl.addEventListener('change', function () {
   
       if (contentOptionsEl.value === 'joke') {
         getjoke();
+    }
+
+    if (contentOptionsEl.value === 'surprise') {
+        getSuprise();
     }
 })
 

@@ -50,7 +50,7 @@ h5 {
 }
 
 .dropdown-container {
-    margin-right: 2.75rem;
+    /* margin-right: 2.75rem; */
 }
 
 select:focus {
@@ -172,12 +172,9 @@ button:focus {
     mask-image: url(../img/mask.png);
 }
 
-.gif-size {
-    height: 300px;
-    width: 300px; 
-}
 
 .search-modal {
+
     /* Hide Modal by default */
     visibility: hidden;
     /* Keep Modal in same position */
@@ -290,6 +287,7 @@ input:focus {
     display:none; 
 }
 
+
 .show {
     visibility: initial;
 }
@@ -301,6 +299,7 @@ input:focus {
 .space-top-image {
     margin-top: 8vh;
 }
+
 
 /* Welcome Page Classes */
 
@@ -318,3 +317,103 @@ input:focus {
         width: 40%;  
     }
 }
+
+.space-top-image {
+    margin-top: 8vh;
+}
+
+/* Make box appear in its contents from 0 to 100% width in 2 seconds over 60 steps */
+.appear-header {
+    opacity: 0; 
+    animation: appear-header 1.5s linear forwards; 
+}
+
+@keyframes appear-header {
+    from{opacity: 0; }
+    to{opacity: 1; }
+}
+
+.appear-msg {
+    opacity: 0;
+    animation: appear-msg 1.5s linear 1.5s forwards; 
+}
+
+@keyframes appear-msg {
+    from{opacity:0; }
+    to{opacity: 1; }
+}
+
+/* Sound button classes */
+
+.sound-btn {
+    color: var(--primary); 
+    transition: color 250ms ease-in; 
+     
+}
+
+.sound-dropdown-content {
+   display: none; 
+   z-index: 10; 
+   background-color: var(--background); 
+   box-shadow: 0px 8px 16px rgba(0,0,0,0.2); 
+}
+
+.sound-dropdown-content button {
+    display:block; 
+    color: var(--primary);
+    margin: 0.8rem 0.4rem;   
+    transition: color 250ms ease-in; 
+}
+
+.sound-btn:hover {
+    color: var(--background); 
+    cursor: pointer; 
+}
+
+.sound-dropdown-content button:hover {
+    color: var(--accent); 
+    cursor: pointer;
+}
+
+.sound-dropdown:hover .sound-dropdown-content {
+display: block; 
+}
+
+.play {
+    color: red !important; 
+}
+
+/* Styling for volume slider */
+/* Style for entire general input */
+input[type="range"] {
+    -webkit-appearance: none; 
+}
+
+/* Styling the "thumb" or movable object on the slider */
+input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance: none; 
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: var(--primary); 
+    /* Moves thumb over the center of the track */
+    margin-top: -4.5px; 
+}
+
+/* Styling the track that the user moves the thumb on */
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 5px;
+    width: 300px; 
+    background-color: var(--primary); 
+    border: none;
+    border-radius: 0.5rem; 
+}
+
+/* Interaction styles for slider */
+input[type="range"]::-webkit-slider-runnable-track:hover,
+input[type="range"]::-webkit-slider-thumb:hover {
+    cursor:pointer; 
+}
+
+

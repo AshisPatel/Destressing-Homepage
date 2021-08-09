@@ -3,9 +3,11 @@ const contentEl = document.querySelector("#content");
 const blobContainerEl = document.querySelector("#blobContainer");
 const logoBtnEl = document.querySelector("#logo-btn")
 
-const gifBtnEl = document.querySelector("#gif-btn");
+const soundBtnEl = document.querySelector("#sound-btn"); 
 
 const contentOptionsEl = document.querySelector('#content-options');
+
+const soundModalEl = document.querySelector("#sound-modal"); 
 
 const nextBtnEl = document.querySelector("#next-btn");
 const searchBtnEl = document.querySelector("#search-btn");
@@ -660,8 +662,9 @@ const soundBtnHandler = function (event) {
 
 // Close modal on background click
 document.addEventListener("click", function (event) {
+    console.log(event.target);
     // Do nothing if the target doesn't match
-    if (!event.target.matches('.search-modal')) {
+    if (!event.target.matches('.search-modal') || !event.target.matches('.sound-modal')) {
         return;
     }
 
@@ -672,6 +675,10 @@ document.addEventListener("click", function (event) {
     }
 })
 
+soundBtnEl.addEventListener("click", function() {
+    soundModalEl.classList.add("show");
+    soundModalEl.classList.add("modal-slide-in"); 
+});
 
 soundDropDownEl.addEventListener("click", soundBtnHandler);
 volumeControlEl.addEventListener("change", setVolume);

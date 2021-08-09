@@ -172,8 +172,8 @@ button:focus {
     mask-image: url(../img/mask.png);
 }
 
-
-.search-modal {
+/* Style for Modals */
+.search-modal, .sound-modal {
 
     /* Hide Modal by default */
     visibility: hidden;
@@ -193,7 +193,9 @@ button:focus {
     transition: all 0.3s ease-in-out;
 }
 
-.search-modal.show {
+
+
+.search-modal.show, .sound-modal.show {
     visibility: visible;
     opacity: 1;
 }

@@ -22,7 +22,7 @@
             
             <div class="flex justify-between items-center">
                 <div class="sound-dropdown relative mr-8">
-                    <div class="sound-btn"><i class="fas fa-music fa-lg"></i></div>
+                    <button type="button" id="sound-btn" class="sound-btn"><i class="fas fa-music fa-lg"></i></button>
                     <div class="sound-dropdown-content absolute flex-justify-between">
                         <button type="button" name="rain" id="rain-btn">
                             <audio id="rain-audio" src="assets/videos/rain.mp3"></audio>
@@ -67,17 +67,15 @@
     </header>
 
     <main>
-        <!-- Modal for Gif search -->
+        <!-- Search Modal -->
         <div id="searchModal" class="search-modal">
-            <!-- Gif Modal Header -->
-            <!-- Gif Modal content -->
-
+             <!-- Search Modal Content Header -->
             <div id="searchModalContent" class="modal-content p-4 rounded shadow-lg"> 
                 <div class="flex flex-col">
                     <button id="close-modal-btn" class="close-modal-btn self-end"><img src="assets/img/close.svg" alt="close icon"></button>
                     <h5 class="text-left">Search For A <span id="search-category"></span> or Choose For Me!</h5>  
                 </div>
-
+                 <!-- Search Modal Content Body -->
                 <form onsubmit="return false" class="pt-4" id="modal-search-form">
                     <div class="flex flex-col">
                         <label for="modal-search"></label>
@@ -89,6 +87,13 @@
                     <button type="button" id="modal-choose-btn" class="p-2 rounded-sm">Choose For Me</button>
                     
                 </form>
+            </div>
+        </div>
+        <!-- Sound Modal -->
+        <div id="sound-modal" class="sound-modal">
+            <!-- Sound Modal Content Header -->
+            <div id="soundModalContent" class="modal-content p-4 rounded shadow-lg">
+                test
             </div>
         </div>
 

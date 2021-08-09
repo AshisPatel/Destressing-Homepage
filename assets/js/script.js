@@ -200,7 +200,7 @@ const modalSearchHandler = function (event) {
 
 const getRandomGif = function (event) {
     // Set potential tags that could be searched
-    const potentialTags = ["kitten", "cat", "dog", "puppy", "cute", "wholesome"];
+    const potentialTags = ["kitten", "cat", "dog", "puppy", "cute", "wholesome", "peaceful", "relaxing", "rain", "happy", "cute animal", "baby animal"];
     // Select a random tag from potential tags
     const randomSearchTag = selectRandom(potentialTags, 1);
     prevGifTag = randomSearchTag;

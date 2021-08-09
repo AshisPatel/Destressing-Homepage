@@ -16,8 +16,9 @@
 
 <body>
     <header>
+
         <nav class="flex justify-between items-center mx-11 my-5">
-            <button type="button" id="logo-btn">Home</button>
+            <button type="button" class="home-btn" id="logo-btn"><img src="assets/img/home.svg" alt="home icon"></button>
             
             <div class="flex justify-between items-center">
                 <div class="sound-dropdown relative mr-8">
@@ -59,6 +60,7 @@
                         <option value="surprise">surprise</option>
                     </select>
                 </div>
+
             </div>
 
             </nav>
@@ -66,27 +68,26 @@
 
     <main>
         <!-- Modal for Gif search -->
-        <div id="searchModal" class="modal">
+        <div id="searchModal" class="search-modal">
             <!-- Gif Modal Header -->
             <!-- Gif Modal content -->
-            <!-- grid grid-cols-3 gap-4 -->
-            <div class="modal-content p-0">
-                <div class="grid grid-cols-3 justify-items-stretch mb-3">
-                    <h5 class="col-start-1 col-end-3 pt-5 text-left">Search For A <span id="search-category"></span> or
-                        Have Me Choose!</h5>
-                    <span id="close-modal-btn" class="col-start-3 col-end-4 justify-self-end">&times;</span>
-                </div>
-                <form id="modal-search-form" class="grid grid-cols-3">
-                    <label for="modal-search"></label>
-                    <input type="text" placeholder="Search Here..." id="modal-search-input" name="modal-search"
-                        class="col-start-1 col-end-3 pl-1 text-black" />
-                    <button type="submit" id="modal-search-btn" class="p-2">Search<i
-                            class="ml-2 fas fa-search"></i></button>
-                    <p class="warning-text col-start-1 col-end-4 place-self-center mt-2 hide">Please enter a search tag!
-                    </p>
-                    <button type="button" id="modal-choose-btn" class="col-start-2 col-end-3 p-2 mt-3">Choose For
-                        Me</button>
 
+            <div id="searchModalContent" class="modal-content p-4 rounded shadow-lg"> 
+                <div class="flex flex-col">
+                    <button id="close-modal-btn" class="close-modal-btn self-end"><img src="assets/img/close.svg" alt="close icon"></button>
+                    <h5 class="text-left">Search For A <span id="search-category"></span> or Choose For Me!</h5>  
+                </div>
+
+                <form onsubmit="return false" class="pt-4" id="modal-search-form">
+                    <div class="flex flex-col">
+                        <label for="modal-search"></label>
+                        <input type="text" placeholder="Search Here..." id="modal-search-input" name="modal-search" class="text-black p-2 rounded-sm"/>
+                        <button type="submit" class="modal-search-btn p-2 mt-3 rounded-sm" id="modal-search-btn">Search<i class="ml-2 fas fa-search"></i></button>
+                    </div>
+                    <p class="warning-text hide">Please enter a search tag!</p>
+                    <span class="modal-or py-4 flex flex-row">or</span>
+                    <button type="button" id="modal-choose-btn" class="p-2 rounded-sm">Choose For Me</button>
+                    
                 </form>
             </div>
         </div>

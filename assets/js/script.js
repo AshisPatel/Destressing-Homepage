@@ -8,9 +8,12 @@ const gifBtnEl = document.querySelector("#gif-btn");
 const contentOptionsEl = document.querySelector('#content-options');
 
 const nextBtnEl = document.querySelector("#next-btn");
-const searchBtnEl = document.querySelector("#search-btn");
-const searchModalEl = document.querySelector("#searchModal");
-const closeModalBtnEl = document.querySelector("#close-modal-btn");
+
+const searchBtnEl = document.querySelector("#search-btn");  
+const searchModalEl = document.querySelector("#searchModal"); 
+const searchModalContentEl = document.querySelector("#searchModalContent");
+const closeModalBtnEl = document.querySelector("#close-modal-btn"); 
+
 const modalChooseBtnEl = document.querySelector("#modal-choose-btn");
 const modalSearchBtnEl = document.querySelector("#modal-search-btn");
 const modalSearchFormEl = document.querySelector("#modal-search-form");
@@ -70,7 +73,7 @@ const getWelcomeMessage = function (hour) {
     // Evenning-hours
     if (hour >= 18 && hour < 24) {
         console.log("Evenning");
-        headerText = "Good Evenning";
+        headerText = "Good Evening";
         msgText = "Stay Awhile and Relax 😊";
     }
 
@@ -115,16 +118,24 @@ const searchBtnHandler = function (event) {
     warningEl.classList.add("hide");
     warningEl.classList.remove("show");
 
+    searchModalEl.classList.add("show");
+    searchModalContentEl.classList.add("modal-slide-in");
+    searchModalContentEl.classList.remove("modal-slide-out");
+
     const searchCategoryEl = document.querySelector("#search-category");
     // Add current category to search header in modal 
-    searchCategoryEl.textContent = currentContent.charAt(0).toUpperCase() + currentContent.slice(1);
-    searchModalEl.style.display = "block";
+
+    searchCategoryEl.textContent = currentContent.charAt(0).toUpperCase() + currentContent.slice(1); 
+
 }
 
 const modalChooseBtnHandler = function (event) {
 
     // Hide modal 
-    searchModalEl.style.display = "none";
+    searchModalEl.classList.remove("show");
+    searchModalContentEl.classList.remove("modal-slide-in");
+    searchModalContentEl.classList.add("modal-slide-out");
+
     // Check which display is on the screen 
 
     if (currentContent === "gif") {
@@ -147,8 +158,9 @@ const modalChooseBtnHandler = function (event) {
 }
 
 const modalSearchHandler = function (event) {
-    event.preventDefault();
 
+    //event.preventDefault();
+    
     const modalSearchInputEl = document.querySelector("#modal-search-input");
     const searchTag = modalSearchInputEl.value.trim();
 
@@ -161,8 +173,10 @@ const modalSearchHandler = function (event) {
     }
 
     // Hide Modal
-    searchModalEl.style.display = "none";
-
+    searchModalEl.classList.remove("show");
+    searchModalContentEl.classList.remove("modal-slide-in");
+    searchModalContentEl.classList.add("modal-slide-out");
+    
     // Check for content of search 
     if (currentContent === "gif") {
         prevGifTag = searchTag;
@@ -196,7 +210,7 @@ const getRandomGif = function (event) {
     const randomSearchTag = selectRandom(potentialTags, 1);
     prevGifTag = randomSearchTag;
     getGifs(randomSearchTag);
-    searchModalEl.style.display = "none";
+    //searchModalEl.style.display = "none";
 }
 
 const getGifs = function (searchTag) {
@@ -324,8 +338,11 @@ const nextBtnHandler = function (event) {
     }
 }
 
-const closeModalBtnHandler = function (event) {
-    searchModalEl.style.display = "none";
+
+const closeModalBtnHandler = function(event) {
+    searchModalContentEl.classList.remove("modal-slide-in");
+    searchModalContentEl.classList.add("modal-slide-out");
+    searchModalEl.classList.remove("show");
 
 }
 
@@ -377,6 +394,39 @@ const startQuotes = function (event) {
         }
     });
 };
+
+
+const createRipple = function(event) {
+    const button = event.currentTarget;
+    // Calculate the ripple size based on the button
+    const circle = document.createElement("span");
+    const diameter = Math.max(button.clientWidth, button.clientHeight);
+    const radius = diameter / 2;
+
+    circle.style.width = circle.style.height = `${diameter}px`;
+    circle.style.left = `${event.clientX - (button.offsetLeft + radius)}px`;
+    circle.style.top = `${event.clientY - (button.offsetTop + radius)}px`;
+
+    // Add the light ripple for the modal search button
+    if (button === modalSearchBtnEl) {
+        console.log("light-ripple")
+        circle.classList.add("light-ripple"); 
+        const rippleLight = document.getElementsByClassName("light-ripple")[0];
+        // Remove leftover ripples if there are any
+        if (rippleLight) {
+            rippleLight.remove();
+        }
+    }  
+
+    circle.classList.add("ripple"); 
+    const ripple = button.getElementsByClassName("ripple")[0];
+    // Remove leftover ripples if there are any
+    if (ripple) {
+        ripple.remove();
+    }
+    // Append the ripple span
+    button.appendChild(circle);
+}
 
 //Joke section
 // const jokeContainer = document.createElement ("div");   
@@ -467,10 +517,6 @@ async function searchJoke(searchTag) {
 }
 
 
-
-
-
-
 // Run the function based on the value in the dropdown
 contentOptionsEl.addEventListener('change', function () {
     if (contentOptionsEl.value === 'painting') {
@@ -489,6 +535,30 @@ contentOptionsEl.addEventListener('change', function () {
         getjoke();
     }
 })
+
+
+searchBtnEl.addEventListener("click", createRipple);
+// Timeouts added so you can see the ripple effect before the function is called
+searchBtnEl.addEventListener("click", function(){
+    setTimeout(searchBtnHandler, 350);
+}); 
+
+modalChooseBtnEl.addEventListener("click", createRipple);
+modalChooseBtnEl.addEventListener("click", function(){
+    setTimeout(modalChooseBtnHandler, 350)
+}); 
+
+modalSearchBtnEl.addEventListener("click", createRipple);
+modalSearchFormEl.addEventListener("submit", function(){
+    setTimeout(modalSearchHandler, 300);
+}); 
+
+nextBtnEl.addEventListener("click", createRipple);
+nextBtnEl.addEventListener("click", function(){
+    setTimeout(nextBtnHandler, 300)
+}); 
+
+closeModalBtnEl.addEventListener("click",closeModalBtnHandler); 
 
 // Function Handlers that will play audio on button click 
 
@@ -532,17 +602,30 @@ const soundBtnHandler = function (event) {
 
 }
 
-searchBtnEl.addEventListener("click", searchBtnHandler);
-modalChooseBtnEl.addEventListener("click", modalChooseBtnHandler);
-modalSearchFormEl.addEventListener("submit", modalSearchHandler);
-nextBtnEl.addEventListener("click", nextBtnHandler);
-closeModalBtnEl.addEventListener("click", closeModalBtnHandler);
+
 
 logoBtnEl.addEventListener("click", logoBtnHandler);
+
+
+// Close modal on background click
+document.addEventListener("click",function(event){
+    // Do nothing if the target doesn't match
+    if (!event.target.matches('.search-modal')) {
+        return;
+    }
+
+    else {
+        event.target.classList.remove("show");
+        searchModalContentEl.classList.remove("modal-slide-in");
+        searchModalContentEl.classList.add("modal-slide-out");
+    }   
+})
+
 
 soundDropDownEl.addEventListener("click", soundBtnHandler);
 volumeControlEl.addEventListener("change", setVolume);
 volumeControlEl.addEventListener("input", setVolume);
+
 // On load, generate welcome message
 
 window.onload = function () {

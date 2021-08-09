@@ -4,7 +4,7 @@ const blobContainerEl = document.querySelector("#blobContainer");
 const logoBtnEl = document.querySelector("#logo-btn")
 
 const gifBtnEl = document.querySelector("#gif-btn");
-// const museumBtnEl = document.querySelector("#museum-btn");
+
 const contentOptionsEl = document.querySelector('#content-options');
 
 const nextBtnEl = document.querySelector("#next-btn");
@@ -48,33 +48,26 @@ const getCurrentTime = function () {
 
 const getWelcomeMessage = function (hour) {
     // Initalize message variables
+    let relaxMsg = ["It’s okay to take a break.", "Disconnect to reconnect.", "Relax. Nothing is under control.", "Rest your mind. Calm your heart.", "If you’re tired, learn to rest not quit.", "For the love of your work, take a break!", "Rest and be thankful.", "Sometimes a break is the very thing you need.", "Taking a break can lead to breakthroughs.", "Take a break and have fun.", "Life isn’t as serious as we think.", "Take a deep breath.", "Turn off your mind, relax, and float downstream.", "Nature does not hurry, yet everything is accomplished."]; 
     let headerText = "";
-    let msgText = "";
+    let msgText = selectRandom(relaxMsg,1); 
 
     //Early-hours 
     if (hour >= 0 && hour < 6) {
-        console.log("Early-hours");
         headerText = "Night Owl or Early Bird?";
-        msgText = "Stay Awhile and Relax 😊";
     }
     // Morning-hours
     if (hour >= 6 && hour < 12) {
-        console.log("Morning");
         headerText = "Good Morning";
-        msgText = "Stay Awhile and Relax 😊";
     }
     // Afternoon-hours
     if (hour >= 12 && hour < 18) {
-        console.log("Afternoon");
         headerText = "Good Afternoon";
-        msgText = "Stay Awhile and Relax 😊";
     }
 
     // Evenning-hours
     if (hour >= 18 && hour < 24) {
-        console.log("Evenning");
         headerText = "Good Evening";
-        msgText = "Stay Awhile and Relax 😊";
     }
 
     displayWelcomeMessage(headerText, msgText);

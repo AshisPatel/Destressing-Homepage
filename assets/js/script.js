@@ -8,11 +8,12 @@ const soundBtnEl = document.querySelector("#sound-btn");
 const contentOptionsEl = document.querySelector('#content-options');
 
 const soundModalEl = document.querySelector("#sound-modal"); 
+const soundModalContentEl = document.querySelector("#sound-modal-content"); 
 
 const nextBtnEl = document.querySelector("#next-btn");
 const searchBtnEl = document.querySelector("#search-btn");
 const surpriseBtnEl = document.querySelector("#surprise-btn"); 
-const searchModalEl = document.querySelector("#searchModal");
+const searchModalEl = document.querySelector("#search-modal");
 const searchModalContentEl = document.querySelector("#searchModalContent");
 const closeModalBtnEl = document.querySelector("#close-modal-btn");
 
@@ -664,20 +665,22 @@ const soundBtnHandler = function (event) {
 document.addEventListener("click", function (event) {
     console.log(event.target);
     // Do nothing if the target doesn't match
-    if (!event.target.matches('.search-modal') || !event.target.matches('.sound-modal')) {
+    if (!event.target.matches('.modal-backdrop')) {
         return;
     }
 
     else {
         event.target.classList.remove("show");
-        searchModalContentEl.classList.remove("modal-slide-in");
-        searchModalContentEl.classList.add("modal-slide-out");
+        const modalContentEl = event.target.querySelector(".modal-content"); 
+        modalContentEl.classList.remove("modal-slide-in");
+        modalContentEl.classList.add("modal-slide-out");
     }
 })
 
 soundBtnEl.addEventListener("click", function() {
     soundModalEl.classList.add("show");
-    soundModalEl.classList.add("modal-slide-in"); 
+    soundModalContentEl.classList.add("modal-slide-in"); 
+    soundModalContentEl.classList.remove("modal-slide-out"); 
 });
 
 soundDropDownEl.addEventListener("click", soundBtnHandler);

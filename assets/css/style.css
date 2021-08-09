@@ -173,7 +173,7 @@ button:focus {
 }
 
 /* Style for Modals */
-.search-modal, .sound-modal {
+.modal-backdrop {
 
     /* Hide Modal by default */
     visibility: hidden;
@@ -195,7 +195,7 @@ button:focus {
 
 
 
-.search-modal.show, .sound-modal.show {
+.modal-backdrop.show {
     visibility: visible;
     opacity: 1;
 }

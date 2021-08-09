@@ -360,9 +360,10 @@ input:focus {
 
 .sound-dropdown-content button {
     display:block; 
-    color: var(--primary);
+    color: rgba(70,65,62,0.4); 
     margin: 0.8rem 0.4rem;   
     transition: color 250ms ease-in; 
+    border: none; 
 }
 
 .sound-btn:hover {
@@ -371,7 +372,7 @@ input:focus {
 }
 
 .sound-dropdown-content button:hover {
-    color: var(--accent); 
+    color: rgba(70,65,62,0.8);
     cursor: pointer;
 }
 
@@ -380,13 +381,14 @@ display: block;
 }
 
 .play {
-    color: red !important; 
+    color: var(--primary) !important; 
 }
 
 /* Styling for volume slider */
 /* Style for entire general input */
 input[type="range"] {
     -webkit-appearance: none; 
+    border: none; 
 }
 
 /* Styling the "thumb" or movable object on the slider */

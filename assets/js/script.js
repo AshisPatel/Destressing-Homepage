@@ -8,11 +8,11 @@ const gifBtnEl = document.querySelector("#gif-btn");
 const contentOptionsEl = document.querySelector('#content-options');
 
 const nextBtnEl = document.querySelector("#next-btn");
-
-const searchBtnEl = document.querySelector("#search-btn");  
-const searchModalEl = document.querySelector("#searchModal"); 
+const searchBtnEl = document.querySelector("#search-btn");
+const surpriseBtnEl = document.querySelector("#surprise-btn"); 
+const searchModalEl = document.querySelector("#searchModal");
 const searchModalContentEl = document.querySelector("#searchModalContent");
-const closeModalBtnEl = document.querySelector("#close-modal-btn"); 
+const closeModalBtnEl = document.querySelector("#close-modal-btn");
 
 const modalChooseBtnEl = document.querySelector("#modal-choose-btn");
 const modalSearchBtnEl = document.querySelector("#modal-search-btn");
@@ -48,9 +48,9 @@ const getCurrentTime = function () {
 
 const getWelcomeMessage = function (hour) {
     // Initalize message variables
-    let relaxMsg = ["It’s okay to take a break.", "Disconnect to reconnect.", "Relax. Nothing is under control.", "Rest your mind. Calm your heart.", "If you’re tired, learn to rest not quit.", "For the love of your work, take a break!", "Rest and be thankful.", "Sometimes a break is the very thing you need.", "Taking a break can lead to breakthroughs.", "Take a break and have fun.", "Life isn’t as serious as we think.", "Take a deep breath.", "Turn off your mind, relax, and float downstream.", "Nature does not hurry, yet everything is accomplished."]; 
+    let relaxMsg = ["It’s okay to take a break.", "Disconnect to reconnect.", "Relax. Nothing is under control.", "Rest your mind. Calm your heart.", "If you’re tired, learn to rest not quit.", "For the love of your work, take a break!", "Rest and be thankful.", "Sometimes a break is the very thing you need.", "Taking a break can lead to breakthroughs.", "Take a break and have fun.", "Life isn’t as serious as we think.", "Take a deep breath.", "Turn off your mind, relax, and float downstream.", "Nature does not hurry, yet everything is accomplished."];
     let headerText = "";
-    let msgText = selectRandom(relaxMsg,1); 
+    let msgText = selectRandom(relaxMsg, 1);
 
     //Early-hours 
     if (hour >= 0 && hour < 6) {
@@ -80,6 +80,7 @@ const displayWelcomeMessage = function (headerText, msgText) {
 
     nextBtnEl.classList.remove("show", "my-10");
     searchBtnEl.classList.remove("show", "my-10");
+    surpriseBtnEl.classList.remove("show", "my-10"); 
 
     contentEl.classList.remove("space-top-image");
     contentEl.textContent = "";
@@ -118,7 +119,7 @@ const searchBtnHandler = function (event) {
     const searchCategoryEl = document.querySelector("#search-category");
     // Add current category to search header in modal 
 
-    searchCategoryEl.textContent = currentContent.charAt(0).toUpperCase() + currentContent.slice(1); 
+    searchCategoryEl.textContent = currentContent.charAt(0).toUpperCase() + currentContent.slice(1);
 
 }
 
@@ -153,7 +154,7 @@ const modalChooseBtnHandler = function (event) {
 const modalSearchHandler = function (event) {
 
     //event.preventDefault();
-    
+
     const modalSearchInputEl = document.querySelector("#modal-search-input");
     const searchTag = modalSearchInputEl.value.trim();
 
@@ -169,7 +170,7 @@ const modalSearchHandler = function (event) {
     searchModalEl.classList.remove("show");
     searchModalContentEl.classList.remove("modal-slide-in");
     searchModalContentEl.classList.add("modal-slide-out");
-    
+
     // Check for content of search 
     if (currentContent === "gif") {
         prevGifTag = searchTag;
@@ -254,6 +255,7 @@ const displayGifs = function (gif) {
     nextBtnEl.classList.add("show", "my-10");
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
+    surpriseBtnEl.classList.add("show", "my-10"); 
 }
 
 
@@ -263,6 +265,7 @@ const getArt = async function (searchTag) {
     // Hide the button while it's grabbing the response and show in the function
     nextBtnEl.classList.remove("show");
     searchBtnEl.classList.remove("show");
+    surpriseBtnEl.classList.remove("show"); 
 
     // Create loader
     const loader = document.createElement("img");
@@ -315,6 +318,8 @@ const getArt = async function (searchTag) {
 
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
+
+    surpriseBtnEl.classList.add("show", "my-10"); 
 }
 
 // Function to handle displaying more of currently selected content 
@@ -341,7 +346,7 @@ const nextBtnHandler = function (event) {
 }
 
 
-const closeModalBtnHandler = function(event) {
+const closeModalBtnHandler = function (event) {
     searchModalContentEl.classList.remove("modal-slide-in");
     searchModalContentEl.classList.add("modal-slide-out");
     searchModalEl.classList.remove("show");
@@ -390,6 +395,7 @@ const startQuotes = function (event) {
 
                 nextBtnEl.textContent = "More quotes";
                 nextBtnEl.classList.add("show", "my-10");
+                surpriseBtnEl.classList.add("show", "my-10"); 
             })
         } else {
             alert("link not working")
@@ -398,7 +404,7 @@ const startQuotes = function (event) {
 };
 
 
-const createRipple = function(event) {
+const createRipple = function (event) {
     const button = event.currentTarget;
     // Calculate the ripple size based on the button
     const circle = document.createElement("span");
@@ -412,15 +418,15 @@ const createRipple = function(event) {
     // Add the light ripple for the modal search button
     if (button === modalSearchBtnEl) {
         console.log("light-ripple")
-        circle.classList.add("light-ripple"); 
+        circle.classList.add("light-ripple");
         const rippleLight = document.getElementsByClassName("light-ripple")[0];
         // Remove leftover ripples if there are any
         if (rippleLight) {
             rippleLight.remove();
         }
-    }  
+    }
 
-    circle.classList.add("ripple"); 
+    circle.classList.add("ripple");
     const ripple = button.getElementsByClassName("ripple")[0];
     // Remove leftover ripples if there are any
     if (ripple) {
@@ -431,9 +437,6 @@ const createRipple = function(event) {
 }
 
 //Joke section
-// const jokeContainer = document.createElement ("div");   
-// const jokeContentEL = document.createElement ("div");
-// jokeContainer.appendChild (jokeContentEL);
 
 const getjoke = async function () {
 
@@ -455,6 +458,7 @@ const getjoke = async function () {
     blobContainerEl.classList.add("show");
     nextBtnEl.classList.remove("show", "my-10");
     searchBtnEl.classList.remove("show", "my-10");
+    surpriseBtnEl.classList.remove("show", "my-10"); 
     contentEl.classList.remove("space-top-image");
     contentEl.textContent = "";
 
@@ -475,6 +479,8 @@ const getjoke = async function () {
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
 
+    surpriseBtnEl.classList.add("show","my-10"); 
+
 }
 //call for search
 async function searchJoke(searchTag) {
@@ -487,13 +493,14 @@ async function searchJoke(searchTag) {
     });
 
     const jokeContent = await jokefetch.json();
-    console.log(jokeContent.results[0].joke); 
+    console.log(jokeContent.results[0].joke);
 
 
     blobContainerEl.classList.remove("hide");
     blobContainerEl.classList.add("show");
     nextBtnEl.classList.remove("show", "my-10");
     searchBtnEl.classList.remove("show", "my-10");
+    surpriseBtnEl.classList.remove("show", "my-10"); 
     contentEl.classList.remove("space-top-image");
     contentEl.textContent = "";
 
@@ -505,7 +512,7 @@ async function searchJoke(searchTag) {
     jokeContentEL.classList = "w-full mb-10";
     jokeContainer.appendChild(jokeContentEL);
     contentEl.appendChild(jokeContainer);
-    
+
     //Passing joke on screen
     jokeContentEL.innerHTML = jokeContent.results[0].joke;
 
@@ -515,34 +522,42 @@ async function searchJoke(searchTag) {
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
 
+    surpriseBtnEl.classList.add("show", "my-10"); 
+
     //Passing joke on screen
 }
 
 // Function for suprise option
 
-const getSuprise = function() {
-    const options = ["gif","painting", "quote", "joke"];
+const getSurprise = function () {
+    const options = ["gif", "painting", "quote", "joke"];
 
-    const selected = selectRandom(options, 1)[0]; 
-
-    switch(selected) {
+    const selected = selectRandom(options, 1)[0];
+    // Call function to display selected content and change the dropdown to the option that represents the content 
+    switch (selected) {
         case "gif":
-            console.log("1");
             getRandomGif();
+            contentOptionsEl.selectedIndex = 1;
             break;
-         case "painting":
-             console.log("2");
-             getArt();
-             break;
-         case "quote":
-             console.log("3");
-             startQuotes();
-             break;
-         case "joke":
-             console.log("4");
-             getjoke();
+        case "painting":
+            contentOptionsEl.selectedIndex = 2;
+            getArt();
+            break;
+        case "quote":
+            contentOptionsEl.selectedIndex = 3;
+            startQuotes();
+            break;
+        case "joke":
+            contentOptionsEl.selectedIndex = 4;
+            getjoke();
     }
 }
+
+const surpriseBtnHandler = function(event) {
+    getSurprise(); 
+}
+
+logoBtnEl.addEventListener("click", logoBtnHandler);
 
 // Run the function based on the value in the dropdown
 contentOptionsEl.addEventListener('change', function () {
@@ -557,39 +572,44 @@ contentOptionsEl.addEventListener('change', function () {
     if (contentOptionsEl.value === 'gif') {
         getRandomGif();
     }
-  
-      if (contentOptionsEl.value === 'joke') {
+
+    if (contentOptionsEl.value === 'joke') {
         getjoke();
     }
 
     if (contentOptionsEl.value === 'surprise') {
-        getSuprise();
+        getSurprise();
     }
 })
 
 
 searchBtnEl.addEventListener("click", createRipple);
 // Timeouts added so you can see the ripple effect before the function is called
-searchBtnEl.addEventListener("click", function(){
+searchBtnEl.addEventListener("click", function () {
     setTimeout(searchBtnHandler, 350);
-}); 
+});
 
 modalChooseBtnEl.addEventListener("click", createRipple);
-modalChooseBtnEl.addEventListener("click", function(){
+modalChooseBtnEl.addEventListener("click", function () {
     setTimeout(modalChooseBtnHandler, 350)
-}); 
+});
 
 modalSearchBtnEl.addEventListener("click", createRipple);
-modalSearchFormEl.addEventListener("submit", function(){
+modalSearchFormEl.addEventListener("submit", function () {
     setTimeout(modalSearchHandler, 300);
-}); 
+});
 
 nextBtnEl.addEventListener("click", createRipple);
-nextBtnEl.addEventListener("click", function(){
+nextBtnEl.addEventListener("click", function () {
     setTimeout(nextBtnHandler, 300)
+});
+
+surpriseBtnEl.addEventListener("click", createRipple);
+surpriseBtnEl.addEventListener("click", function() {
+    setTimeout(surpriseBtnHandler, 300)
 }); 
 
-closeModalBtnEl.addEventListener("click",closeModalBtnHandler); 
+closeModalBtnEl.addEventListener("click", closeModalBtnHandler);
 
 // Function Handlers that will play audio on button click 
 
@@ -599,8 +619,8 @@ const setVolume = function () {
     // Grab all sounds buttons that are currently playing 
     const playingSounds = document.querySelectorAll(".play");
     // Go through each sound in the playing sounds array and set their volume 
-    playingSounds.forEach(function(playingSound) {
-        playingSound.querySelector("audio").volume = newVolume; 
+    playingSounds.forEach(function (playingSound) {
+        playingSound.querySelector("audio").volume = newVolume;
     })
 }
 
@@ -635,11 +655,11 @@ const soundBtnHandler = function (event) {
 
 
 
-logoBtnEl.addEventListener("click", logoBtnHandler);
+
 
 
 // Close modal on background click
-document.addEventListener("click",function(event){
+document.addEventListener("click", function (event) {
     // Do nothing if the target doesn't match
     if (!event.target.matches('.search-modal')) {
         return;
@@ -649,7 +669,7 @@ document.addEventListener("click",function(event){
         event.target.classList.remove("show");
         searchModalContentEl.classList.remove("modal-slide-in");
         searchModalContentEl.classList.add("modal-slide-out");
-    }   
+    }
 })
 
 

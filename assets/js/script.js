@@ -370,25 +370,24 @@ const startQuotes = function (event) {
                 // console.log(data.content)
 
                 const quoteCard = document.createElement("div");
-                quoteCard.classList = "w-full mx-auto rounded-lg bg-white shadow-lg px-5 pt-5 pb-10 text-gray-800";
-                quoteCard.setAttribute("style", "max-width: 500px")
+                quoteCard.classList = "space-top-text";
+                quoteCard.setAttribute("style", "max-width: 70%");
 
                 const quoteTextArea = document.createElement("div");
                 quoteTextArea.classList = "w-full mb-10";
                 quoteCard.appendChild(quoteTextArea);
 
-                const randomQuote = document.createElement("p")
-                randomQuote.classList = "text-sm text-gray-600 text-center px-5"
+                const randomQuote = document.createElement("h2");
                 randomQuote.textContent = '"' + data.content + '"';
                 quoteTextArea.appendChild(randomQuote);
 
                 const autorArea = document.createElement("div");
                 autorArea.classList = "w-full";
-                quoteCard.appendChild(autorArea)
+                quoteCard.appendChild(autorArea);
 
-                const autorName = document.createElement("p");
-                autorName.classList = "text-md text-indigo-500 font-bold text-center";
-                autorName.textContent = data.author;
+                const autorName = document.createElement("h4");
+                autorName.classList = "text-md  font-bold text-center";
+                autorName.textContent = "-" +data.author;
                 autorArea.appendChild(autorName);
 
                 contentEl.appendChild(quoteCard);
@@ -652,10 +651,6 @@ const soundBtnHandler = function (event) {
     }
 
 }
-
-
-
-
 
 
 // Close modal on background click

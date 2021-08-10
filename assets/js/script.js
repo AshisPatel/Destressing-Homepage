@@ -80,7 +80,7 @@ const displayWelcomeMessage = function (headerText, msgText) {
 
     nextBtnEl.classList.remove("show", "my-10");
     searchBtnEl.classList.remove("show", "my-10");
-    //surpriseBtnEl.classList.remove("show", "my-10"); 
+  
 
     contentEl.classList.remove("space-top-image");
     contentEl.textContent = "";
@@ -89,7 +89,7 @@ const displayWelcomeMessage = function (headerText, msgText) {
     welcomeHeaderEl.classList = "space-top-text appear-header";
     welcomeHeaderEl.textContent = headerText;
 
-    const welcomeMsgEl = document.createElement("h2");
+    const welcomeMsgEl = document.createElement("h3");
     welcomeMsgEl.classList = "pt-2 appear-msg"
     welcomeMsgEl.textContent = msgText;
 
@@ -255,7 +255,6 @@ const displayGifs = function (gif) {
     nextBtnEl.classList.add("show", "my-10");
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
-    surpriseBtnEl.classList.add("show", "my-10"); 
 }
 
 
@@ -265,7 +264,6 @@ const getArt = async function (searchTag) {
     // Hide the button while it's grabbing the response and show in the function
     nextBtnEl.classList.remove("show");
     searchBtnEl.classList.remove("show");
-    surpriseBtnEl.classList.remove("show"); 
 
     // Create loader
     const loader = document.createElement("img");
@@ -319,7 +317,6 @@ const getArt = async function (searchTag) {
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
 
-    surpriseBtnEl.classList.add("show", "my-10"); 
 }
 
 // Function to handle displaying more of currently selected content 
@@ -395,7 +392,6 @@ const startQuotes = function (event) {
 
                 nextBtnEl.textContent = "More quotes";
                 nextBtnEl.classList.add("show", "my-10");
-                surpriseBtnEl.classList.add("show", "my-10"); 
             })
         } else {
             alert("link not working")
@@ -458,7 +454,6 @@ const getjoke = async function () {
     blobContainerEl.classList.add("show");
     nextBtnEl.classList.remove("show", "my-10");
     searchBtnEl.classList.remove("show", "my-10");
-    surpriseBtnEl.classList.remove("show", "my-10"); 
     contentEl.classList.remove("space-top-image");
     contentEl.textContent = "";
 
@@ -479,7 +474,7 @@ const getjoke = async function () {
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
 
-    surpriseBtnEl.classList.add("show","my-10"); 
+
 
 }
 //call for search
@@ -500,7 +495,6 @@ async function searchJoke(searchTag) {
     blobContainerEl.classList.add("show");
     nextBtnEl.classList.remove("show", "my-10");
     searchBtnEl.classList.remove("show", "my-10");
-    surpriseBtnEl.classList.remove("show", "my-10"); 
     contentEl.classList.remove("space-top-image");
     contentEl.textContent = "";
 
@@ -521,8 +515,6 @@ async function searchJoke(searchTag) {
 
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
-
-    surpriseBtnEl.classList.add("show", "my-10"); 
 
     //Passing joke on screen
 }
@@ -575,10 +567,6 @@ contentOptionsEl.addEventListener('change', function () {
 
     if (contentOptionsEl.value === 'joke') {
         getjoke();
-    }
-
-    if (contentOptionsEl.value === 'surprise') {
-        getSurprise();
     }
 })
 

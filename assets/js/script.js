@@ -209,6 +209,7 @@ const startQuotes = function(event){
              autorArea.appendChild(autorName);
 
              contentEl.appendChild(quoteCard);
+             
 
              nextBtnEl.textContent="Next Quote";
             })
@@ -240,5 +241,4 @@ gifChooseBtnEl.addEventListener("click", gifChooseBtnHandler);
 gifSearchFormEl.addEventListener("submit", gifSearchHandler);
 nextBtnEl.addEventListener("click", nextBtnHandler);   
 closeModalBtnEl.addEventListener("click",closeModalBtnHandler); 
-//quoteEl.addEventListener("click", startQuotes);
 logoBtnEl.addEventListener("click", reset);

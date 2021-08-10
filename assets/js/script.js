@@ -3,12 +3,10 @@ const contentEl = document.querySelector("#content");
 const blobContainerEl = document.querySelector("#blobContainer");
 const logoBtnEl = document.querySelector("#logo-btn")
 
-const soundBtnEl = document.querySelector("#sound-btn"); 
+
 
 const contentOptionsEl = document.querySelector('#content-options');
 
-const soundModalEl = document.querySelector("#sound-modal"); 
-const soundModalContentEl = document.querySelector("#sound-modal-content"); 
 
 const nextBtnEl = document.querySelector("#next-btn");
 const searchBtnEl = document.querySelector("#search-btn");
@@ -31,10 +29,16 @@ const errorModalContentEl = document.querySelector("#error-modal-content");
 
 
 // DOM elements related to sound
+const soundBtnEl = document.querySelector("#sound-btn"); 
+const soundModalEl = document.querySelector("#sound-modal"); 
+const soundModalContentEl = document.querySelector("#sound-modal-content"); 
+const soundOptionsWrapperEl = document.querySelector("#sound-options-wrapper");
 const soundDropDownEl = document.querySelector(".sound-dropdown-content");
 const volumeControlEl = document.querySelector("#volume-slider");
+const soundOptions = [{name: "rain",icon: "fas fa-cloud-rain fa-3x"}, {name: "cafe", icon: "fas fa-coffee fa-3x"}, {name: "city", icon: "fas fa-city fa-3x"}, {name: "forest", icon: "fas fa-tree fa-3x"}];
 
-//  Utility functions
+
+//  Utility function
 
 const selectRandom = function (array, numItems) {
     let random = [];
@@ -387,6 +391,8 @@ const startQuotes = function (event) {
             blobContainerEl.classList.add("show");
             searchBtnEl.classList.remove("show", "my-10");
             searchBtnEl.classList.add("hide");
+            // Remove ripple from searchBtn as when the hide class is removed in the other APIs - the ripple will replay. 
+            searchBtnEl.querySelector(".ripple").remove(); 
             contentEl.textContent = "";
             currentContent = "quote";
             response.json().then(function (data) {
@@ -450,9 +456,12 @@ const createRipple = function (event) {
     }
 
     circle.classList.add("ripple");
-    const ripple = button.getElementsByClassName("ripple")[0];
+    //const ripple = button.querySelector(".ripple");
+    const ripple = button.getElementsByClassName("ripple")[0]; 
+    console.log(ripple);
     // Remove leftover ripples if there are any
     if (ripple) {
+        console.log("this is being checked")
         ripple.remove();
     }
     // Append the ripple span
@@ -646,16 +655,37 @@ surpriseBtnEl.addEventListener("click", function() {
 closeModalBtnEl.addEventListener("click", closeModalBtnHandler);
 
 // Function Handlers that will play audio on button click 
+let playingAudios = [];
+const saveSoundSettings = function () {
+    // Grab all playing audio
+    playingAudios = soundModalContentEl.querySelectorAll(".play");
+    // Grab all current volumes 
+    console.log(playingAudios);
+}
 
-const setVolume = function () {
-    // Get volume from slider value 
-    const newVolume = volumeControlEl.value / 100;
-    // Grab all sounds buttons that are currently playing 
-    const playingSounds = document.querySelectorAll(".play");
-    // Go through each sound in the playing sounds array and set their volume 
-    playingSounds.forEach(function (playingSound) {
-        playingSound.querySelector("audio").volume = newVolume;
-    })
+const loadSoundSettings = function() {
+    playingAudios.forEach(playingAudio => {
+        const playingAudioId = playingAudio.id.replace("btn","audio");
+        const playingAudioEl = soundModalContentEl.querySelector(`#${playingAudioId}`);
+        playingAudioEl.classList.add("play");
+        playingAudioEl.play();
+        playingAudioEl.loop();
+    });
+}
+
+const setVolume = function (event) {
+
+    // Get the new volume 
+    const newVolume = event.target.value / 100; 
+    //Find which audio was selected
+    const selectedSoundId = event.target.getAttribute("id").replace('-vol',"");
+    console.log(selectedSoundId);
+    const selectedAudioEl = this.querySelector(`#${selectedSoundId}-audio`);
+    // Change volume of the selected audio
+    selectedAudioEl.volume = newVolume; 
+
+    saveSoundSettings();
+
 }
 
 const soundBtnHandler = function (event) {
@@ -685,6 +715,8 @@ const soundBtnHandler = function (event) {
         selectedSoundAudioEl.loop = false;
     }
 
+    saveSoundSettings();
+
 }
 
 
@@ -707,19 +739,72 @@ document.addEventListener("click", function (event) {
     }
 })
 
+// Sound functions 
+
 soundBtnEl.addEventListener("click", function() {
     // Make sound modal pop-up 
     soundModalEl.classList.add("show");
     soundModalContentEl.classList.add("modal-slide-in"); 
     soundModalContentEl.classList.remove("modal-slide-out"); 
-
+    displaySounds();
     // Generate sound options in the container within the modal 
 
 });
 
+// Display sound options in sound modal
+
+const displaySounds = function() {
+    // reset modal content
+
+    soundOptionsWrapperEl.textContent = "";
+
+    soundOptions.forEach(soundOption => {
+        const soundButtonWrapperEl = document.createElement("div");
+        soundButtonWrapperEl.classList = "flex flex-col content-center";
+        
+        const soundButtonEl = document.createElement("button");
+        soundButtonEl.setAttribute("type","button");
+        soundButtonEl.setAttribute("name", soundOption.name);
+        soundButtonEl.setAttribute("id",`${soundOption.name}-btn`);
+        soundButtonEl.classList = "mb-8";
+
+        const soundAudioEl = document.createElement("audio");
+        soundAudioEl.setAttribute("id",`${soundOption.name}-audio`);
+        soundAudioEl.setAttribute("src",`assets/videos/${soundOption.name}.mp3`);
+
+        const soundIconEl = document.createElement("i");
+        soundIconEl.classList = soundOption.icon; 
+
+        soundButtonEl.appendChild(soundAudioEl);
+        soundButtonEl.appendChild(soundIconEl);
+
+        const soundVolumeEl = document.createElement("input");
+        soundVolumeEl.setAttribute("type", "range");
+        soundVolumeEl.setAttribute("id",`${soundOption.name}-vol`);
+        soundVolumeEl.setAttribute("aria-label",`${soundOption.name}-volume`);
+        soundVolumeEl.setAttribute("name",`${soundOption.name}-volume` );
+        soundVolumeEl.setAttribute("min","0");
+        soundVolumeEl.setAttribute("max", "100");
+        soundVolumeEl.classList = "mb-8";
+
+        soundButtonWrapperEl.appendChild(soundButtonEl);
+        soundButtonWrapperEl.appendChild(soundVolumeEl);
+
+        soundOptionsWrapperEl.appendChild(soundButtonWrapperEl);
+
+    })
+
+    loadSoundSettings();
+   
+}
+
 soundModalContentEl.addEventListener("click", soundBtnHandler);
-volumeControlEl.addEventListener("change", setVolume);
-volumeControlEl.addEventListener("input", setVolume);
+
+soundModalContentEl.addEventListener("input", setVolume);
+soundModalContentEl.addEventListener("change", setVolume);
+
+
+
 
 
 

@@ -72,8 +72,17 @@
     </header>
 
     <main>
+        <div id="error-modal" class="modal-backdrop">
+            <div id="error-modal-content" class="modal-content p-4 rounded shadow-lg">
+                <div class="flex flex-col">
+                    <p>There was a problem loading the content. Returning you to the homepage.</p>
+                    <button type="click" name="ok" id="ok-btn" class="bg-transparent border-2 p-2">Ok</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Modal for Gif search -->
-        <div id="searchModal" class="search-modal">
+        <div id="searchModal" class="modal-backdrop">
             <!-- Gif Modal Header -->
             <!-- Gif Modal content -->
 

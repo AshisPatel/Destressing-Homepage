@@ -729,7 +729,10 @@ soundBtnEl.addEventListener("click", function() {
 // Display sound options in sound modal
 
 const displaySounds = function() {
-    
+    // reset modal content
+
+    soundOptionsWrapperEl.textContent = "";
+
     soundOptions.forEach(soundOption => {
         const soundButtonWrapperEl = document.createElement("div");
         soundButtonWrapperEl.classList = "flex flex-col content-center";

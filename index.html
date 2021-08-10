@@ -18,8 +18,9 @@
     <header>
 
         <nav class="flex justify-between items-center mx-11 my-5">
-            <button type="button" class="home-btn" id="logo-btn"><img src="assets/img/home.svg" alt="home icon"></button>
-            
+            <button type="button" class="home-btn" id="logo-btn"><img src="assets/img/home.svg"
+                    alt="home icon"></button>
+
             <div class="flex justify-between items-center">
                 <div class="sound-dropdown relative mr-8">
                     <button type="button" id="sound-btn" class="sound-btn"><i class="fas fa-music fa-lg"></i></button>
@@ -42,11 +43,12 @@
                             <audio id="cafe-audio" src="assets/videos/cafe.mp3"></audio>
                             <i class="fas fa-coffee fa-lg"></i>
                         </button>
-                        
+
                     </div>
                 </div>
-                
-                <input type="range" aria-label="volume" id="volume-slider" name="volume" min="0" max="100" class = "mr-8"/>
+
+                <!-- <input type="range" aria-label="volume" id="volume-slider" name="volume" min="0" max="100"
+                    class="mr-8" /> -->
 
                 <!-- absolute -->
                 <div class="dropdown-container">
@@ -63,29 +65,32 @@
 
             </div>
 
-            </nav>
+        </nav>
     </header>
 
     <main>
         <!-- Search Modal -->
         <div id="search-modal" class="modal-backdrop">
-             <!-- Search Modal Content Header -->
-            <div id="searchModalContent" class="modal-content p-4 rounded shadow-lg"> 
+            <!-- Search Modal Content Header -->
+            <div id="searchModalContent" class="modal-content p-4 rounded shadow-lg">
                 <div class="flex flex-col">
-                    <button id="close-modal-btn" class="close-modal-btn self-end"><img src="assets/img/close.svg" alt="close icon"></button>
-                    <h5 class="text-left">Search For A <span id="search-category"></span> or Choose For Me!</h5>  
+                    <button id="close-modal-btn" class="close-modal-btn self-end"><img src="assets/img/close.svg"
+                            alt="close icon"></button>
+                    <h5 class="text-left">Search For A <span id="search-category"></span> or Choose For Me!</h5>
                 </div>
-                 <!-- Search Modal Content Body -->
+                <!-- Search Modal Content Body -->
                 <form onsubmit="return false" class="pt-4" id="modal-search-form">
                     <div class="flex flex-col">
                         <label for="modal-search"></label>
-                        <input type="text" placeholder="Search Here..." id="modal-search-input" name="modal-search" class="text-black p-2 rounded-sm"/>
-                        <button type="submit" class="modal-search-btn p-2 mt-3 rounded-sm" id="modal-search-btn">Search<i class="ml-2 fas fa-search"></i></button>
+                        <input type="text" placeholder="Search Here..." id="modal-search-input" name="modal-search"
+                            class="text-black p-2 rounded-sm" />
+                        <button type="submit" class="modal-search-btn p-2 mt-3 rounded-sm"
+                            id="modal-search-btn">Search<i class="ml-2 fas fa-search"></i></button>
                     </div>
                     <p class="warning-text hide">Please enter a search tag!</p>
                     <span class="modal-or py-4 flex flex-row">or</span>
                     <button type="button" id="modal-choose-btn" class="p-2 rounded-sm">Choose For Me</button>
-                    
+
                 </form>
             </div>
         </div>
@@ -93,7 +98,17 @@
         <div id="sound-modal" class="modal-backdrop">
             <!-- Sound Modal Content Header -->
             <div id="sound-modal-content" class="modal-content p-4 rounded shadow-lg">
-                test
+                <h5 class="text-center">Sound Board</h5>
+                <div id="sound-options" class="h-64 mt-8 grid grid-cols-3 gap-y-8 justify-items-center overflow-y-auto">
+                    <div class="flex flex-col">
+                        <button type="button" name="rain" id="rain-btn" class="mb-8">
+                            <audio id="rain-audio" src="assets/videos/rain.mp3"></audio>
+                            <i class="fas fa-cloud-rain fa-3x"></i>
+                        </button>
+
+                        <input type="range" aria-label="volume" id="volume-slider" name="volume" min="0" max="100" class="mr-8" />
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -106,7 +121,8 @@
                 another!</button>
             <button type="button" id="search-btn" class="ml-4 bg-transparent border-2 p-2 search-button">Search<i
                     class="ml-2 fas fa-search"></i></button>
-            <button type ="button" id="surprise-btn" class="ml-4 bg-transparent border-2 p-2 surprise-button">Surprise</button>
+            <button type="button" id="surprise-btn"
+                class="ml-4 bg-transparent border-2 p-2 surprise-button">Surprise</button>
         </section>
 
         <!-- Blobs -->

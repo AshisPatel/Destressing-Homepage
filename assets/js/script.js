@@ -678,12 +678,16 @@ document.addEventListener("click", function (event) {
 })
 
 soundBtnEl.addEventListener("click", function() {
+    // Make sound modal pop-up 
     soundModalEl.classList.add("show");
     soundModalContentEl.classList.add("modal-slide-in"); 
     soundModalContentEl.classList.remove("modal-slide-out"); 
+
+    // Generate sound options in the container within the modal 
+
 });
 
-soundDropDownEl.addEventListener("click", soundBtnHandler);
+soundModalContentEl.addEventListener("click", soundBtnHandler);
 volumeControlEl.addEventListener("change", setVolume);
 volumeControlEl.addEventListener("input", setVolume);
 

@@ -36,6 +36,8 @@ const soundOptionsWrapperEl = document.querySelector("#sound-options-wrapper");
 const soundDropDownEl = document.querySelector(".sound-dropdown-content");
 const volumeControlEl = document.querySelector("#volume-slider");
 const soundOptions = [{name: "rain",icon: "fas fa-cloud-rain fa-3x"}, {name: "cafe", icon: "fas fa-coffee fa-3x"}, {name: "city", icon: "fas fa-city fa-3x"}, {name: "forest", icon: "fas fa-tree fa-3x"}];
+
+
 //  Utility function
 
 const selectRandom = function (array, numItems) {
@@ -653,16 +655,37 @@ surpriseBtnEl.addEventListener("click", function() {
 closeModalBtnEl.addEventListener("click", closeModalBtnHandler);
 
 // Function Handlers that will play audio on button click 
+let playingAudios = [];
+const saveSoundSettings = function () {
+    // Grab all playing audio
+    playingAudios = soundModalContentEl.querySelectorAll(".play");
+    // Grab all current volumes 
+    console.log(playingAudios);
+}
 
-const setVolume = function () {
-    // Get volume from slider value 
-    const newVolume = volumeControlEl.value / 100;
-    // Grab all sounds buttons that are currently playing 
-    const playingSounds = document.querySelectorAll(".play");
-    // Go through each sound in the playing sounds array and set their volume 
-    playingSounds.forEach(function (playingSound) {
-        playingSound.querySelector("audio").volume = newVolume;
-    })
+const loadSoundSettings = function() {
+    playingAudios.forEach(playingAudio => {
+        const playingAudioId = playingAudio.id.replace("btn","audio");
+        const playingAudioEl = soundModalContentEl.querySelector(`#${playingAudioId}`);
+        playingAudioEl.classList.add("play");
+        playingAudioEl.play();
+        playingAudioEl.loop();
+    });
+}
+
+const setVolume = function (event) {
+
+    // Get the new volume 
+    const newVolume = event.target.value / 100; 
+    //Find which audio was selected
+    const selectedSoundId = event.target.getAttribute("id").replace('-vol',"");
+    console.log(selectedSoundId);
+    const selectedAudioEl = this.querySelector(`#${selectedSoundId}-audio`);
+    // Change volume of the selected audio
+    selectedAudioEl.volume = newVolume; 
+
+    saveSoundSettings();
+
 }
 
 const soundBtnHandler = function (event) {
@@ -691,6 +714,8 @@ const soundBtnHandler = function (event) {
         selectedSoundAudioEl.pause();
         selectedSoundAudioEl.loop = false;
     }
+
+    saveSoundSettings();
 
 }
 
@@ -768,11 +793,18 @@ const displaySounds = function() {
         soundOptionsWrapperEl.appendChild(soundButtonWrapperEl);
 
     })
+
+    loadSoundSettings();
+   
 }
 
 soundModalContentEl.addEventListener("click", soundBtnHandler);
-//volumeControlEl.addEventListener("change", setVolume);
-//volumeControlEl.addEventListener("input", setVolume);
+
+soundModalContentEl.addEventListener("input", setVolume);
+soundModalContentEl.addEventListener("change", setVolume);
+
+
+
 
 
 

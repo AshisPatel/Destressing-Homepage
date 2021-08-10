@@ -299,7 +299,7 @@ const getArt = async function (searchTag) {
     // Use try/catch to catch any errors
     try {
         const allMuseumResponse = await fetch(
-            `https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=${searchTag}`
+            `https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&medium=Paintings&q=${searchTag}`
         );
         const museumData = await allMuseumResponse.json();
 
@@ -307,19 +307,25 @@ const getArt = async function (searchTag) {
         const museumArray = museumData.objectIDs;
 
         // Check if no IDs returned
-        if (!museumArray) {
+        if (!allMuseumResponse.ok) {
             displayErrorModal();
             return; 
         }
 
-    // Get random ID from that array
-    const museumId = museumArray[Math.floor((Math.random() * museumArray.length))];
-    
-    // Get object matching that ID
-    const artResponse = await fetch(
-        `https://collectionapi.metmuseum.org/public/collection/v1/objects/${museumId}`
-    );
-    const artData = await artResponse.json();
+        // Get random ID from that array
+        const museumId = museumArray[Math.floor((Math.random() * museumArray.length))];
+        
+        // Get object matching that ID
+        const artResponse = await fetch(
+            `https://collectionapi.metmuseum.org/public/collection/v1/objects/${museumId}`
+        );
+        const artData = await artResponse.json();
+
+        // Check if no IDs returned
+        if (!artResponse.ok) {
+            displayErrorModal();
+            return; 
+        }
 
         // Remove loader to show image
         contentEl.removeChild(loader);

@@ -21,6 +21,12 @@ const warningEl = document.querySelector(".warning-text");
 let prevGifTag = "";
 let currentContent = "";
 
+// Dom elements related to error-modal
+const okBtnEl = document.querySelector("#ok-btn"); 
+const errorModalEl = document.querySelector("#error-modal");
+const errorModalContentEl = document.querySelector("#error-modal-content"); 
+
+
 // DOM elements related to sound
 const soundDropDownEl = document.querySelector(".sound-dropdown-content");
 const volumeControlEl = document.querySelector("#volume-slider");
@@ -108,6 +114,14 @@ const logoBtnHandler = function (event) {
 
 // Functions regarding modals 
 
+// Error Modal functions
+const displayErrorModal = function (event) {
+    errorModalEl.classList.add("show");
+    errorModalContentEl.classList.add("modal-slide-in");
+    errorModalContentEl.classList.remove("modal-slide-out");
+}
+
+// Search Modal functions 
 const searchBtnHandler = function (event) {
     warningEl.classList.add("hide");
     warningEl.classList.remove("show");
@@ -227,13 +241,18 @@ const getGifs = function (searchTag) {
             })
         }
         else {
-            console.log("There was a problem finding a gif!");
+            displayErrorModal(); 
         }
     });
 }
 
 const displayGifs = function (gif) {
     currentContent = "gif";
+    // Display error modal if gif is empty
+    if (typeof gif[0] === "undefined") {
+        displayErrorModal(); 
+        return; 
+    }
     // Delete old content in content section
     blobContainerEl.classList.remove("show");
     blobContainerEl.classList.add("hide");
@@ -246,7 +265,7 @@ const displayGifs = function (gif) {
     const gifImg = document.createElement("img");
     gifImg.classList.add("image-mask");
 
-    //gifImg.setAttribute("style", "width:480px;height:480px");
+    
 
     gifImg.setAttribute("src", gif[0].images.original.url);
     gifWrapper.appendChild(gifImg);
@@ -285,9 +304,15 @@ const getArt = async function (searchTag) {
     // Get IDs of the objects
     const museumArray = museumData.objectIDs;
 
+    // Check if no IDs returned
+    if (!museumArray) {
+        displayErrorModal();
+        return; 
+    }
+
     // Get random ID from that array
     const museumId = museumArray[Math.floor((Math.random() * museumArray.length))];
-
+    
     // Get object matching that ID
     const artResponse = await fetch(
         `https://collectionapi.metmuseum.org/public/collection/v1/objects/${museumId}`
@@ -393,7 +418,7 @@ const startQuotes = function (event) {
                 nextBtnEl.classList.add("show", "my-10");
             })
         } else {
-            alert("link not working")
+            displayErrorModal(); 
         }
     });
 };
@@ -487,11 +512,14 @@ async function searchJoke(searchTag) {
     });
 
     const jokeContent = await jokefetch.json();
-    console.log(jokeContent.results);
+    
+    // Check to see if any jokes were returned 
+    if (typeof jokeContent[0] === "undefined") {
+        displayErrorModal();
+        return; 
+    }
 
     var jokerandom= selectRandom(jokeContent.results,1);
-    console.log(jokerandom);
-
 
     blobContainerEl.classList.remove("hide");
     blobContainerEl.classList.add("show");
@@ -571,6 +599,20 @@ contentOptionsEl.addEventListener('change', function () {
     }
 })
 
+const okBtnHandler = function (event) {
+    // Remove error modal
+    errorModalEl.classList.remove("show");
+    errorModalContentEl.classList.remove("modal-slide-in");
+    errorModalContentEl.classList.add("modal-slide-out");
+    // Return user to homepage
+    logoBtnHandler();
+}
+
+okBtnEl.addEventListener("click", createRipple);
+okBtnEl.addEventListener("click", function() { 
+    setTimeout(okBtnHandler,300);
+});
+
 
 searchBtnEl.addEventListener("click", createRipple);
 // Timeouts added so you can see the ripple effect before the function is called
@@ -645,15 +687,20 @@ const soundBtnHandler = function (event) {
 
 // Close modal on background click
 document.addEventListener("click", function (event) {
+    const displayedModal = event.target.querySelector(".modal-content"); 
     // Do nothing if the target doesn't match
-    if (!event.target.matches('.search-modal')) {
+    if (!event.target.matches('.modal-backdrop')) {
         return;
     }
-
+    // If off-screen is clicked, and it is the error-modal 
+    else if (event.target.getAttribute("id") === "error-modal") {
+        okBtnHandler(); 
+    }
+    // If off-screen is clicked for the search modal 
     else {
         event.target.classList.remove("show");
-        searchModalContentEl.classList.remove("modal-slide-in");
-        searchModalContentEl.classList.add("modal-slide-out");
+        displayedModal.classList.remove("modal-slide-in");
+        displayedModal.classList.add("modal-slide-out");
     }
 })
 
@@ -661,6 +708,8 @@ document.addEventListener("click", function (event) {
 soundDropDownEl.addEventListener("click", soundBtnHandler);
 volumeControlEl.addEventListener("change", setVolume);
 volumeControlEl.addEventListener("input", setVolume);
+
+
 
 // On load, generate welcome message
 

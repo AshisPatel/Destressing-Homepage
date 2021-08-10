@@ -80,7 +80,7 @@ const displayWelcomeMessage = function (headerText, msgText) {
 
     nextBtnEl.classList.remove("show", "my-10");
     searchBtnEl.classList.remove("show", "my-10");
-    surpriseBtnEl.classList.remove("show", "my-10"); 
+    //surpriseBtnEl.classList.remove("show", "my-10"); 
 
     contentEl.classList.remove("space-top-image");
     contentEl.textContent = "";

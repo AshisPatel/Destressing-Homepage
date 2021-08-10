@@ -173,7 +173,7 @@ button:focus {
 }
 
 
-.search-modal {
+.modal-backdrop {
 
     /* Hide Modal by default */
     visibility: hidden;
@@ -193,7 +193,7 @@ button:focus {
     transition: all 0.3s ease-in-out;
 }
 
-.search-modal.show {
+.modal-backdrop.show {
     visibility: visible;
     opacity: 1;
 }

@@ -276,46 +276,51 @@ const getArt = async function (searchTag) {
     contentEl.appendChild(loader);
 
     // Get all objects that have an image and matches the query 'Painting'
-    const allMuseumResponse = await fetch(
-        `https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=${searchTag}`
-    );
-    const museumData = await allMuseumResponse.json();
+    // Use try/catch to catch any errors
+    try {
+        const allMuseumResponse = await fetch(
+            `https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=${searchTag}`
+        );
+        const museumData = await allMuseumResponse.json();
 
-    // Get IDs of the objects
-    const museumArray = museumData.objectIDs;
+            // Get IDs of the objects
+        const museumArray = museumData.objectIDs;
 
-    // Get random ID from that array
-    const museumId = museumArray[Math.floor((Math.random() * museumArray.length))];
+        // Get random ID from that array
+        const museumId = museumArray[Math.floor((Math.random() * museumArray.length))];
 
-    // Get object matching that ID
-    const artResponse = await fetch(
-        `https://collectionapi.metmuseum.org/public/collection/v1/objects/${museumId}`
-    );
-    const artData = await artResponse.json();
+        // Get object matching that ID
+        const artResponse = await fetch(
+            `https://collectionapi.metmuseum.org/public/collection/v1/objects/${museumId}`
+        );
+        const artData = await artResponse.json();
 
-    // Remove loader to show image
-    contentEl.removeChild(loader);
+        // Remove loader to show image
+        contentEl.removeChild(loader);
 
-    const artSource = artData.primaryImageSmall;
+        const artSource = artData.primaryImageSmall;
 
-    const artWrapper = document.createElement("div");
-    const artImg = document.createElement("img");
-    artImg.src = artSource;
-    artWrapper.classList = 'media-wrapper';
+        const artWrapper = document.createElement("div");
+        const artImg = document.createElement("img");
+        artImg.src = artSource;
+        artWrapper.classList = 'media-wrapper';
 
-    contentEl.appendChild(artWrapper);
-    artWrapper.appendChild(artImg);
-    contentEl.classList.add("space-top-image");
-    artImg.classList.add("image-mask");
+        contentEl.appendChild(artWrapper);
+        artWrapper.appendChild(artImg);
+        contentEl.classList.add("space-top-image");
+        artImg.classList.add("image-mask");
 
-    // Show the next buttona and hide the blobs
-    nextBtnEl.classList.add("show", "my-10");
+        // Show the next buttona and hide the blobs
+        nextBtnEl.classList.add("show", "my-10");
 
-    nextBtnEl.textContent = `More artwork`;
+        nextBtnEl.textContent = `More artwork`;
 
-    searchBtnEl.classList.remove("hide");
-    searchBtnEl.classList.add("show", "my-10");
+        searchBtnEl.classList.remove("hide");
+        searchBtnEl.classList.add("show", "my-10");
 
+        } catch (error) {
+            console.log(`There was a problem grabbing the artwork! Error: ${error}`);
+        }
 }
 
 // Function to handle displaying more of currently selected content 
@@ -470,9 +475,6 @@ const getjoke = async function () {
 
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
-
-
-
 }
 
 //call for search

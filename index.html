@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,55 +10,83 @@
     <link href="./assets/css/style.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
     <title>Destressing Homepage</title>
 </head>
+
 <body>
     <header>
-        <nav class="flex items-center justify-between mx-11 my-5">
-            <button type="button" id="logo-btn">Home</button>
-        <!-- 
-            <ul></ul>
 
-            <ul id="content-options">
-                <li><button type="button" id="gif-btn">gif</button></li>
-                <li><button type="button" id="museum-btn">museum</button></li>
-                <li><button type="button" id="quote-btn">quote</button></li>
-                <li><button type="button" id="joke-btn">joke</button></li>
-            </ul>
-            -->
+        <nav class="flex justify-between items-center mx-11 my-5">
+            <button type="button" class="home-btn" id="logo-btn"><img src="assets/img/home.svg" alt="home icon"></button>
+            
+            <div class="flex justify-between items-center">
+                <div class="sound-dropdown relative mr-8">
+                    <div class="sound-btn"><i class="fas fa-music fa-lg"></i></div>
+                    <div class="sound-dropdown-content absolute flex-justify-between">
+                        <button type="button" name="rain" id="rain-btn">
+                            <audio id="rain-audio" src="assets/videos/rain.mp3"></audio>
+                            <i class="fas fa-cloud-rain fa-lg"></i>
+                        </button>
 
-            <div class="dropdown-container absolute right-0">
-                <label for="content-options" class="pr-1">Show me a...</label>
-                <select name="content-options" id="content-options" class="pl-2 py-2 rounded-sm">
-                    <option value="" selected disabled hidden>choose</option>
-                    <option value="gif">gif</option>
-                    <option value="painting">painting</option>
-                    <option value="quote">quote</option>
-                    <option value="joke">joke</option>
-                    <option value="surprise">surprise</option>
-                </select>
+                        <button type="button" name="city">
+                            <audio id="city-audio" src="assets/videos/city.mp3"></audio>
+                            <i class="fas fa-city fa-lg"></i>
+                        </button>
+
+                        <button type="button" name="nature">
+                            <audio id="forest-audio" src="assets/videos/forest.mp3"></audio>
+                            <i class="fas fa-tree fa-lg"></i>
+                        </button>
+                        <button type="button" name="cafe">
+                            <audio id="cafe-audio" src="assets/videos/cafe.mp3"></audio>
+                            <i class="fas fa-coffee fa-lg"></i>
+                        </button>
+                        
+                    </div>
+                </div>
+                
+                <input type="range" aria-label="volume" id="volume-slider" name="volume" min="0" max="100" class = "mr-8"/>
+
+                <!-- absolute -->
+                <div class="dropdown-container">
+                    <label for="content-options" class="pr-1">Show me a...</label>
+                    <select name="content-options" id="content-options" class="pl-2 py-2 rounded-sm">
+                        <option value="" selected disabled hidden>choose</option>
+                        <option value="gif">gif</option>
+                        <option value="painting">painting</option>
+                        <option value="quote">quote</option>
+                        <option value="joke">joke</option>
+                        <option value="surprise">surprise</option>
+                    </select>
+                </div>
+
             </div>
-        <nav>
+
+            </nav>
     </header>
-    
+
     <main>
         <!-- Modal for Gif search -->
-        <div id="searchModal" class="modal">
+        <div id="searchModal" class="search-modal">
             <!-- Gif Modal Header -->
             <!-- Gif Modal content -->
-            <!-- grid grid-cols-3 gap-4 -->
-            <div class="modal-content p-0"> 
-                <div class="grid grid-cols-3 justify-items-stretch mb-3">
-                    <h5 class="col-start-1 col-end-3 pt-5 text-left">Search For A <span id="search-category"></span> or Have Me Choose!</h5>  
-                    <span id="close-modal-btn" class = "col-start-3 col-end-4 justify-self-end">&times;</span>
+
+            <div id="searchModalContent" class="modal-content p-4 rounded shadow-lg"> 
+                <div class="flex flex-col">
+                    <button id="close-modal-btn" class="close-modal-btn self-end"><img src="assets/img/close.svg" alt="close icon"></button>
+                    <h5 class="text-left">Search For A <span id="search-category"></span> or Choose For Me!</h5>  
                 </div>
-                <form id="modal-search-form" class = "grid grid-cols-3">
-                    <label for="modal-search"></label>
-                    <input type="text" placeholder="Search Here..." id="modal-search-input" name="modal-search" class="col-start-1 col-end-3 pl-1 text-black"/>
-                    <button type="submit" id="modal-search-btn" class="p-2">Search<i class="ml-2 fas fa-search"></i></button>
-                    <p class="warning-text col-start-1 col-end-4 place-self-center mt-2 hide">Please enter a search tag!</p>
-                    <button type="button" id="modal-choose-btn" class="col-start-2 col-end-3 p-2 mt-3">Choose For Me</button>
+
+                <form onsubmit="return false" class="pt-4" id="modal-search-form">
+                    <div class="flex flex-col">
+                        <label for="modal-search"></label>
+                        <input type="text" placeholder="Search Here..." id="modal-search-input" name="modal-search" class="text-black p-2 rounded-sm"/>
+                        <button type="submit" class="modal-search-btn p-2 mt-3 rounded-sm" id="modal-search-btn">Search<i class="ml-2 fas fa-search"></i></button>
+                    </div>
+                    <p class="warning-text hide">Please enter a search tag!</p>
+                    <span class="modal-or py-4 flex flex-row">or</span>
+                    <button type="button" id="modal-choose-btn" class="p-2 rounded-sm">Choose For Me</button>
                     
                 </form>
             </div>
@@ -65,13 +94,14 @@
 
         <section id="content" class="flex flex-col items-center">
             <!-- Dynamically generate your content here -->
-            <!-- Static greeting to be replaced based on time of day -->
         </section>
-
         <section id="navigation-options" class="flex justify-center">
             <!-- Shows your next version of content -->
-            <button type="button" id="next-btn" class="bg-transparent border-2 p-2 another-button">Show another!</button>
-            <button type="button" id="search-btn" class="ml-4 bg-transparent border-2 p-2 search-button">Search<i class="ml-2 fas fa-search"></i></button>
+            <button type="button" id="next-btn" class="bg-transparent border-2 p-2 another-button">Show
+                another!</button>
+            <button type="button" id="search-btn" class="ml-4 bg-transparent border-2 p-2 search-button">Search<i
+                    class="ml-2 fas fa-search"></i></button>
+            <button type ="button" id="surprise-btn" class="ml-4 bg-transparent border-2 p-2 surprise-button">Surprise</button>
         </section>
 
         <!-- Blobs -->
@@ -80,6 +110,8 @@
             <img class="blob2" src="./assets/img/blob2.svg">
         </div>
     </main>
+
     <script src="./assets/js/script.js"></script>
 </body>
+
 </html>

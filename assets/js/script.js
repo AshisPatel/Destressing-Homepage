@@ -457,8 +457,7 @@ const getjoke = async function () {
     contentEl.textContent = "";
 
     const jokeContainer = document.createElement("div");
-    jokeContainer.classList = "jokeContainer space-top-text ";
-    jokeContainer.setAttribute("style", "w-3/4");
+    jokeContainer.classList = "jokeContainer space-top-text w-3/4";
 
     const jokeContentEL = document.createElement("h2");
     jokeContentEL.classList = "pt-2 ";
@@ -502,8 +501,7 @@ async function searchJoke(searchTag) {
     contentEl.textContent = "";
 
     const jokeContainer = document.createElement("div");
-    jokeContainer.classList = "jokeContainer space-top-text ";
-    jokeContainer.setAttribute("style", "w-3/4 ");
+    jokeContainer.classList = "jokeContainer space-top-text w-3/4";
 
     const jokeContentEL = document.createElement("h2");
     jokeContentEL.classList = "pt-2 ";

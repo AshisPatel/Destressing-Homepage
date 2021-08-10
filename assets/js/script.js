@@ -513,11 +513,6 @@ async function searchJoke(searchTag) {
 
     const jokeContent = await jokefetch.json();
     
-    // Check to see if any jokes were returned 
-    if (typeof jokeContent[0] === "undefined") {
-        displayErrorModal();
-        return; 
-    }
 
     var jokerandom= selectRandom(jokeContent.results,1);
 
@@ -536,6 +531,12 @@ async function searchJoke(searchTag) {
     jokeContainer.appendChild(jokeContentEL);
     contentEl.appendChild(jokeContainer);
 
+
+    // Check to see if any jokes were returned 
+    if (typeof jokerandom[0] === "undefined") {
+        displayErrorModal();
+        return; 
+    }
     //Passing joke on screen
     jokeContentEL.innerHTML = jokerandom[0].joke;
 

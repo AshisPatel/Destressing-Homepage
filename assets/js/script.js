@@ -463,11 +463,11 @@ const getjoke = async function () {
     contentEl.textContent = "";
 
     const jokeContainer = document.createElement("div");
-    jokeContainer.classList = "jokeContainer w-full mx-auto rounded-lg bg-white shadow-lg px-5 pt-5 pb-10 text-gray-800";
-    jokeContainer.setAttribute("style", "max-width: 500px");
+    jokeContainer.classList = "jokeContainer space-top-text ";
+    jokeContainer.setAttribute("style", "w-3/4");
 
-    const jokeContentEL = document.createElement("div");
-    jokeContentEL.classList = "w-full mb-10";
+    const jokeContentEL = document.createElement("h2");
+    jokeContentEL.classList = "pt-2 ";
     jokeContainer.appendChild(jokeContentEL);
     contentEl.appendChild(jokeContainer);
 
@@ -482,6 +482,7 @@ const getjoke = async function () {
     surpriseBtnEl.classList.add("show","my-10"); 
 
 }
+
 //call for search
 async function searchJoke(searchTag) {
 
@@ -493,7 +494,10 @@ async function searchJoke(searchTag) {
     });
 
     const jokeContent = await jokefetch.json();
-    console.log(jokeContent.results[0].joke);
+    console.log(jokeContent.results);
+
+    var jokerandom= selectRandom(jokeContent.results,1);
+    console.log(jokerandom);
 
 
     blobContainerEl.classList.remove("hide");
@@ -505,16 +509,16 @@ async function searchJoke(searchTag) {
     contentEl.textContent = "";
 
     const jokeContainer = document.createElement("div");
-    jokeContainer.classList = "jokeContainer w-full mx-auto rounded-lg bg-white shadow-lg px-5 pt-5 pb-10 text-gray-800";
-    jokeContainer.setAttribute("style", "max-width: 500px");
+    jokeContainer.classList = "jokeContainer space-top-text ";
+    jokeContainer.setAttribute("style", "w-3/4 ");
 
-    const jokeContentEL = document.createElement("div");
-    jokeContentEL.classList = "w-full mb-10";
+    const jokeContentEL = document.createElement("h2");
+    jokeContentEL.classList = "pt-2 ";
     jokeContainer.appendChild(jokeContentEL);
     contentEl.appendChild(jokeContainer);
 
     //Passing joke on screen
-    jokeContentEL.innerHTML = jokeContent.results[0].joke;
+    jokeContentEL.innerHTML = jokerandom[0].joke;
 
     nextBtnEl.textContent = "More jokes";
     nextBtnEl.classList.add("show", "my-10");

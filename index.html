@@ -18,9 +18,9 @@
     <header>
 
         <nav class="flex justify-between items-center mx-11 my-5">
-            <button type="button" class="home-btn" id="logo-btn"><img src="assets/img/home.svg"
-                    alt="home icon"></button>
+            <button type="button" class="home-btn" id="logo-btn"><img src="assets/img/home.svg" alt="home icon"></button>
 
+            
             <div class="flex justify-between items-center">
                 <div class="sound-dropdown relative mr-8">
                     <button type="button" id="sound-btn" class="sound-btn"><i class="fas fa-music fa-lg"></i></button>
@@ -50,7 +50,7 @@
                 <!-- <input type="range" aria-label="volume" id="volume-slider" name="volume" min="0" max="100"
                     class="mr-8" /> -->
 
-                <!-- absolute -->
+           
                 <div class="dropdown-container">
                     <label for="content-options" class="pr-1">Show me a...</label>
                     <select name="content-options" id="content-options" class="pl-2 py-2 rounded-sm">
@@ -59,20 +59,32 @@
                         <option value="painting">painting</option>
                         <option value="quote">quote</option>
                         <option value="joke">joke</option>
-                        <option value="surprise">surprise</option>
                     </select>
                 </div>
 
+                <button type ="button" id="surprise-btn" class="ml-4 bg-transparent border-2 p-2 surprise-button show">Surprise</button>
+            
             </div>
 
         </nav>
     </header>
 
     <main>
-        <!-- Search Modal -->
+        <div id="error-modal" class="modal-backdrop">
+            <div id="error-modal-content" class="modal-content p-4 rounded shadow-lg">
+                <div class="flex flex-col">
+                    <p>There was a problem loading the content. Returning you to the homepage.</p>
+                    <button type="click" name="ok" id="ok-btn" class="bg-transparent border-2 p-2">Ok</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Gif search -->
         <div id="search-modal" class="modal-backdrop">
-            <!-- Search Modal Content Header -->
-            <div id="searchModalContent" class="modal-content p-4 rounded shadow-lg">
+            <!-- Gif Modal Header -->
+            <!-- Gif Modal content -->
+
+            <div id="search-modal-content" class="modal-content p-4 rounded shadow-lg"> 
                 <div class="flex flex-col">
                     <button id="close-modal-btn" class="close-modal-btn self-end"><img src="assets/img/close.svg"
                             alt="close icon"></button>
@@ -100,7 +112,7 @@
             <div id="sound-modal-content" class="modal-content p-4 rounded shadow-lg">
                 <h5 class="text-center">Sound Board</h5>
                 <div id="sound-options" class="h-64 mt-8 grid grid-cols-3 gap-y-8 justify-items-center overflow-y-auto">
-                    <div class="flex flex-col">
+                    <div class="flex flex-col content-center">
                         <button type="button" name="rain" id="rain-btn" class="mb-8">
                             <audio id="rain-audio" src="assets/videos/rain.mp3"></audio>
                             <i class="fas fa-cloud-rain fa-3x"></i>
@@ -115,7 +127,7 @@
                             <i class="fas fa-cloud-rain fa-3x"></i>
                         </button>
 
-                        <input type="range" aria-label="volume" id="volume-slider" name="volume" min="0" max="100" class="mr-8" />
+                        <input type="range" aria-label="volume" id="volume-slider" name="volume" min="0" max="100"/>
                     </div>
 
                     <div class="flex flex-col">
@@ -148,8 +160,7 @@
                 another!</button>
             <button type="button" id="search-btn" class="ml-4 bg-transparent border-2 p-2 search-button">Search<i
                     class="ml-2 fas fa-search"></i></button>
-            <button type="button" id="surprise-btn"
-                class="ml-4 bg-transparent border-2 p-2 surprise-button">Surprise</button>
+            <!-- <button type ="button" id="surprise-btn" class="ml-4 bg-transparent border-2 p-2 surprise-button">Surprise</button> -->
         </section>
 
         <!-- Blobs -->

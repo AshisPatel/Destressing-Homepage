@@ -14,7 +14,7 @@ const nextBtnEl = document.querySelector("#next-btn");
 const searchBtnEl = document.querySelector("#search-btn");
 const surpriseBtnEl = document.querySelector("#surprise-btn"); 
 const searchModalEl = document.querySelector("#search-modal");
-const searchModalContentEl = document.querySelector("#searchModalContent");
+const searchModalContentEl = document.querySelector("#search-modal-content");
 const closeModalBtnEl = document.querySelector("#close-modal-btn");
 
 const modalChooseBtnEl = document.querySelector("#modal-choose-btn");
@@ -23,6 +23,12 @@ const modalSearchFormEl = document.querySelector("#modal-search-form");
 const warningEl = document.querySelector(".warning-text");
 let prevGifTag = "";
 let currentContent = "";
+
+// Dom elements related to error-modal
+const okBtnEl = document.querySelector("#ok-btn"); 
+const errorModalEl = document.querySelector("#error-modal");
+const errorModalContentEl = document.querySelector("#error-modal-content"); 
+
 
 // DOM elements related to sound
 const soundDropDownEl = document.querySelector(".sound-dropdown-content");
@@ -83,7 +89,7 @@ const displayWelcomeMessage = function (headerText, msgText) {
 
     nextBtnEl.classList.remove("show", "my-10");
     searchBtnEl.classList.remove("show", "my-10");
-    surpriseBtnEl.classList.remove("show", "my-10"); 
+  
 
     contentEl.classList.remove("space-top-image");
     contentEl.textContent = "";
@@ -92,7 +98,7 @@ const displayWelcomeMessage = function (headerText, msgText) {
     welcomeHeaderEl.classList = "space-top-text appear-header";
     welcomeHeaderEl.textContent = headerText;
 
-    const welcomeMsgEl = document.createElement("h2");
+    const welcomeMsgEl = document.createElement("h3");
     welcomeMsgEl.classList = "pt-2 appear-msg"
     welcomeMsgEl.textContent = msgText;
 
@@ -111,6 +117,14 @@ const logoBtnHandler = function (event) {
 
 // Functions regarding modals 
 
+// Error Modal functions
+const displayErrorModal = function (event) {
+    errorModalEl.classList.add("show");
+    errorModalContentEl.classList.add("modal-slide-in");
+    errorModalContentEl.classList.remove("modal-slide-out");
+}
+
+// Search Modal functions 
 const searchBtnHandler = function (event) {
     warningEl.classList.add("hide");
     warningEl.classList.remove("show");
@@ -230,13 +244,18 @@ const getGifs = function (searchTag) {
             })
         }
         else {
-            console.log("There was a problem finding a gif!");
+            displayErrorModal(); 
         }
     });
 }
 
 const displayGifs = function (gif) {
     currentContent = "gif";
+    // Display error modal if gif is empty
+    if (typeof gif[0] === "undefined") {
+        displayErrorModal(); 
+        return; 
+    }
     // Delete old content in content section
     blobContainerEl.classList.remove("show");
     blobContainerEl.classList.add("hide");
@@ -249,7 +268,7 @@ const displayGifs = function (gif) {
     const gifImg = document.createElement("img");
     gifImg.classList.add("image-mask");
 
-    //gifImg.setAttribute("style", "width:480px;height:480px");
+    
 
     gifImg.setAttribute("src", gif[0].images.original.url);
     gifWrapper.appendChild(gifImg);
@@ -258,7 +277,6 @@ const displayGifs = function (gif) {
     nextBtnEl.classList.add("show", "my-10");
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
-    surpriseBtnEl.classList.add("show", "my-10"); 
 }
 
 
@@ -268,7 +286,6 @@ const getArt = async function (searchTag) {
     // Hide the button while it's grabbing the response and show in the function
     nextBtnEl.classList.remove("show");
     searchBtnEl.classList.remove("show");
-    surpriseBtnEl.classList.remove("show"); 
 
     // Create loader
     const loader = document.createElement("img");
@@ -290,9 +307,15 @@ const getArt = async function (searchTag) {
     // Get IDs of the objects
     const museumArray = museumData.objectIDs;
 
+    // Check if no IDs returned
+    if (!museumArray) {
+        displayErrorModal();
+        return; 
+    }
+
     // Get random ID from that array
     const museumId = museumArray[Math.floor((Math.random() * museumArray.length))];
-
+    
     // Get object matching that ID
     const artResponse = await fetch(
         `https://collectionapi.metmuseum.org/public/collection/v1/objects/${museumId}`
@@ -322,7 +345,6 @@ const getArt = async function (searchTag) {
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
 
-    surpriseBtnEl.classList.add("show", "my-10"); 
 }
 
 // Function to handle displaying more of currently selected content 
@@ -373,35 +395,33 @@ const startQuotes = function (event) {
                 // console.log(data.content)
 
                 const quoteCard = document.createElement("div");
-                quoteCard.classList = "w-full mx-auto rounded-lg bg-white shadow-lg px-5 pt-5 pb-10 text-gray-800";
-                quoteCard.setAttribute("style", "max-width: 500px")
+                quoteCard.classList = "space-top-text";
+                quoteCard.setAttribute("style", "max-width: 70%");
 
                 const quoteTextArea = document.createElement("div");
                 quoteTextArea.classList = "w-full mb-10";
                 quoteCard.appendChild(quoteTextArea);
 
-                const randomQuote = document.createElement("p")
-                randomQuote.classList = "text-sm text-gray-600 text-center px-5"
+                const randomQuote = document.createElement("h2");
                 randomQuote.textContent = '"' + data.content + '"';
                 quoteTextArea.appendChild(randomQuote);
 
                 const autorArea = document.createElement("div");
                 autorArea.classList = "w-full";
-                quoteCard.appendChild(autorArea)
+                quoteCard.appendChild(autorArea);
 
-                const autorName = document.createElement("p");
-                autorName.classList = "text-md text-indigo-500 font-bold text-center";
-                autorName.textContent = data.author;
+                const autorName = document.createElement("h4");
+                autorName.classList = "text-md  font-bold text-center";
+                autorName.textContent = "-" +data.author;
                 autorArea.appendChild(autorName);
 
                 contentEl.appendChild(quoteCard);
 
                 nextBtnEl.textContent = "More quotes";
                 nextBtnEl.classList.add("show", "my-10");
-                surpriseBtnEl.classList.add("show", "my-10"); 
             })
         } else {
-            alert("link not working")
+            displayErrorModal(); 
         }
     });
 };
@@ -461,16 +481,14 @@ const getjoke = async function () {
     blobContainerEl.classList.add("show");
     nextBtnEl.classList.remove("show", "my-10");
     searchBtnEl.classList.remove("show", "my-10");
-    surpriseBtnEl.classList.remove("show", "my-10"); 
     contentEl.classList.remove("space-top-image");
     contentEl.textContent = "";
 
     const jokeContainer = document.createElement("div");
-    jokeContainer.classList = "jokeContainer w-full mx-auto rounded-lg bg-white shadow-lg px-5 pt-5 pb-10 text-gray-800";
-    jokeContainer.setAttribute("style", "max-width: 500px");
+    jokeContainer.classList = "jokeContainer space-top-text w-3/4";
 
-    const jokeContentEL = document.createElement("div");
-    jokeContentEL.classList = "w-full mb-10";
+    const jokeContentEL = document.createElement("h2");
+    jokeContentEL.classList = "pt-2 ";
     jokeContainer.appendChild(jokeContentEL);
     contentEl.appendChild(jokeContainer);
 
@@ -482,9 +500,10 @@ const getjoke = async function () {
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
 
-    surpriseBtnEl.classList.add("show","my-10"); 
+
 
 }
+
 //call for search
 async function searchJoke(searchTag) {
 
@@ -496,36 +515,38 @@ async function searchJoke(searchTag) {
     });
 
     const jokeContent = await jokefetch.json();
-    console.log(jokeContent.results[0].joke);
+    
+    // Check to see if any jokes were returned 
+    if (typeof jokeContent[0] === "undefined") {
+        displayErrorModal();
+        return; 
+    }
 
+    var jokerandom= selectRandom(jokeContent.results,1);
 
     blobContainerEl.classList.remove("hide");
     blobContainerEl.classList.add("show");
     nextBtnEl.classList.remove("show", "my-10");
     searchBtnEl.classList.remove("show", "my-10");
-    surpriseBtnEl.classList.remove("show", "my-10"); 
     contentEl.classList.remove("space-top-image");
     contentEl.textContent = "";
 
     const jokeContainer = document.createElement("div");
-    jokeContainer.classList = "jokeContainer w-full mx-auto rounded-lg bg-white shadow-lg px-5 pt-5 pb-10 text-gray-800";
-    jokeContainer.setAttribute("style", "max-width: 500px");
+    jokeContainer.classList = "jokeContainer space-top-text w-3/4";
 
-    const jokeContentEL = document.createElement("div");
-    jokeContentEL.classList = "w-full mb-10";
+    const jokeContentEL = document.createElement("h2");
+    jokeContentEL.classList = "pt-2 ";
     jokeContainer.appendChild(jokeContentEL);
     contentEl.appendChild(jokeContainer);
 
     //Passing joke on screen
-    jokeContentEL.innerHTML = jokeContent.results[0].joke;
+    jokeContentEL.innerHTML = jokerandom[0].joke;
 
     nextBtnEl.textContent = "More jokes";
     nextBtnEl.classList.add("show", "my-10");
 
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
-
-    surpriseBtnEl.classList.add("show", "my-10"); 
 
     //Passing joke on screen
 }
@@ -579,11 +600,21 @@ contentOptionsEl.addEventListener('change', function () {
     if (contentOptionsEl.value === 'joke') {
         getjoke();
     }
-
-    if (contentOptionsEl.value === 'surprise') {
-        getSurprise();
-    }
 })
+
+const okBtnHandler = function (event) {
+    // Remove error modal
+    errorModalEl.classList.remove("show");
+    errorModalContentEl.classList.remove("modal-slide-in");
+    errorModalContentEl.classList.add("modal-slide-out");
+    // Return user to homepage
+    logoBtnHandler();
+}
+
+okBtnEl.addEventListener("click", createRipple);
+okBtnEl.addEventListener("click", function() { 
+    setTimeout(okBtnHandler,300);
+});
 
 
 searchBtnEl.addEventListener("click", createRipple);
@@ -657,23 +688,22 @@ const soundBtnHandler = function (event) {
 }
 
 
-
-
-
-
 // Close modal on background click
 document.addEventListener("click", function (event) {
-    console.log(event.target);
+    const displayedModal = event.target.querySelector(".modal-content"); 
     // Do nothing if the target doesn't match
     if (!event.target.matches('.modal-backdrop')) {
         return;
     }
-
+    // If off-screen is clicked, and it is the error-modal 
+    else if (event.target.getAttribute("id") === "error-modal") {
+        okBtnHandler(); 
+    }
+    // If off-screen is clicked for the search modal 
     else {
         event.target.classList.remove("show");
-        const modalContentEl = event.target.querySelector(".modal-content"); 
-        modalContentEl.classList.remove("modal-slide-in");
-        modalContentEl.classList.add("modal-slide-out");
+        displayedModal.classList.remove("modal-slide-in");
+        displayedModal.classList.add("modal-slide-out");
     }
 })
 
@@ -690,6 +720,8 @@ soundBtnEl.addEventListener("click", function() {
 soundModalContentEl.addEventListener("click", soundBtnHandler);
 volumeControlEl.addEventListener("change", setVolume);
 volumeControlEl.addEventListener("input", setVolume);
+
+
 
 // On load, generate welcome message
 

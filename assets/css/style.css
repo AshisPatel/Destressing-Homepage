@@ -172,7 +172,6 @@ button:focus {
     mask-image: url(../img/mask.png);
 }
 
-/* Style for Modals */
 .modal-backdrop {
 
     /* Hide Modal by default */
@@ -192,8 +191,6 @@ button:focus {
     opacity: 0;
     transition: all 0.3s ease-in-out;
 }
-
-
 
 .modal-backdrop.show {
     visibility: visible;

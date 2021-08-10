@@ -163,7 +163,7 @@ button:focus {
     outline: 1px solid var(--accent);
 }
 
-.another-button, .search-button  {
+.another-button, .search-button, .surprise-button {
     visibility: hidden;
 }
 

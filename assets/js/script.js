@@ -241,12 +241,11 @@ const displayGifs = function (gif) {
     contentEl.classList.add("space-top-image");
 
     const gifWrapper = document.createElement("div");
-    gifWrapper.setAttribute("style", "width:800px;height:550px");
-    gifWrapper.classList = "flex justify-center";
+    //gifWrapper.setAttribute("style", "width:800px;height:550px");
+    gifWrapper.classList = "flex justify-center media-wrapper";
     const gifImg = document.createElement("img");
     gifImg.classList.add("image-mask");
 
-    //gifImg.setAttribute("style", "width:480px;height:480px");
 
     gifImg.setAttribute("src", gif[0].images.original.url);
     gifWrapper.appendChild(gifImg);
@@ -302,7 +301,7 @@ const getArt = async function (searchTag) {
     const artWrapper = document.createElement("div");
     const artImg = document.createElement("img");
     artImg.src = artSource;
-    artWrapper.setAttribute('style', 'width:800px;height:550px');
+    artWrapper.classList = 'media-wrapper';
 
     contentEl.appendChild(artWrapper);
     artWrapper.appendChild(artImg);
@@ -371,7 +370,7 @@ const startQuotes = function (event) {
                 quoteCard.setAttribute("style", "max-width: 70%");
 
                 const quoteTextArea = document.createElement("div");
-                quoteTextArea.classList = "w-full mb-10";
+                quoteTextArea.classList = "w-full mb-5";
                 quoteCard.appendChild(quoteTextArea);
 
                 const randomQuote = document.createElement("h2");
@@ -383,8 +382,8 @@ const startQuotes = function (event) {
                 quoteCard.appendChild(autorArea);
 
                 const autorName = document.createElement("h4");
-                autorName.classList = "text-md  font-bold text-center";
-                autorName.textContent = "-" +data.author;
+                autorName.classList = "text-md text-center";
+                autorName.textContent = "\u2015" +data.author;
                 autorArea.appendChild(autorName);
 
                 contentEl.appendChild(quoteCard);

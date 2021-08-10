@@ -22,16 +22,16 @@ h1 {
 }
 
 h2 {
-    font-weight: 400;
-    font-size: 4em; 
-    line-height: 1em;
+    font-weight: 600;
+    font-size: 3.4em; 
+    line-height: 1.1em;
     text-align: center;
 }
 
 h3 {
     font-weight: 400;
     font-size: 3em; 
-    line-height: 1em;
+    line-height: 1.1em;
     text-align: center;
 }
 
@@ -47,10 +47,6 @@ h5 {
     font-size: 1.25em; 
     line-height: 1em;
     text-align: center;
-}
-
-.dropdown-container {
-    /* margin-right: 2.75rem; */
 }
 
 select:focus {
@@ -71,8 +67,10 @@ select:focus {
     position: absolute;
     top: 0;
     right: 0;
-    width: 756px;
-    height: 805px;
+    /* width: 756px;
+    height: 805px; */
+    width: 80%;
+    height: auto;
     margin-right: -280px; 
     margin-top: -290px; 
 }
@@ -81,8 +79,10 @@ select:focus {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 757px;
-    height: 805px;
+    /* width: 757px;
+    height: 805px; */
+    width: 80%;
+    height: auto;
     margin-left: -280px; 
     margin-bottom: -290px; 
 }
@@ -101,6 +101,7 @@ button {
     position: relative;
     overflow: hidden;
     transition: background-color 400ms;
+    /* width: 92%; */
 }
 
 /* Used for the ripple when buttons are clicked */
@@ -170,9 +171,21 @@ button:focus {
 .image-mask {
     -webkit-mask-image: url(../img/mask.png);
     mask-image: url(../img/mask.png);
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    /* width: 100%;
+    height: auto; */
 }
 
+/* For wrapping the images and gifs */
+.media-wrapper {
+    width: 92vw;
+    height: auto;
+}
 
+/* Modal Styling */
 .search-modal {
 
     /* Hide Modal by default */
@@ -311,17 +324,6 @@ input:focus {
     font-size: 24pt; 
 }
 
-/* Media Queries */
-@media screen and (min-width: 700px) {
-    .modal-content {
-        width: 40%;  
-    }
-}
-
-.space-top-image {
-    margin-top: 8vh;
-}
-
 /* Make box appear in its contents from 0 to 100% width in 2 seconds over 60 steps */
 .appear-header {
     opacity: 0; 
@@ -418,4 +420,24 @@ input[type="range"]::-webkit-slider-thumb:hover {
     cursor:pointer; 
 }
 
+/* Media Queries */
+@media screen and (min-width: 768px) {
+    .modal-content {
+        width: 40%;  
+    }
 
+    .media-wrapper {
+        width: 800px;
+        height: 550px;
+    }
+
+    .image-mask {
+        width: 800px;
+        height: 550px;
+    }
+
+    .blob1, .blob2 {
+        width: 40%;
+        height: auto;
+    }
+}

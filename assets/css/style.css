@@ -360,6 +360,16 @@ input:focus {
     color: var(--primary) !important; 
 }
 
+.animate-preset-btn {
+    animation-name: presetsave; 
+    animation-duration: 0.4s; 
+}
+
+@keyframes presetsave {
+    0.0% {background-color: transparent}
+    50.0% {background-color:rgba(70,65,62,0.5)}
+    100.0% {background-color: transparent}
+}
 /* Styling for volume slider */
 /* Style for entire general input */
 input[type="range"] {

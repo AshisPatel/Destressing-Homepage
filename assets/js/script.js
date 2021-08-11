@@ -871,7 +871,10 @@ const generatePresetList = function() {
         presetSelectEl.appendChild(optionEl); 
     })
 }
-const savePresetBtnHandler = function() {
+const savePresetBtnHandler = function(event) {
+    // Add button ani
+    event.target.classList.add("animate-preset-btn"); 
+    setTimeout(function() {savePresetBtnEl.classList.remove("animate-preset-btn")},400);
     // Check if the user has input a name for the preset
     if(presetNameInputEl.value === "") {
         presetWarningEl.textContent = "Please enter a name for the preset before submitting!"; 

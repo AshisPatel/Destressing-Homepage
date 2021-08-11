@@ -397,6 +397,12 @@ const startQuotes = function (event) {
             blobContainerEl.classList.add("show");
             searchBtnEl.classList.remove("show", "my-10");
             searchBtnEl.classList.add("hide");
+
+            // Remove ripple from searchBtn because the ripple will replay when the hide class is removed
+            if (searchBtnEl.querySelector(".ripple")) {
+                searchBtnEl.querySelector(".ripple").remove();
+            }
+
             contentEl.textContent = "";
             currentContent = "quote";
             response.json().then(function (data) {
@@ -450,7 +456,6 @@ const createRipple = function (event) {
 
     // Add the light ripple for the modal search button
     if (button === modalSearchBtnEl) {
-        console.log("light-ripple")
         circle.classList.add("light-ripple");
         const rippleLight = document.getElementsByClassName("light-ripple")[0];
         // Remove leftover ripples if there are any

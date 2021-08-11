@@ -371,7 +371,7 @@ const nextBtnHandler = function (event) {
     }
 
     if (currentContent === "painting") {
-        getArt();
+        getArt("painting");
     }
 
 
@@ -573,7 +573,7 @@ const getSurprise = function () {
             break;
         case "painting":
             contentOptionsEl.selectedIndex = 2;
-            getArt();
+            getArt("painting");
             break;
         case "quote":
             contentOptionsEl.selectedIndex = 3;

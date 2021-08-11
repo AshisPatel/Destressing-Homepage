@@ -387,7 +387,7 @@ const nextBtnHandler = function (event) {
     }
 
     if (currentContent === "painting") {
-        getArt();
+        getArt("painting");
     }
 
 
@@ -413,11 +413,13 @@ const startQuotes = function (event) {
             blobContainerEl.classList.add("show");
             searchBtnEl.classList.remove("show", "my-10");
             searchBtnEl.classList.add("hide");
-            // Remove ripple from searchBtn as when the hide class is removed in the other APIs - the ripple will replay. 
+
+
+            // Remove ripple from searchBtn because the ripple will replay when the hide class is removed
             if (searchBtnEl.querySelector(".ripple")) {
-                console.log("ripple removed"); 
-                searchBtnEl.querySelector(".ripple").remove(); 
+                searchBtnEl.querySelector(".ripple").remove();
             }
+
             contentEl.textContent = "";
             currentContent = "quote";
             response.json().then(function (data) {
@@ -471,7 +473,6 @@ const createRipple = function (event) {
 
     // Add the light ripple for the modal search button
     if (button === modalSearchBtnEl) {
-        console.log("light-ripple")
         circle.classList.add("light-ripple");
         const rippleLight = document.getElementsByClassName("light-ripple")[0];
         // Remove leftover ripples if there are any
@@ -597,7 +598,7 @@ const getSurprise = function () {
             break;
         case "painting":
             contentOptionsEl.selectedIndex = 2;
-            getArt();
+            getArt("painting");
             break;
         case "quote":
             contentOptionsEl.selectedIndex = 3;

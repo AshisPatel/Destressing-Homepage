@@ -18,42 +18,22 @@
     <header>
 
         <nav class="flex justify-between items-start md:items-center mx-11 my-5">
-            <button type="button" class="home-btn" id="logo-btn"><img src="assets/img/home.svg" alt="home icon"></button>
+            <button type="button" class="home-btn" id="logo-btn"><img src="assets/img/home.svg"
+                    alt="home icon"></button>
 
-            
+
             <div class="flex justify-between items-end md:items-center flex-col md:flex-row">
                 <!-- Wrapping the sound input for layout purposes -->
+                <div class="sound-btn"><i class="fas fa-music fa-lg"></i></div>
                 <div class="flex flex-row">
-                    <div class="sound-dropdown relative mr-4">
-                        <div class="sound-btn"><i class="fas fa-music fa-lg"></i></div>
-                        <div class="sound-dropdown-content absolute flex-justify-between">
-                            <button type="button" name="rain" id="rain-btn">
-                                <audio id="rain-audio" src="assets/videos/rain.mp3"></audio>
-                                <i class="fas fa-cloud-rain fa-lg"></i>
-                            </button>
 
-                            <button type="button" name="city">
-                                <audio id="city-audio" src="assets/videos/city.mp3"></audio>
-                                <i class="fas fa-city fa-lg"></i>
-                            </button>
-
-                            <button type="button" name="nature">
-                                <audio id="forest-audio" src="assets/videos/forest.mp3"></audio>
-                                <i class="fas fa-tree fa-lg"></i>
-                            </button>
-                            <button type="button" name="cafe">
-                                <audio id="cafe-audio" src="assets/videos/cafe.mp3"></audio>
-                                <i class="fas fa-coffee fa-lg"></i>
-                            </button>
-                            
-                        </div>
-                    </div>
-                    
-                    <input type="range" aria-label="volume" id="volume-slider" name="volume" min="0" max="100" class = "mr-0 md:mr-8 bg-transparent"/>
+                    <!-- 
+                <input type="range" aria-label="volume" id="volume-slider" name="volume" min="0" max="100"
+                        class="mr-0 md:mr-8 bg-transparent" /> -->
                 </div>
 
                 <!-- absolute -->
-                <div class="dropdown-container mt-5 md:mt-0">
+                <div class="dropdown-container mt-5 ml-7 md:mt-0">
                     <label for="content-options" class="pr-1">Show me a...</label>
                     <select name="content-options" id="content-options" class="pl-2 py-2 rounded-sm">
                         <option value="" selected disabled hidden>choose</option>
@@ -64,8 +44,9 @@
                     </select>
                 </div>
 
-                <button type ="button" id="surprise-btn" class="ml-7 bg-transparent border-2 p-2 surprise-button show mt-5 md:mt-0">Surprise</button>
-            
+                <button type="button" id="surprise-btn"
+                    class="ml-7 bg-transparent border-2 p-2 surprise-button show mt-5 md:mt-0">Surprise</button>
+
             </div>
 
         </nav>
@@ -83,9 +64,9 @@
 
         <!-- Modal for Search -->
         <div id="search-modal" class="modal-backdrop">
-         
 
-            <div id="search-modal-content" class="modal-content p-4 rounded shadow-lg"> 
+
+            <div id="search-modal-content" class="modal-content p-4 rounded shadow-lg">
                 <div class="flex flex-col">
                     <button id="close-modal-btn" class="close-modal-btn self-end"><img src="assets/img/close.svg"
                             alt="close icon"></button>
@@ -111,21 +92,37 @@
         <div id="sound-modal" class="modal-backdrop">
             <!-- Sound Modal Content Header -->
             <div id="sound-modal-content" class="modal-content p-4 rounded shadow-lg">
-                <h5 class="text-center">Sound Board</h5>
+                <h5 class="text-center">Sound Mixer</h5>
                 <div class="flex flex-row justify-center mt-8">
-                
+
                     <label for="preset-options" class="mr-4 mt-2">Select a </label>
-                     <select name="preset-options" id="preset-select" class="pl-2 py-2 mr-3 rounded-sm">
+                    <select name="preset-options" id="preset-select" class="pl-2 py-2 mr-3 rounded-sm">
                         <option value="" selected disabled hidden>preset</option>
                     </select>
-                    
+
                     <input type="text" name="preset-name" id="preset-name-input" placeholder="Enter Preset Name" />
-                    <button type="button" name="save-preset" id="save-preset-btn">Save Preset</button>
+                    <button type="button" name="save-preset" id="save-preset-btn" class="p-2 rounded-sm">Save
+                        Preset</button>
                 </div>
+
                 <p id="preset-warning" class="mt-4 text-center warning-text"></p>
-                <div id="sound-options-wrapper" class="h-64 mt-8 grid grid-cols-2 xl:grid-cols-3 gap-y-8 justify-items-center overflow-y-auto"></div>
+
+                <div id="sound-options-wrapper"
+                    class="h-64 mt-8 grid grid-cols-2 gap-y-8 justify-items-center overflow-y-auto">
                 </div>
+
+                <div class="flex flex-row justify-around mt-8">
+                    <button type="button" name="clear-presets" id="clear-preset-btn" class="p-2 rounded-sm">Clear Presets</button>
+                    <button type="button" name="reset-sound-modal" id="reset-sound-modal-btn"
+                        class="p-2 rounded-sm">Reset</button>
+                    <button type="button" name="close-sound-modal" id="close-sound-modal-btn"
+                        class="p-2 rounded-sm">Close</button>
+
+                </div>
+                <p class="text-center mt-8 italic text-sm">All sounds from Zapsplat</p>
             </div>
+
+        </div>
         </div>
 
         <section id="content" class="flex flex-col items-center">
@@ -135,7 +132,8 @@
             <!-- Shows your next version of content -->
             <button type="button" id="next-btn" class="bg-transparent border-2 p-2 w-full md:w-auto another-button">Show
                 another!</button>
-            <button type="button" id="search-btn" class="ml-4 bg-transparent border-2 p-2 search-button w-full md:w-auto">Search<i
+            <button type="button" id="search-btn"
+                class="ml-4 bg-transparent border-2 p-2 search-button w-full md:w-auto">Search<i
                     class="ml-2 fas fa-search"></i></button>
         </section>
 

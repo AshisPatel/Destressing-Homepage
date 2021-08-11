@@ -35,12 +35,18 @@ const soundModalContentEl = document.querySelector("#sound-modal-content");
 const soundOptionsWrapperEl = document.querySelector("#sound-options-wrapper");
 const soundDropDownEl = document.querySelector(".sound-dropdown-content");
 const volumeControlEl = document.querySelector("#volume-slider");
-const soundOptions = [{name: "rain",icon: "fas fa-cloud-rain fa-3x"}, {name: "cafe", icon: "fas fa-coffee fa-3x"}, {name: "city", icon: "fas fa-city fa-3x"}, {name: "forest", icon: "fas fa-tree fa-3x"}];
+const soundOptions = [{name: "rain",icon: "fas fa-cloud-rain fa-3x"}, {name: "cafe", icon: "fas fa-coffee fa-3x"}, {name: "city", icon: "fas fa-city fa-3x"}, {name: "forest", icon: "fas fa-tree fa-3x"}, {name: "fire", icon:"fas fa-fire fa-3x"}, {name: "space", icon: "fas fa-rocket fa-3x"}];
 
 const savePresetBtnEl = document.querySelector("#save-preset-btn"); 
 const presetNameInputEl = document.querySelector("#preset-name-input"); 
 const presetWarningEl = document.querySelector("#preset-warning");
 const presetSelectEl = document.querySelector("#preset-select"); 
+
+const clearPresetBtnEl = document.querySelector("#clear-preset-btn"); 
+const resetSoundBtnEl = document.querySelector("#reset-sound-modal-btn"); 
+const closeSoundBtnEl = document.querySelector("#close-sound-modal-btn"); 
+
+let presets = []; 
 //  Utility function
 
 const selectRandom = function (array, numItems) {
@@ -408,7 +414,10 @@ const startQuotes = function (event) {
             searchBtnEl.classList.remove("show", "my-10");
             searchBtnEl.classList.add("hide");
             // Remove ripple from searchBtn as when the hide class is removed in the other APIs - the ripple will replay. 
-            searchBtnEl.querySelector(".ripple").remove(); 
+            if (searchBtnEl.querySelector(".ripple")) {
+                console.log("ripple removed"); 
+                searchBtnEl.querySelector(".ripple").remove(); 
+            }
             contentEl.textContent = "";
             currentContent = "quote";
             response.json().then(function (data) {
@@ -784,7 +793,6 @@ soundBtnEl.addEventListener("click", function() {
     // Display sound options 
     displaySounds();
     // Add presets to list 
-    
     loadPresets(); 
     if (presets != "") {
         generatePresetList(); 
@@ -837,15 +845,19 @@ const displaySounds = function() {
     loadSoundSettings();
    
 }
-let presets = []; 
+
+
 
 const presetSelectHandler = function () {
-
+    // Reset which buttons are actually toggled and volume sliders
+    resetSoundBtnHandler(); 
+    // Grab the appropraite value and then grab the preset from localStorage
     selectedPreset = presetSelectEl.value; 
     const desiredPreset = presets.find(preset => preset.name === selectedPreset)
     playingSounds = desiredPreset.sounds; 
-    console.log(playingSounds); 
     loadSoundSettings(); 
+    presetSelectEl.selectedIndex = 0;
+
 }
 
 const generatePresetList = function() {
@@ -869,24 +881,59 @@ const savePresetBtnHandler = function() {
     presetWarningEl.textContent = ""; 
 
     saveSoundSettings();
-    let presetName = presetNameInputEl.value.trim(); 
+    let presetName = presetNameInputEl.value.toLowerCase().trim(); 
     let presetSounds = playingSounds; 
     let presetObj = {name: presetName, sounds: presetSounds}; 
     
+    // If same name preset exists, replace it
+    if (presets.some(obj => obj.name === presetName)) {
+        // Grab index of obj that already exists
+        const objIndex = presets.findIndex(obj => obj.name === presetName); 
+        // Replace with new obj
+        presets[objIndex] = presetObj;
+    }
     // Add preset to preset list
-    presets.push(presetObj); 
+     else {
+        presets.push(presetObj); 
+     } 
+    
+   
     localStorage.setItem("presets", JSON.stringify(presets)); 
     
     loadPresets(); 
     generatePresetList(); 
     // Reset text input content
     presetNameInputEl.value = ""; 
+    // Reset playingSounds to prevent wrong sounds from being saved
+    playingSounds = []; 
 
+}
+
+const resetSoundBtnHandler = function() {
+    playingSounds = [];
+    displaySounds();  
+}
+
+const clearPresetBtnHandler = function() {
+    localStorage.removeItem("presets");
+    loadPresets(); 
+    generatePresetList(); 
+}
+
+const closeSoundBtnHandler = function() {
+      // Remove Sound Modal
+      soundModalEl.classList.remove("show");
+      soundModalContentEl.classList.remove("modal-slide-in");
+      soundModalContentEl.classList.add("modal-slide-out");
 }
 
 
 const loadPresets = function() {
     presets = JSON.parse(localStorage.getItem("presets"),presets); 
+    // if null re-initialize as empty array
+    if(!presets) {
+        presets = []; 
+    }
 }
 
 soundOptionsWrapperEl.addEventListener("click", soundBtnHandler);
@@ -894,12 +941,16 @@ soundOptionsWrapperEl.addEventListener("click", soundBtnHandler);
 soundOptionsWrapperEl.addEventListener("input", setVolume);
 soundOptionsWrapperEl.addEventListener("change", setVolume);
 
-savePresetBtnEl.addEventListener("click", savePresetBtnHandler); 
 presetSelectEl.addEventListener("change",presetSelectHandler); 
 
+ 
+savePresetBtnEl.addEventListener("click",savePresetBtnHandler); 
+clearPresetBtnEl.addEventListener("click", clearPresetBtnHandler); 
+resetSoundBtnEl.addEventListener("click", resetSoundBtnHandler);
+closeSoundBtnEl.addEventListener("click", closeSoundBtnHandler);
 
 // On load, generate welcome message
 
-window.onload = function () {
+window.onload = function () { 
     logoBtnHandler();
 }

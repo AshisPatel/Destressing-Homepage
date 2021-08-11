@@ -680,6 +680,11 @@ closeModalBtnEl.addEventListener("click", closeModalBtnHandler);
 // Function Handlers that will play audio on button click 
 
 let playingSounds = []; 
+
+const clearSounds = function () {
+    playingSounds = [];
+}
+
 const saveSoundSettings = function () {
     // Grab all playing audio
     const playingAudios = soundModalContentEl.querySelectorAll(".play");
@@ -713,7 +718,7 @@ const loadSoundSettings = function() {
 
     });
     // Clear values to remove any residual buttons 
-    playingSounds = []; 
+    //playingSounds = []; 
 }
 
 const setVolume = function (event) {
@@ -843,7 +848,7 @@ const displaySounds = function() {
     })
 
     loadSoundSettings();
-   
+    clearSounds();
 }
 
 
@@ -925,6 +930,7 @@ const clearPresetBtnHandler = function() {
 
 const closeSoundBtnHandler = function() {
       // Remove Sound Modal
+      saveSoundSettings(); 
       soundModalEl.classList.remove("show");
       soundModalContentEl.classList.remove("modal-slide-in");
       soundModalContentEl.classList.add("modal-slide-out");

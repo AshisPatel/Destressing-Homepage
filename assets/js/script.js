@@ -267,8 +267,8 @@ const displayGifs = function (gif) {
     contentEl.classList.add("space-top-image");
 
     const gifWrapper = document.createElement("div");
-    gifWrapper.setAttribute("style", "width:800px;height:550px");
-    gifWrapper.classList = "flex justify-center";
+    //gifWrapper.setAttribute("style", "width:800px;height:550px");
+    gifWrapper.classList = "flex justify-center media-wrapper";
     const gifImg = document.createElement("img");
     gifImg.classList.add("image-mask");
 
@@ -303,52 +303,65 @@ const getArt = async function (searchTag) {
     contentEl.appendChild(loader);
 
     // Get all objects that have an image and matches the query 'Painting'
-    const allMuseumResponse = await fetch(
-        `https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=${searchTag}`
-    );
-    const museumData = await allMuseumResponse.json();
+    // Use try/catch to catch any errors
+    try {
+        const allMuseumResponse = await fetch(
+            `https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&medium=Paintings&q=${searchTag}`
+        );
+        const museumData = await allMuseumResponse.json();
 
-    // Get IDs of the objects
-    const museumArray = museumData.objectIDs;
+            // Get IDs of the objects
+        const museumArray = museumData.objectIDs;
 
-    // Check if no IDs returned
-    if (!museumArray) {
-        displayErrorModal();
-        return; 
-    }
+        // Check if no IDs returned
+        if (!allMuseumResponse.ok) {
+            displayErrorModal();
+            return; 
+        }
 
-    // Get random ID from that array
-    const museumId = museumArray[Math.floor((Math.random() * museumArray.length))];
-    
-    // Get object matching that ID
-    const artResponse = await fetch(
-        `https://collectionapi.metmuseum.org/public/collection/v1/objects/${museumId}`
-    );
-    const artData = await artResponse.json();
+        // Get random ID from that array
+        const museumId = museumArray[Math.floor((Math.random() * museumArray.length))];
+        
+        // Get object matching that ID
+        const artResponse = await fetch(
+            `https://collectionapi.metmuseum.org/public/collection/v1/objects/${museumId}`
+        );
+        const artData = await artResponse.json();
 
-    // Remove loader to show image
-    contentEl.removeChild(loader);
+        // Check if no IDs returned
+        if (!artResponse.ok) {
+            displayErrorModal();
+            return; 
+        }
 
-    const artSource = artData.primaryImageSmall;
+        // Remove loader to show image
+        contentEl.removeChild(loader);
 
-    const artWrapper = document.createElement("div");
-    const artImg = document.createElement("img");
-    artImg.src = artSource;
-    artWrapper.setAttribute('style', 'width:800px;height:550px');
+        const artSource = artData.primaryImageSmall;
 
-    contentEl.appendChild(artWrapper);
-    artWrapper.appendChild(artImg);
-    contentEl.classList.add("space-top-image");
-    artImg.classList.add("image-mask");
+        const artWrapper = document.createElement("div");
+        const artImg = document.createElement("img");
+        artImg.src = artSource;
+        artWrapper.classList = 'media-wrapper';
 
-    // Show the next buttona and hide the blobs
-    nextBtnEl.classList.add("show", "my-10");
+        contentEl.appendChild(artWrapper);
+        artWrapper.appendChild(artImg);
+        contentEl.classList.add("space-top-image");
+        artImg.classList.add("image-mask");
 
-    nextBtnEl.textContent = `More artwork`;
+        // Show the next buttona and hide the blobs
+        nextBtnEl.classList.add("show", "my-10");
 
-    searchBtnEl.classList.remove("hide");
-    searchBtnEl.classList.add("show", "my-10");
+        nextBtnEl.textContent = `More artwork`;
 
+        searchBtnEl.classList.remove("hide");
+        searchBtnEl.classList.add("show", "my-10");
+
+        } catch (error) {
+            console.log(`There was a problem grabbing the artwork! Error: ${error}`);
+            displayErrorModal();
+            return; 
+        }
 }
 
 // Function to handle displaying more of currently selected content 
@@ -405,7 +418,7 @@ const startQuotes = function (event) {
                 quoteCard.setAttribute("style", "max-width: 70%");
 
                 const quoteTextArea = document.createElement("div");
-                quoteTextArea.classList = "w-full mb-10";
+                quoteTextArea.classList = "w-full mb-5";
                 quoteCard.appendChild(quoteTextArea);
 
                 const randomQuote = document.createElement("h2");
@@ -417,8 +430,8 @@ const startQuotes = function (event) {
                 quoteCard.appendChild(autorArea);
 
                 const autorName = document.createElement("h4");
-                autorName.classList = "text-md  font-bold text-center";
-                autorName.textContent = "-" +data.author;
+                autorName.classList = "text-md text-center";
+                autorName.textContent = "\u2015" +data.author;
                 autorArea.appendChild(autorName);
 
                 contentEl.appendChild(quoteCard);
@@ -508,9 +521,6 @@ const getjoke = async function () {
 
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
-
-
-
 }
 
 //call for search

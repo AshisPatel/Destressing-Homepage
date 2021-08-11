@@ -17,41 +17,43 @@
 <body>
     <header>
 
-        <nav class="flex justify-between items-center mx-11 my-5">
+        <nav class="flex justify-between items-start md:items-center mx-11 my-5">
             <button type="button" class="home-btn" id="logo-btn"><img src="assets/img/home.svg" alt="home icon"></button>
 
             
-            <div class="flex justify-between items-center">
-                <div class="sound-dropdown relative mr-8">
-                    <button type="button" id="sound-btn" class="sound-btn"><i class="fas fa-music fa-lg"></i></button>
-                    <div class="sound-dropdown-content absolute flex-justify-between">
-                        <button type="button" name="rain" id="rain-btn">
-                            <audio id="rain-audio" src="assets/videos/rain.mp3"></audio>
-                            <i class="fas fa-cloud-rain fa-lg"></i>
-                        </button>
+            <div class="flex justify-between items-end md:items-center flex-col md:flex-row">
+                <!-- Wrapping the sound input for layout purposes -->
+                <div class="flex flex-row">
+                    <div class="sound-dropdown relative mr-4">
+                        <div class="sound-btn"><i class="fas fa-music fa-lg"></i></div>
+                        <div class="sound-dropdown-content absolute flex-justify-between">
+                            <button type="button" name="rain" id="rain-btn">
+                                <audio id="rain-audio" src="assets/videos/rain.mp3"></audio>
+                                <i class="fas fa-cloud-rain fa-lg"></i>
+                            </button>
 
-                        <button type="button" name="city">
-                            <audio id="city-audio" src="assets/videos/city.mp3"></audio>
-                            <i class="fas fa-city fa-lg"></i>
-                        </button>
+                            <button type="button" name="city">
+                                <audio id="city-audio" src="assets/videos/city.mp3"></audio>
+                                <i class="fas fa-city fa-lg"></i>
+                            </button>
 
-                        <button type="button" name="nature">
-                            <audio id="forest-audio" src="assets/videos/forest.mp3"></audio>
-                            <i class="fas fa-tree fa-lg"></i>
-                        </button>
-                        <button type="button" name="cafe">
-                            <audio id="cafe-audio" src="assets/videos/cafe.mp3"></audio>
-                            <i class="fas fa-coffee fa-lg"></i>
-                        </button>
-
+                            <button type="button" name="nature">
+                                <audio id="forest-audio" src="assets/videos/forest.mp3"></audio>
+                                <i class="fas fa-tree fa-lg"></i>
+                            </button>
+                            <button type="button" name="cafe">
+                                <audio id="cafe-audio" src="assets/videos/cafe.mp3"></audio>
+                                <i class="fas fa-coffee fa-lg"></i>
+                            </button>
+                            
+                        </div>
                     </div>
+                    
+                    <input type="range" aria-label="volume" id="volume-slider" name="volume" min="0" max="100" class = "mr-0 md:mr-8 bg-transparent"/>
                 </div>
 
-                <!-- <input type="range" aria-label="volume" id="volume-slider" name="volume" min="0" max="100"
-                    class="mr-8" /> -->
-
-           
-                <div class="dropdown-container">
+                <!-- absolute -->
+                <div class="dropdown-container mt-5 md:mt-0">
                     <label for="content-options" class="pr-1">Show me a...</label>
                     <select name="content-options" id="content-options" class="pl-2 py-2 rounded-sm">
                         <option value="" selected disabled hidden>choose</option>
@@ -62,7 +64,7 @@
                     </select>
                 </div>
 
-                <button type ="button" id="surprise-btn" class="ml-4 bg-transparent border-2 p-2 surprise-button show">Surprise</button>
+                <button type ="button" id="surprise-btn" class="ml-7 bg-transparent border-2 p-2 surprise-button show mt-5 md:mt-0">Surprise</button>
             
             </div>
 
@@ -119,11 +121,11 @@
         <section id="content" class="flex flex-col items-center">
             <!-- Dynamically generate your content here -->
         </section>
-        <section id="navigation-options" class="flex justify-center">
+        <section id="navigation-options" class="flex justify-center px-5 w-full md:w-auto md:px-0">
             <!-- Shows your next version of content -->
-            <button type="button" id="next-btn" class="bg-transparent border-2 p-2 another-button">Show
+            <button type="button" id="next-btn" class="bg-transparent border-2 p-2 w-full md:w-auto another-button">Show
                 another!</button>
-            <button type="button" id="search-btn" class="ml-4 bg-transparent border-2 p-2 search-button">Search<i
+            <button type="button" id="search-btn" class="ml-4 bg-transparent border-2 p-2 search-button w-full md:w-auto">Search<i
                     class="ml-2 fas fa-search"></i></button>
         </section>
 

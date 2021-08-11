@@ -821,7 +821,7 @@ const displaySounds = function() {
         soundAudioEl.setAttribute("src",`assets/videos/${soundOption.name}.mp3`);
 
         const soundIconEl = document.createElement("i");
-        soundIconEl.classList = soundOption.icon; 
+        soundIconEl.classList = `${soundOption.icon} sound-option-icon`; 
 
         soundButtonEl.appendChild(soundAudioEl);
         soundButtonEl.appendChild(soundIconEl);

@@ -344,12 +344,18 @@ input:focus {
     cursor: pointer; 
 }
 
-.sound-option-btn:hover {
+ .sound-option-btn:hover {
+    background-color: var(--background);
+} 
+
+.sound-option-btn:focus {
+    outline: none; 
+} 
+
+.sound-option-icon:hover {
     color: rgba(70,65,62,0.8);
     cursor: pointer;
 }
-
-
 .play {
     color: var(--primary) !important; 
 }

@@ -93,30 +93,39 @@
             <!-- Sound Modal Content Header -->
             <div id="sound-modal-content" class="modal-content p-4 rounded shadow-lg">
                 <h5 class="text-center">Sound Mixer</h5>
-                <div class="flex flex-row justify-center mt-8">
+                <div class="flex flex-col mt-8">
 
-                    <label for="preset-options" class="mr-4 mt-2">Select a </label>
-                    <select name="preset-options" id="preset-select" class="pl-2 py-2 mr-3 rounded-sm">
-                        <option value="" selected disabled hidden>preset</option>
-                    </select>
+                    <div class="flex flex-row justify-between">
+                        <div class="flex flex-row justify-center">
+                            <label for="preset-options" class="mr-4 mt-2">Select a </label>
+                            <select name="preset-options" id="preset-select" class="pl-2 py-2 mr-3 rounded-sm">
+                                <option value="" selected disabled hidden>preset</option>
+                            </select>
+                        </div>
 
-                    <input type="text" name="preset-name" id="preset-name-input" placeholder="Enter Preset Name" />
-                    <button type="button" name="save-preset" id="save-preset-btn" class="p-2 rounded-sm">Save
-                        Preset</button>
+                        <div class="flex flex-row justify-center">
+                            <input type="text" name="preset-name" id="preset-name-input"
+                                placeholder="Enter Preset Name" />
+                            <button type="button" name="save-preset" id="save-preset-btn" class="p-2 rounded-sm">Save
+                                Preset</button>
+                        </div>
+                    </div>
+
+                    <p id="preset-warning" class="mt-4 text-center warning-text"></p>
                 </div>
-
-                <p id="preset-warning" class="mt-4 text-center warning-text"></p>
-
                 <div id="sound-options-wrapper"
                     class="h-64 mt-8 grid grid-cols-2 gap-y-8 justify-items-center overflow-y-auto">
                 </div>
 
-                <div class="flex flex-row justify-around mt-8">
-                    <button type="button" name="clear-presets" id="clear-preset-btn" class="p-2 rounded-sm">Clear Presets</button>
+                <div class="flex flex-col mt-8">
                     <button type="button" name="reset-sound-modal" id="reset-sound-modal-btn"
-                        class="p-2 rounded-sm">Reset</button>
+                        class="p-2 rounded-sm ">Reset</button>
+
+                    <button type="button" name="clear-presets" id="clear-preset-btn" class="p-2 rounded-sm mt-3">Clear
+                        Presets</button>
+
                     <button type="button" name="close-sound-modal" id="close-sound-modal-btn"
-                        class="p-2 rounded-sm">Close</button>
+                        class="p-2 rounded-sm mt-3">Close</button>
 
                 </div>
                 <p class="text-center mt-8 italic text-sm">All sounds from Zapsplat</p>

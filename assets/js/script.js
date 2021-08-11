@@ -3,15 +3,16 @@ const contentEl = document.querySelector("#content");
 const blobContainerEl = document.querySelector("#blobContainer");
 const logoBtnEl = document.querySelector("#logo-btn")
 
-const gifBtnEl = document.querySelector("#gif-btn");
+
 
 const contentOptionsEl = document.querySelector('#content-options');
+
 
 const nextBtnEl = document.querySelector("#next-btn");
 const searchBtnEl = document.querySelector("#search-btn");
 const surpriseBtnEl = document.querySelector("#surprise-btn"); 
-const searchModalEl = document.querySelector("#searchModal");
-const searchModalContentEl = document.querySelector("#searchModalContent");
+const searchModalEl = document.querySelector("#search-modal");
+const searchModalContentEl = document.querySelector("#search-modal-content");
 const closeModalBtnEl = document.querySelector("#close-modal-btn");
 
 const modalChooseBtnEl = document.querySelector("#modal-choose-btn");
@@ -28,10 +29,25 @@ const errorModalContentEl = document.querySelector("#error-modal-content");
 
 
 // DOM elements related to sound
+const soundBtnEl = document.querySelector(".sound-btn"); 
+const soundModalEl = document.querySelector("#sound-modal"); 
+const soundModalContentEl = document.querySelector("#sound-modal-content"); 
+const soundOptionsWrapperEl = document.querySelector("#sound-options-wrapper");
 const soundDropDownEl = document.querySelector(".sound-dropdown-content");
 const volumeControlEl = document.querySelector("#volume-slider");
+const soundOptions = [{name: "rain",icon: "fas fa-cloud-rain fa-3x"}, {name: "cafe", icon: "fas fa-coffee fa-3x"}, {name: "city", icon: "fas fa-city fa-3x"}, {name: "forest", icon: "fas fa-tree fa-3x"}, {name: "fire", icon:"fas fa-fire fa-3x"}, {name: "space", icon: "fas fa-rocket fa-3x"}];
 
-//  Utility functions
+const savePresetBtnEl = document.querySelector("#save-preset-btn"); 
+const presetNameInputEl = document.querySelector("#preset-name-input"); 
+const presetWarningEl = document.querySelector("#preset-warning");
+const presetSelectEl = document.querySelector("#preset-select"); 
+
+const clearPresetBtnEl = document.querySelector("#clear-preset-btn"); 
+const resetSoundBtnEl = document.querySelector("#reset-sound-modal-btn"); 
+const closeSoundBtnEl = document.querySelector("#close-sound-modal-btn"); 
+
+let presets = []; 
+//  Utility function
 
 const selectRandom = function (array, numItems) {
     let random = [];
@@ -398,6 +414,7 @@ const startQuotes = function (event) {
             searchBtnEl.classList.remove("show", "my-10");
             searchBtnEl.classList.add("hide");
 
+
             // Remove ripple from searchBtn because the ripple will replay when the hide class is removed
             if (searchBtnEl.querySelector(".ripple")) {
                 searchBtnEl.querySelector(".ripple").remove();
@@ -465,9 +482,12 @@ const createRipple = function (event) {
     }
 
     circle.classList.add("ripple");
-    const ripple = button.getElementsByClassName("ripple")[0];
+    //const ripple = button.querySelector(".ripple");
+    const ripple = button.getElementsByClassName("ripple")[0]; 
+    console.log(ripple);
     // Remove leftover ripples if there are any
     if (ripple) {
+        console.log("this is being checked")
         ripple.remove();
     }
     // Append the ripple span
@@ -660,15 +680,57 @@ closeModalBtnEl.addEventListener("click", closeModalBtnHandler);
 
 // Function Handlers that will play audio on button click 
 
-const setVolume = function () {
-    // Get volume from slider value 
-    const newVolume = volumeControlEl.value / 100;
-    // Grab all sounds buttons that are currently playing 
-    const playingSounds = document.querySelectorAll(".play");
-    // Go through each sound in the playing sounds array and set their volume 
-    playingSounds.forEach(function (playingSound) {
-        playingSound.querySelector("audio").volume = newVolume;
-    })
+let playingSounds = []; 
+
+const clearSounds = function () {
+    playingSounds = [];
+}
+
+const saveSoundSettings = function () {
+    // Grab all playing audio
+    const playingAudios = soundModalContentEl.querySelectorAll(".play");
+    // Grab the names of the playing sounds to use to ensure that the playing audios are filled in on modal-load
+    for (let i=0; i < playingAudios.length; i++) {
+        //playingSounds[i] = playingAudios[i].name; 
+        const soundName = playingAudios[i].name; 
+        // Grab volume from volume slider
+        const playingSoundVolEl = soundModalContentEl.querySelector(`#${soundName}-vol`);
+        const soundVolume = playingSoundVolEl.value; 
+
+        const soundObj = {name: soundName, volume: soundVolume}; 
+        playingSounds.push(soundObj); 
+    }
+    
+}
+
+const loadSoundSettings = function() {
+    playingSounds.forEach(playingSound => {
+
+        const playingSoundBtnEl = soundModalContentEl.querySelector(`#${playingSound.name}-btn`);
+        playingSoundBtnEl.classList.add("play"); 
+        const playingSoundAudioEl = soundModalContentEl.querySelector(`#${playingSound.name}-audio`);
+
+        const playingSoundVolumeEl = soundModalContentEl.querySelector(`#${playingSound.name}-vol`);
+        playingSoundVolumeEl.value = playingSound.volume; 
+        playingSoundAudioEl.volume = Number(playingSound.volume) / 100; 
+        playingSoundAudioEl.play();
+        playingSoundAudioEl.loop = true; 
+
+
+    });
+    // Clear values to remove any residual buttons 
+    //playingSounds = []; 
+}
+
+const setVolume = function (event) {
+    // Get the new volume 
+    const newVolume = event.target.value / 100; 
+    //Find which audio was selected
+    const selectedSoundId = event.target.getAttribute("id").replace('-vol',"");
+    const selectedAudioEl = this.querySelector(`#${selectedSoundId}-audio`);
+    // Change volume of the selected audio
+    selectedAudioEl.volume = newVolume; 
+
 }
 
 const soundBtnHandler = function (event) {
@@ -712,6 +774,13 @@ document.addEventListener("click", function (event) {
     else if (event.target.getAttribute("id") === "error-modal") {
         okBtnHandler(); 
     }
+    else if (event.target.getAttribute("id") === "sound-modal") {
+        saveSoundSettings(); 
+        event.target.classList.remove("show");
+        displayedModal.classList.remove("modal-slide-in");
+        displayedModal.classList.add("modal-slide-out");
+        presetWarningEl.textContent = ""; 
+    }
     // If off-screen is clicked for the search modal 
     else {
         event.target.classList.remove("show");
@@ -720,15 +789,195 @@ document.addEventListener("click", function (event) {
     }
 })
 
+// Sound functions 
 
-soundDropDownEl.addEventListener("click", soundBtnHandler);
-volumeControlEl.addEventListener("change", setVolume);
-volumeControlEl.addEventListener("input", setVolume);
+soundBtnEl.addEventListener("click", function() {
+    // Make sound modal pop-up 
+    soundModalEl.classList.add("show");
+    soundModalContentEl.classList.add("modal-slide-in"); 
+    soundModalContentEl.classList.remove("modal-slide-out"); 
+    // Display sound options 
+    displaySounds();
+    // Add presets to list 
+    loadPresets(); 
+    if (presets != "") {
+        generatePresetList(); 
+    }
+});
+
+// Display sound options in sound modal
+
+const displaySounds = function() {
+    // reset modal content
+
+    soundOptionsWrapperEl.textContent = "";
+
+    soundOptions.forEach(soundOption => {
+        const soundButtonWrapperEl = document.createElement("div");
+        soundButtonWrapperEl.classList = "flex flex-col content-center";
+        
+        const soundButtonEl = document.createElement("button");
+        soundButtonEl.setAttribute("type","button");
+        soundButtonEl.setAttribute("name", soundOption.name);
+        soundButtonEl.setAttribute("id",`${soundOption.name}-btn`);
+        soundButtonEl.classList = "sound-option-btn mb-8";
+
+        const soundAudioEl = document.createElement("audio");
+        soundAudioEl.setAttribute("id",`${soundOption.name}-audio`);
+        soundAudioEl.setAttribute("src",`assets/videos/${soundOption.name}.mp3`);
+
+        const soundIconEl = document.createElement("i");
+        soundIconEl.classList = `${soundOption.icon} sound-option-icon`; 
+
+        soundButtonEl.appendChild(soundAudioEl);
+        soundButtonEl.appendChild(soundIconEl);
+
+        const soundVolumeEl = document.createElement("input");
+        soundVolumeEl.setAttribute("type", "range");
+        soundVolumeEl.setAttribute("id",`${soundOption.name}-vol`);
+        soundVolumeEl.setAttribute("aria-label",`${soundOption.name}-volume`);
+        soundVolumeEl.setAttribute("name",`${soundOption.name}-volume` );
+        soundVolumeEl.setAttribute("min","0");
+        soundVolumeEl.setAttribute("max", "100");
+        soundVolumeEl.classList = "bg-transparent mb-8";
+
+        soundButtonWrapperEl.appendChild(soundButtonEl);
+        soundButtonWrapperEl.appendChild(soundVolumeEl);
+
+        soundOptionsWrapperEl.appendChild(soundButtonWrapperEl);
+
+    })
+
+    loadSoundSettings();
+    clearSounds();
+}
 
 
+
+const presetSelectHandler = function () {
+    // Reset which buttons are actually toggled and volume sliders
+    resetSoundBtnHandler(); 
+    // Grab the appropraite value and then grab the preset from localStorage
+    selectedPreset = presetSelectEl.value; 
+    const desiredPreset = presets.find(preset => preset.name === selectedPreset)
+    playingSounds = desiredPreset.sounds; 
+    loadSoundSettings(); 
+    presetSelectEl.selectedIndex = 0;
+
+}
+
+const generatePresetList = function() {
+  
+    presetSelectEl.innerHTML = "<option value='' selected disabled hidden>preset</option>"
+    presets.forEach(preset => {
+        const optionEl = document.createElement("option");
+        optionEl.setAttribute("value",preset.name); 
+        optionEl.textContent = preset.name; 
+
+        presetSelectEl.appendChild(optionEl); 
+    })
+}
+const savePresetBtnHandler = function(event) {
+    // Add button ani
+    event.target.classList.add("animate-preset-btn"); 
+    setTimeout(function() {savePresetBtnEl.classList.remove("animate-preset-btn")},400);
+    // Check if the user has input a name for the preset
+    if(presetNameInputEl.value === "") {
+        presetWarningEl.textContent = "Please enter a name for the preset before submitting!"; 
+        return;
+    }
+    // If the user enters a valid name, save the preset to localStorage
+    presetWarningEl.textContent = ""; 
+
+    saveSoundSettings();
+    let presetName = presetNameInputEl.value.toLowerCase().trim(); 
+    let presetSounds = playingSounds; 
+    let presetObj = {name: presetName, sounds: presetSounds}; 
+    
+    // If same name preset exists, replace it
+    if (presets.some(obj => obj.name === presetName)) {
+        // Grab index of obj that already exists
+        const objIndex = presets.findIndex(obj => obj.name === presetName); 
+        // Replace with new obj
+        presets[objIndex] = presetObj;
+    }
+    // Add preset to preset list
+     else {
+        presets.push(presetObj); 
+     } 
+    
+   
+    localStorage.setItem("presets", JSON.stringify(presets)); 
+    
+    loadPresets(); 
+    generatePresetList(); 
+    // Reset text input content
+    presetNameInputEl.value = ""; 
+    // Reset playingSounds to prevent wrong sounds from being saved
+    playingSounds = []; 
+
+}
+
+const resetSoundBtnHandler = function() {
+    playingSounds = [];
+    displaySounds();  
+}
+
+const clearPresetBtnHandler = function() {
+    localStorage.removeItem("presets");
+    loadPresets(); 
+    generatePresetList(); 
+}
+
+const closeSoundBtnHandler = function() {
+      // Remove Sound Modal
+      saveSoundSettings(); 
+      soundModalEl.classList.remove("show");
+      soundModalContentEl.classList.remove("modal-slide-in");
+      soundModalContentEl.classList.add("modal-slide-out");
+}
+
+
+const loadPresets = function() {
+    presets = JSON.parse(localStorage.getItem("presets"),presets); 
+    // if null re-initialize as empty array
+    if(!presets) {
+        presets = []; 
+    }
+}
+
+soundOptionsWrapperEl.addEventListener("click", soundBtnHandler);
+
+soundOptionsWrapperEl.addEventListener("input", setVolume);
+soundOptionsWrapperEl.addEventListener("change", setVolume);
+
+presetSelectEl.addEventListener("change",presetSelectHandler); 
+
+
+// savePresetBtnEl.addEventListener("click", createRipple);
+// savePresetBtnEl.addEventListener("click", function() {
+//     setTimeout(savePresetBtnHandler, 300);
+// }); 
+
+savePresetBtnEl.addEventListener("click", savePresetBtnHandler);
+
+clearPresetBtnEl.addEventListener("click", createRipple); 
+clearPresetBtnEl.addEventListener("click", function() {
+    setTimeout(clearPresetBtnHandler, 300)
+}); 
+
+resetSoundBtnEl.addEventListener("click", createRipple);
+resetSoundBtnEl.addEventListener("click", function() {
+    setTimeout(resetSoundBtnHandler, 300); 
+});
+
+closeSoundBtnEl.addEventListener("click", createRipple);
+closeSoundBtnEl.addEventListener("click", function() {
+    setTimeout(closeSoundBtnHandler, 300);
+});
 
 // On load, generate welcome message
 
-window.onload = function () {
+window.onload = function () { 
     logoBtnHandler();
 }

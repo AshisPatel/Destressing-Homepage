@@ -656,22 +656,40 @@ surpriseBtnEl.addEventListener("click", function() {
 closeModalBtnEl.addEventListener("click", closeModalBtnHandler);
 
 // Function Handlers that will play audio on button click 
-let playingAudios = [];
+
+let playingSounds = []; 
+let playingVolumes = [];
 const saveSoundSettings = function () {
     // Grab all playing audio
-    playingAudios = soundModalContentEl.querySelectorAll(".play");
+    const playingAudios = soundModalContentEl.querySelectorAll(".play");
+    // Grab the names of the playing sounds to use to ensure that the playing audios are filled in on modal-load
+    for (let i=0; i < playingAudios.length; i++) {
+        playingSounds[i] = playingAudios[i].name; 
+    }
     // Grab all current volumes 
-    console.log(playingAudios);
+    playingSounds.forEach(playingSound => {
+        const playingSoundVolEl = soundModalContentEl.querySelector(`#${playingSound}-vol`)
+        const currentVolume = playingSoundVolEl.value; 
+        const volumeObj = {sound: playingSound, volume: currentVolume};
+        playingVolumes.push(volumeObj); 
+        console.log(playingVolumes); 
+    });
+    
 }
 
 const loadSoundSettings = function() {
-    playingAudios.forEach(playingAudio => {
-        const playingAudioId = playingAudio.id.replace("btn","audio");
-        const playingAudioEl = soundModalContentEl.querySelector(`#${playingAudioId}`);
-        playingAudioEl.classList.add("play");
-        playingAudioEl.play();
-        playingAudioEl.loop();
+    playingSounds.forEach(playingSound => {
+
+        const playingSoundBtnEl = document.querySelector(`#${playingSound}-btn`)
+        playingSoundBtnEl.classList.add("play"); 
+
+        const playingSoundAudioEl = soundModalContentEl.querySelector(`#${playingSound}-audio`);
+
+        playingSoundAudioEl.play();
+        playingSoundAudioEl.loop = true; 
     });
+    // Clear values to remove any residual buttons 
+    playingSounds = []; 
 }
 
 const setVolume = function (event) {
@@ -767,7 +785,7 @@ const displaySounds = function() {
         soundButtonEl.setAttribute("type","button");
         soundButtonEl.setAttribute("name", soundOption.name);
         soundButtonEl.setAttribute("id",`${soundOption.name}-btn`);
-        soundButtonEl.classList = "mb-8";
+        soundButtonEl.classList = "sound-option-btn mb-8";
 
         const soundAudioEl = document.createElement("audio");
         soundAudioEl.setAttribute("id",`${soundOption.name}-audio`);

@@ -361,7 +361,7 @@ input:focus {
    box-shadow: 0px 8px 16px rgba(0,0,0,0.2); 
 }
 
-#sound-modal-content button {
+.sound-option-btn {
     display:block; 
     color: rgba(70,65,62,0.4); 
     margin: 0.8rem 0.4rem;   
@@ -374,7 +374,7 @@ input:focus {
     cursor: pointer; 
 }
 
-#sound-modal-content button:hover {
+.sound-option-btn:hover {
     color: rgba(70,65,62,0.8);
     cursor: pointer;
 }

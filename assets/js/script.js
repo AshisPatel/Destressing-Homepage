@@ -943,11 +943,28 @@ soundOptionsWrapperEl.addEventListener("change", setVolume);
 
 presetSelectEl.addEventListener("change",presetSelectHandler); 
 
- 
-savePresetBtnEl.addEventListener("click",savePresetBtnHandler); 
-clearPresetBtnEl.addEventListener("click", clearPresetBtnHandler); 
-resetSoundBtnEl.addEventListener("click", resetSoundBtnHandler);
-closeSoundBtnEl.addEventListener("click", closeSoundBtnHandler);
+
+// savePresetBtnEl.addEventListener("click", createRipple);
+// savePresetBtnEl.addEventListener("click", function() {
+//     setTimeout(savePresetBtnHandler, 300);
+// }); 
+
+savePresetBtnEl.addEventListener("click", savePresetBtnHandler);
+
+clearPresetBtnEl.addEventListener("click", createRipple); 
+clearPresetBtnEl.addEventListener("click", function() {
+    setTimeout(clearPresetBtnHandler, 300)
+}); 
+
+resetSoundBtnEl.addEventListener("click", createRipple);
+resetSoundBtnEl.addEventListener("click", function() {
+    setTimeout(resetSoundBtnHandler, 300); 
+});
+
+closeSoundBtnEl.addEventListener("click", createRipple);
+closeSoundBtnEl.addEventListener("click", function() {
+    setTimeout(closeSoundBtnHandler, 300);
+});
 
 // On load, generate welcome message
 

@@ -29,7 +29,7 @@ const errorModalContentEl = document.querySelector("#error-modal-content");
 
 
 // DOM elements related to sound
-const soundBtnEl = document.querySelector("#sound-btn"); 
+const soundBtnEl = document.querySelector(".sound-btn"); 
 const soundModalEl = document.querySelector("#sound-modal"); 
 const soundModalContentEl = document.querySelector("#sound-modal-content"); 
 const soundOptionsWrapperEl = document.querySelector("#sound-options-wrapper");
@@ -668,52 +668,51 @@ closeModalBtnEl.addEventListener("click", closeModalBtnHandler);
 // Function Handlers that will play audio on button click 
 
 let playingSounds = []; 
-let playingVolumes = [];
 const saveSoundSettings = function () {
     // Grab all playing audio
     const playingAudios = soundModalContentEl.querySelectorAll(".play");
     // Grab the names of the playing sounds to use to ensure that the playing audios are filled in on modal-load
     for (let i=0; i < playingAudios.length; i++) {
-        playingSounds[i] = playingAudios[i].name; 
+        //playingSounds[i] = playingAudios[i].name; 
+        const soundName = playingAudios[i].name; 
+        // Grab volume from volume slider
+        const playingSoundVolEl = soundModalContentEl.querySelector(`#${soundName}-vol`);
+        const soundVolume = playingSoundVolEl.value; 
+
+        const soundObj = {name: soundName, volume: soundVolume}; 
+        playingSounds.push(soundObj); 
     }
-    // Grab all current volumes 
-    playingSounds.forEach(playingSound => {
-        const playingSoundVolEl = soundModalContentEl.querySelector(`#${playingSound}-vol`)
-        const currentVolume = playingSoundVolEl.value; 
-        const volumeObj = {sound: playingSound, volume: currentVolume};
-        playingVolumes.push(volumeObj); 
-        console.log(playingVolumes); 
-    });
     
 }
 
 const loadSoundSettings = function() {
     playingSounds.forEach(playingSound => {
 
-        const playingSoundBtnEl = document.querySelector(`#${playingSound}-btn`)
+        const playingSoundBtnEl = soundModalContentEl.querySelector(`#${playingSound.name}-btn`);
         playingSoundBtnEl.classList.add("play"); 
+        const playingSoundAudioEl = soundModalContentEl.querySelector(`#${playingSound.name}-audio`);
 
-        const playingSoundAudioEl = soundModalContentEl.querySelector(`#${playingSound}-audio`);
-
+        const playingSoundVolumeEl = soundModalContentEl.querySelector(`#${playingSound.name}-vol`);
+        playingSoundVolumeEl.value = playingSound.volume; 
+        playingSoundAudioEl.volume = Number(playingSound.volume) / 100; 
         playingSoundAudioEl.play();
         playingSoundAudioEl.loop = true; 
+
+
     });
     // Clear values to remove any residual buttons 
     playingSounds = []; 
 }
 
 const setVolume = function (event) {
-
+    console.log(event.target); 
     // Get the new volume 
     const newVolume = event.target.value / 100; 
     //Find which audio was selected
     const selectedSoundId = event.target.getAttribute("id").replace('-vol',"");
-    console.log(selectedSoundId);
     const selectedAudioEl = this.querySelector(`#${selectedSoundId}-audio`);
     // Change volume of the selected audio
     selectedAudioEl.volume = newVolume; 
-
-    saveSoundSettings();
 
 }
 
@@ -744,8 +743,6 @@ const soundBtnHandler = function (event) {
         selectedSoundAudioEl.loop = false;
     }
 
-    saveSoundSettings();
-
 }
 
 
@@ -759,6 +756,12 @@ document.addEventListener("click", function (event) {
     // If off-screen is clicked, and it is the error-modal 
     else if (event.target.getAttribute("id") === "error-modal") {
         okBtnHandler(); 
+    }
+    else if (event.target.getAttribute("id") === "sound-modal") {
+        saveSoundSettings(); 
+        event.target.classList.remove("show");
+        displayedModal.classList.remove("modal-slide-in");
+        displayedModal.classList.add("modal-slide-out");
     }
     // If off-screen is clicked for the search modal 
     else {
@@ -814,7 +817,7 @@ const displaySounds = function() {
         soundVolumeEl.setAttribute("name",`${soundOption.name}-volume` );
         soundVolumeEl.setAttribute("min","0");
         soundVolumeEl.setAttribute("max", "100");
-        soundVolumeEl.classList = "mb-8";
+        soundVolumeEl.classList = "bg-transparent mb-8";
 
         soundButtonWrapperEl.appendChild(soundButtonEl);
         soundButtonWrapperEl.appendChild(soundVolumeEl);

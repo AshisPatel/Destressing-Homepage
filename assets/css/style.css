@@ -336,8 +336,8 @@ input:focus {
    box-shadow: 0px 8px 16px rgba(0,0,0,0.2); 
 }
 
-.sound-dropdown-content button {
-    max-width: 32px; /* Limit width on Firefox */
+.sound-option-btn {
+    /* max-width: 32px; Limit width on Firefox */
     display:block; 
     color: rgba(70,65,62,0.4); 
     margin: 0.8rem 0.4rem;   

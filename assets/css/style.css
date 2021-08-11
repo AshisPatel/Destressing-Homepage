@@ -329,16 +329,10 @@ input:focus {
      
 }
 
-.sound-dropdown-content {
-   display: none; 
-   z-index: 10; 
-   background-color: var(--background); 
-   box-shadow: 0px 8px 16px rgba(0,0,0,0.2); 
-}
 
 .sound-option-btn {
     /* max-width: 32px; Limit width on Firefox */
-    display:block; 
+    /* display:block;  */
     color: rgba(70,65,62,0.4); 
     margin: 0.8rem 0.4rem;   
     transition: color 250ms ease-in; 
@@ -355,9 +349,6 @@ input:focus {
     cursor: pointer;
 }
 
-.sound-dropdown:hover .sound-dropdown-content {
-display: block; 
-}
 
 .play {
     color: var(--primary) !important; 

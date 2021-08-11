@@ -37,7 +37,10 @@ const soundDropDownEl = document.querySelector(".sound-dropdown-content");
 const volumeControlEl = document.querySelector("#volume-slider");
 const soundOptions = [{name: "rain",icon: "fas fa-cloud-rain fa-3x"}, {name: "cafe", icon: "fas fa-coffee fa-3x"}, {name: "city", icon: "fas fa-city fa-3x"}, {name: "forest", icon: "fas fa-tree fa-3x"}];
 
-
+const savePresetBtnEl = document.querySelector("#save-preset-btn"); 
+const presetNameInputEl = document.querySelector("#preset-name-input"); 
+const presetWarningEl = document.querySelector("#preset-warning");
+const presetSelectEl = document.querySelector("#preset-select"); 
 //  Utility function
 
 const selectRandom = function (array, numItems) {
@@ -705,7 +708,6 @@ const loadSoundSettings = function() {
 }
 
 const setVolume = function (event) {
-    console.log(event.target); 
     // Get the new volume 
     const newVolume = event.target.value / 100; 
     //Find which audio was selected
@@ -762,6 +764,7 @@ document.addEventListener("click", function (event) {
         event.target.classList.remove("show");
         displayedModal.classList.remove("modal-slide-in");
         displayedModal.classList.add("modal-slide-out");
+        presetWarningEl.textContent = ""; 
     }
     // If off-screen is clicked for the search modal 
     else {
@@ -778,9 +781,14 @@ soundBtnEl.addEventListener("click", function() {
     soundModalEl.classList.add("show");
     soundModalContentEl.classList.add("modal-slide-in"); 
     soundModalContentEl.classList.remove("modal-slide-out"); 
+    // Display sound options 
     displaySounds();
-    // Generate sound options in the container within the modal 
-
+    // Add presets to list 
+    
+    loadPresets(); 
+    if (presets != "") {
+        generatePresetList(); 
+    }
 });
 
 // Display sound options in sound modal
@@ -829,15 +837,65 @@ const displaySounds = function() {
     loadSoundSettings();
    
 }
+let presets = []; 
 
-soundModalContentEl.addEventListener("click", soundBtnHandler);
+const presetSelectHandler = function () {
 
-soundModalContentEl.addEventListener("input", setVolume);
-soundModalContentEl.addEventListener("change", setVolume);
+    selectedPreset = presetSelectEl.value; 
+    const desiredPreset = presets.find(preset => preset.name === selectedPreset)
+    playingSounds = desiredPreset.sounds; 
+    console.log(playingSounds); 
+    loadSoundSettings(); 
+}
+
+const generatePresetList = function() {
+  
+    presetSelectEl.innerHTML = "<option value='' selected disabled hidden>preset</option>"
+    presets.forEach(preset => {
+        const optionEl = document.createElement("option");
+        optionEl.setAttribute("value",preset.name); 
+        optionEl.textContent = preset.name; 
+
+        presetSelectEl.appendChild(optionEl); 
+    })
+}
+const savePresetBtnHandler = function() {
+    // Check if the user has input a name for the preset
+    if(presetNameInputEl.value === "") {
+        presetWarningEl.textContent = "Please enter a name for the preset before submitting!"; 
+        return;
+    }
+    // If the user enters a valid name, save the preset to localStorage
+    presetWarningEl.textContent = ""; 
+
+    saveSoundSettings();
+    let presetName = presetNameInputEl.value.trim(); 
+    let presetSounds = playingSounds; 
+    let presetObj = {name: presetName, sounds: presetSounds}; 
+    
+    // Add preset to preset list
+    presets.push(presetObj); 
+    localStorage.setItem("presets", JSON.stringify(presets)); 
+    
+    loadPresets(); 
+    generatePresetList(); 
+    // Reset text input content
+    presetNameInputEl.value = ""; 
+
+}
 
 
+const loadPresets = function() {
+    presets = JSON.parse(localStorage.getItem("presets"),presets); 
+}
 
+soundOptionsWrapperEl.addEventListener("click", soundBtnHandler);
 
+soundOptionsWrapperEl.addEventListener("input", setVolume);
+soundOptionsWrapperEl.addEventListener("change", setVolume);
+
+savePresetBtnEl.addEventListener("click", savePresetBtnHandler); 
+presetSelectEl.addEventListener("change",presetSelectHandler); 
 
 
 // On load, generate welcome message

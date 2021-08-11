@@ -112,6 +112,17 @@
             <!-- Sound Modal Content Header -->
             <div id="sound-modal-content" class="modal-content p-4 rounded shadow-lg">
                 <h5 class="text-center">Sound Board</h5>
+                <div class="flex flex-row justify-center mt-8">
+                
+                    <label for="preset-options" class="mr-4 mt-2">Select a </label>
+                     <select name="preset-options" id="preset-select" class="pl-2 py-2 mr-3 rounded-sm">
+                        <option value="" selected disabled hidden>preset</option>
+                    </select>
+                    
+                    <input type="text" name="preset-name" id="preset-name-input" placeholder="Enter Preset Name" />
+                    <button type="button" name="save-preset" id="save-preset-btn">Save Preset</button>
+                </div>
+                <p id="preset-warning" class="mt-4 text-center warning-text"></p>
                 <div id="sound-options-wrapper" class="h-64 mt-8 grid grid-cols-2 xl:grid-cols-3 gap-y-8 justify-items-center overflow-y-auto"></div>
                 </div>
             </div>

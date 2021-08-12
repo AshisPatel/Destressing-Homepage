@@ -708,8 +708,9 @@ const setVolume = function (event) {
 const soundBtnHandler = function (event) {
     // Grab the sound button of the icon that was clicked
     const selectedSoundBtnEl = event.target.closest("button");
-    // Grab the audio of the icon that was clicked IF a valid button was found
-    if (!selectedSoundBtnEl) {
+    const selectedSoundIconEl = selectedSoundBtnEl.querySelector("i");
+    // Turn on the sound button only IF the icon was clicked, not the button space 
+    if (event.target != selectedSoundIconEl) {
         return;
     }
 

@@ -908,8 +908,8 @@ const loadPresets = function() {
 
 // Functions related to color variation
 const colorChange = function(time) {
-  
-    let colorSets = [{time: "afternoon" , colors: {background: "#445F87", primary: "255, 170, 118", accent: "#FFE0BE"}}, {time: "evening", colors: {background:"#403A37", primary: "228, 122, 88", accent: "#DA6A74"}}, {time:"late-night",colors: {background: "#5E4980", primary: "236, 214, 179", accent: "#9268A1"}}];
+   
+    const colorSets = [{time: "morning", colors: {background: "#FBF7F2", primary: "70, 65, 62", accent: "#F5D8B4"}},{time: "afternoon" , colors: {background: "#445F87", primary: "255, 170, 118", accent: "#FFE0BE"}}, {time: "evening", colors: {background:"#403A37", primary: "228, 122, 88", accent: "#DA6A74"}}, {time:"late-night",colors: {background: "#5E4980", primary: "236, 214, 179", accent: "#9268A1"}}];
 
     const desiredColorSet = colorSets.find(colorSet => colorSet.time === time);
     

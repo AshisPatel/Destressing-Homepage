@@ -373,7 +373,7 @@ const getArt = async function (searchTag) {
         searchBtnEl.classList.add("show", "my-10");
 
         } catch (error) {
-            console.log(`There was a problem grabbing the artwork! Error: ${error}`);
+            //console.log(`There was a problem grabbing the artwork! Error: ${error}`);
             displayErrorModal();
             return; 
         }
@@ -490,10 +490,10 @@ const createRipple = function (event) {
     circle.classList.add("ripple");
     //const ripple = button.querySelector(".ripple");
     const ripple = button.getElementsByClassName("ripple")[0]; 
-    console.log(ripple);
+    //console.log(ripple);
     // Remove leftover ripples if there are any
     if (ripple) {
-        console.log("this is being checked")
+        //console.log("this is being checked")
         ripple.remove();
     }
     // Append the ripple span

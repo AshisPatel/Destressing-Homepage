@@ -43,6 +43,9 @@ const closeSoundBtnEl = document.querySelector("#close-sound-modal-btn");
 
 let presets = []; 
 let playingSounds = []; 
+
+// DOM elements related to CSS / Color Variation
+const cssRoot = document.querySelector(":root");
 //  Utility function
 
 // Function to grab a random items x amount of times from an array 
@@ -896,6 +899,19 @@ const loadPresets = function() {
     }
 }
 
+
+// Functions related to color variation
+const colorChange = function() {
+
+    let colorsets = [{time: "afternoon" , colors: {background: "#445F87", primary: "255, 170, 118", accent: "#FFE0BE"}}, {time: "evening", colors: {background:"#403A37", primary: "228, 122, 88", accent: "#DA6A74"}}, {time:"late-night",colors: {background: "#5E4980", primary: "236, 214, 179", accent: "#9268A1"}}];
+    const cssRootStyles= getComputedStyle(cssRoot);
+    const cssBGColor = cssRootStyles.getPropertyValue("--background");
+    console.log(cssBGColor);
+    cssRoot.style.setProperty(`--background`,colorsets[2].colors.background);
+    cssRoot.style.setProperty(`--primary`,colorsets[2].colors.primary);
+    cssRoot.style.setProperty(`--accent`,colorsets[2].colors.accent);
+}
+
 // Event Listeners Below 
 
 logoBtnEl.addEventListener("click", logoBtnHandler);
@@ -1006,5 +1022,6 @@ closeSoundBtnEl.addEventListener("click", function() {
 // On load, generate welcome message
 
 window.onload = function () { 
+    colorChange();
     logoBtnHandler();
 }

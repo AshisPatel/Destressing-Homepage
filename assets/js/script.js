@@ -80,26 +80,32 @@ const getWelcomeMessage = function (hour) {
     let relaxMsg = ["It’s okay to take a break.", "Disconnect to reconnect.", "Relax. Nothing is under control.", "Rest your mind. Calm your heart.", "If you’re tired, learn to rest not quit.", "For the love of your work, take a break!", "Rest and be thankful.", "Sometimes a break is the very thing you need.", "Taking a break can lead to breakthroughs.", "Take a break and have fun.", "Life isn’t as serious as we think.", "Take a deep breath.", "Turn off your mind, relax, and float downstream.", "Nature does not hurry, yet everything is accomplished."];
     let headerText = "";
     let msgText = selectRandom(relaxMsg, 1);
-
+    let time = "";
     //Early-hours 
     if (hour >= 0 && hour < 6) {
         headerText = "Night Owl or Early Bird?";
+        time = "late-night";
     }
     // Morning-hours
     if (hour >= 6 && hour < 12) {
         headerText = "Good Morning";
+        time = "morning";
     }
     // Afternoon-hours
     if (hour >= 12 && hour < 18) {
         headerText = "Good Afternoon";
+        time ="afternoon";
     }
 
     // Evenning-hours
     if (hour >= 18 && hour < 24) {
         headerText = "Good Evening";
+        time = "evening";
     }
     // Call function to display welcome message 
     displayWelcomeMessage(headerText, msgText);
+    // Call function to change color theme
+    colorChange(time);
 }
 
 // Function to populate the content-section with the welcome function 
@@ -901,15 +907,18 @@ const loadPresets = function() {
 
 
 // Functions related to color variation
-const colorChange = function() {
+const colorChange = function(time) {
+  
+    let colorSets = [{time: "afternoon" , colors: {background: "#445F87", primary: "255, 170, 118", accent: "#FFE0BE"}}, {time: "evening", colors: {background:"#403A37", primary: "228, 122, 88", accent: "#DA6A74"}}, {time:"late-night",colors: {background: "#5E4980", primary: "236, 214, 179", accent: "#9268A1"}}];
 
-    let colorsets = [{time: "afternoon" , colors: {background: "#445F87", primary: "255, 170, 118", accent: "#FFE0BE"}}, {time: "evening", colors: {background:"#403A37", primary: "228, 122, 88", accent: "#DA6A74"}}, {time:"late-night",colors: {background: "#5E4980", primary: "236, 214, 179", accent: "#9268A1"}}];
+    const desiredColorSet = colorSets.find(colorSet => colorSet.time === time);
+    
     const cssRootStyles= getComputedStyle(cssRoot);
     const cssBGColor = cssRootStyles.getPropertyValue("--background");
     console.log(cssBGColor);
-    cssRoot.style.setProperty(`--background`,colorsets[2].colors.background);
-    cssRoot.style.setProperty(`--primary`,colorsets[2].colors.primary);
-    cssRoot.style.setProperty(`--accent`,colorsets[2].colors.accent);
+    cssRoot.style.setProperty(`--background`,desiredColorSet.colors.background);
+    cssRoot.style.setProperty(`--primary`,desiredColorSet.colors.primary);
+    cssRoot.style.setProperty(`--accent`,desiredColorSet.colors.accent);
 }
 
 // Event Listeners Below 
@@ -1022,6 +1031,5 @@ closeSoundBtnEl.addEventListener("click", function() {
 // On load, generate welcome message
 
 window.onload = function () { 
-    colorChange();
     logoBtnHandler();
 }

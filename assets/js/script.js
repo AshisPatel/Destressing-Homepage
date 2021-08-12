@@ -936,7 +936,6 @@ closeModalBtnEl.addEventListener("click", closeModalBtnHandler);
 
 // Close modal on background click
 document.addEventListener("click", function (event) {
-    console.log(playingSounds); 
     const displayedModal = event.target.querySelector(".modal-content"); 
     // Do nothing if the target doesn't match
     if (!event.target.matches('.modal-backdrop')) {

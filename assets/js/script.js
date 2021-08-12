@@ -1,13 +1,9 @@
-const quoteEl = document.querySelector("#quote-btn");
+// DOM elements related to the main page static elements 
 const contentEl = document.querySelector("#content");
 const blobContainerEl = document.querySelector("#blobContainer");
 const logoBtnEl = document.querySelector("#logo-btn")
-
-
-
 const contentOptionsEl = document.querySelector('#content-options');
-
-
+// DOM elements related to Search-Modal 
 const nextBtnEl = document.querySelector("#next-btn");
 const searchBtnEl = document.querySelector("#search-btn");
 const surpriseBtnEl = document.querySelector("#surprise-btn"); 
@@ -22,11 +18,10 @@ const warningEl = document.querySelector(".warning-text");
 let prevGifTag = "";
 let currentContent = "";
 
-// Dom elements related to error-modal
+// DOM elements related to Error-Modal 
 const okBtnEl = document.querySelector("#ok-btn"); 
 const errorModalEl = document.querySelector("#error-modal");
 const errorModalContentEl = document.querySelector("#error-modal-content"); 
-
 
 // DOM elements related to sound
 const soundBtnEl = document.querySelector(".sound-btn"); 
@@ -47,12 +42,15 @@ const resetSoundBtnEl = document.querySelector("#reset-sound-modal-btn");
 const closeSoundBtnEl = document.querySelector("#close-sound-modal-btn"); 
 
 let presets = []; 
+let playingSounds = []; 
 //  Utility function
 
+// Function to grab a random items x amount of times from an array 
 const selectRandom = function (array, numItems) {
     let random = [];
     for (let i = 0; random.length < numItems; i++) {
         let randomItem = array[Math.floor(Math.random() * array.length)];
+        // Check to see if that element already exists 
         if (!random.includes(randomItem)) {
             random.push(randomItem);
         }
@@ -62,14 +60,20 @@ const selectRandom = function (array, numItems) {
 
 // Functions related to welcome page generation
 
+// Grabs the user's time according the browser in hours 
 const getCurrentTime = function () {
+  
     const currentDate = new Date();
     const hour = currentDate.getHours();
+    // Call function to get the welcome message from the time 
     getWelcomeMessage(hour);
+
 }
 
+// Grab the welcome message based on the time 
 const getWelcomeMessage = function (hour) {
     // Initalize message variables
+    // Potential messages array to grab for header 
     let relaxMsg = ["It’s okay to take a break.", "Disconnect to reconnect.", "Relax. Nothing is under control.", "Rest your mind. Calm your heart.", "If you’re tired, learn to rest not quit.", "For the love of your work, take a break!", "Rest and be thankful.", "Sometimes a break is the very thing you need.", "Taking a break can lead to breakthroughs.", "Take a break and have fun.", "Life isn’t as serious as we think.", "Take a deep breath.", "Turn off your mind, relax, and float downstream.", "Nature does not hurry, yet everything is accomplished."];
     let headerText = "";
     let msgText = selectRandom(relaxMsg, 1);
@@ -91,10 +95,11 @@ const getWelcomeMessage = function (hour) {
     if (hour >= 18 && hour < 24) {
         headerText = "Good Evening";
     }
-
+    // Call function to display welcome message 
     displayWelcomeMessage(headerText, msgText);
 }
 
+// Function to populate the content-section with the welcome function 
 const displayWelcomeMessage = function (headerText, msgText) {
     // Reset home page 
     blobContainerEl.classList.remove("hide");
@@ -103,10 +108,10 @@ const displayWelcomeMessage = function (headerText, msgText) {
     nextBtnEl.classList.remove("show", "my-10");
     searchBtnEl.classList.remove("show", "my-10");
   
-
     contentEl.classList.remove("space-top-image");
     contentEl.textContent = "";
 
+    // Create header and welcome sub-header and append to content section 
     const welcomeHeaderEl = document.createElement("h1");
     welcomeHeaderEl.classList = "space-top-text appear-header";
     welcomeHeaderEl.textContent = headerText;
@@ -127,11 +132,11 @@ const logoBtnHandler = function (event) {
     contentOptionsEl.selectedIndex = 0;
 }
 
-
 // Functions regarding modals 
 
 // Error Modal functions
 const displayErrorModal = function (event) {
+    // Add modal to screen 
     errorModalEl.classList.add("show");
     errorModalContentEl.classList.add("modal-slide-in");
     errorModalContentEl.classList.remove("modal-slide-out");
@@ -139,20 +144,23 @@ const displayErrorModal = function (event) {
 
 // Search Modal functions 
 const searchBtnHandler = function (event) {
+    // Reset the warning message incase no search was entered 
     warningEl.classList.add("hide");
     warningEl.classList.remove("show");
 
+    // Add modal to screen 
     searchModalEl.classList.add("show");
     searchModalContentEl.classList.add("modal-slide-in");
     searchModalContentEl.classList.remove("modal-slide-out");
 
     const searchCategoryEl = document.querySelector("#search-category");
-    // Add current category to search header in modal 
 
+    // Add current category to search header in modal - capitilize the first letter 
     searchCategoryEl.textContent = currentContent.charAt(0).toUpperCase() + currentContent.slice(1);
 
 }
 
+// Function to handle a click on the Choose For Me button on the Search Modal 
 const modalChooseBtnHandler = function (event) {
 
     // Hide modal 
@@ -160,14 +168,12 @@ const modalChooseBtnHandler = function (event) {
     searchModalContentEl.classList.remove("modal-slide-in");
     searchModalContentEl.classList.add("modal-slide-out");
 
-    // Check which display is on the screen 
-
+    // Check which display is on the screen and grab content for that section 
     if (currentContent === "gif") {
         getRandomGif();
     }
 
     if (currentContent === "painting") {
-        // Insert function to call random painting
         getArt("Painting");
     }
 
@@ -176,15 +182,14 @@ const modalChooseBtnHandler = function (event) {
     }
 
     if (currentContent === "joke") {
-        // Insert function to call random joke 
         getjoke();
     }
 }
 
+// Function to handle a submit on the search form 
 const modalSearchHandler = function (event) {
 
-    //event.preventDefault();
-
+    // Grab the search input text as a tag 
     const modalSearchInputEl = document.querySelector("#modal-search-input");
     const searchTag = modalSearchInputEl.value.trim();
 
@@ -201,7 +206,7 @@ const modalSearchHandler = function (event) {
     searchModalContentEl.classList.remove("modal-slide-in");
     searchModalContentEl.classList.add("modal-slide-out");
 
-    // Check for content of search 
+    // Check for content of search and call appropraite function, then reset search form
     if (currentContent === "gif") {
         prevGifTag = searchTag;
         getGifs(searchTag);
@@ -228,16 +233,18 @@ const modalSearchHandler = function (event) {
 
 // Functions related to gif generation 
 
+// Function to grab a random gif
 const getRandomGif = function (event) {
     // Set potential tags that could be searched
     const potentialTags = ["kitten", "cat", "dog", "puppy", "cute", "wholesome", "peaceful", "relaxing", "rain", "happy", "cute animal", "baby animal"];
     // Select a random tag from potential tags
     const randomSearchTag = selectRandom(potentialTags, 1);
     prevGifTag = randomSearchTag;
+    // Call function to make the giphy API call 
     getGifs(randomSearchTag);
-    //searchModalEl.style.display = "none";
 }
 
+// Function to call giphy API to find gif of the searched random or specific tag 
 const getGifs = function (searchTag) {
     nextBtnEl.textContent = `More ${searchTag} gifs`;
     const apiUrl = `https://api.giphy.com/v1/gifs/search?q=${searchTag}&api_key=8uu014p8mspMOtSIJu7z8PtcUxdwsM9x`;
@@ -249,19 +256,19 @@ const getGifs = function (searchTag) {
                 const numGifs = 1;
                 const retrievedGifs = data.data;
                 const selectedGifs = selectRandom(retrievedGifs, numGifs);
-                // Returned object is contains a "data" key that is an array of 50 gifs
-                // Grab numGifs from that array, maybe randomize
-
+                // Call function to display gif on content section 
                 displayGifs(selectedGifs);
 
             })
         }
         else {
+            // Problem fetching, call the error modal 
             displayErrorModal(); 
         }
     });
 }
 
+// Function to generate the gif display on the content section 
 const displayGifs = function (gif) {
     currentContent = "gif";
     // Display error modal if gif is empty
@@ -275,18 +282,17 @@ const displayGifs = function (gif) {
     contentEl.textContent = "";
     contentEl.classList.add("space-top-image");
 
-    const gifWrapper = document.createElement("div");
-    //gifWrapper.setAttribute("style", "width:800px;height:550px");
+    // Generate elements to store the grabbed gif and add them to the contente section 
+    const gifWrapper = document.createElement("div");  
     gifWrapper.classList = "flex justify-center media-wrapper";
     const gifImg = document.createElement("img");
     gifImg.classList.add("image-mask");
-
-    
-
     gifImg.setAttribute("src", gif[0].images.original.url);
+
     gifWrapper.appendChild(gifImg);
     contentEl.appendChild(gifWrapper);
 
+    //Show buttons for navigating content 
     nextBtnEl.classList.add("show", "my-10");
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
@@ -375,14 +381,13 @@ const getArt = async function (searchTag) {
 
 // Function to handle displaying more of currently selected content 
 const nextBtnHandler = function (event) {
-
+    
+    // Check the current content and then call the appropraite function 
     if (currentContent === "gif") {
         getGifs(prevGifTag);
-
     }
 
     if (currentContent === "joke") {
-        // Insert function to fetch joke
         getjoke();
     }
 
@@ -396,7 +401,7 @@ const nextBtnHandler = function (event) {
     }
 }
 
-
+// Function to handle a click on the close search modal button 
 const closeModalBtnHandler = function (event) {
     searchModalContentEl.classList.remove("modal-slide-in");
     searchModalContentEl.classList.add("modal-slide-out");
@@ -404,11 +409,13 @@ const closeModalBtnHandler = function (event) {
 
 }
 
+// Function to grab a quote from the quotable API 
 const startQuotes = function (event) {
 
     fetch("https://api.quotable.io/random").then(function (response) {
 
         if (response.ok) {
+            // Add blobs to the screen and fix buttons 
             blobContainerEl.classList.remove("hide");
             blobContainerEl.classList.add("show");
             searchBtnEl.classList.remove("show", "my-10");
@@ -420,12 +427,10 @@ const startQuotes = function (event) {
                 searchBtnEl.querySelector(".ripple").remove();
             }
 
+            // Pass grabbed generation into another function to generate the display 
             contentEl.textContent = "";
             currentContent = "quote";
             response.json().then(function (data) {
-                //  console.log(data);
-                // alert("quotes Working!")
-                // console.log(data.content)
 
                 const quoteCard = document.createElement("div");
                 quoteCard.classList = "space-top-text";
@@ -454,12 +459,13 @@ const startQuotes = function (event) {
                 nextBtnEl.classList.add("show", "my-10");
             })
         } else {
+            // If problem grabbing quote, display error modal 
             displayErrorModal(); 
         }
     });
 };
 
-
+// Function to generate a ripple to be applied to various interactable elements
 const createRipple = function (event) {
     const button = event.currentTarget;
     // Calculate the ripple size based on the button
@@ -510,7 +516,6 @@ const getjoke = async function () {
 
     const jokeContent = await jokefetch.json();
 
-    //console.log(jokeContent.joke);
     //Passing joke on screen
     blobContainerEl.classList.remove("hide");
     blobContainerEl.classList.add("show");
@@ -585,10 +590,12 @@ async function searchJoke(searchTag) {
 }
 
 // Function for suprise option
-
 const getSurprise = function () {
+
+    // Grab potential content options 
     const options = ["gif", "painting", "quote", "joke"];
 
+    // Grab random option -> returns 1 element array, so grab the item at index 0
     const selected = selectRandom(options, 1)[0];
     // Call function to display selected content and change the dropdown to the option that represents the content 
     switch (selected) {
@@ -610,11 +617,20 @@ const getSurprise = function () {
     }
 }
 
+// Function to handle click on the suprise button 
 const surpriseBtnHandler = function(event) {
     getSurprise(); 
 }
 
-logoBtnEl.addEventListener("click", logoBtnHandler);
+// Function to handle click on the OK button on the error modal 
+const okBtnHandler = function (event) {
+    // Remove error modal
+    errorModalEl.classList.remove("show");
+    errorModalContentEl.classList.remove("modal-slide-in");
+    errorModalContentEl.classList.add("modal-slide-out");
+    // Return user to homepage
+    logoBtnHandler();
+}
 
 // Run the function based on the value in the dropdown
 contentOptionsEl.addEventListener('change', function () {
@@ -635,57 +651,12 @@ contentOptionsEl.addEventListener('change', function () {
     }
 })
 
-const okBtnHandler = function (event) {
-    // Remove error modal
-    errorModalEl.classList.remove("show");
-    errorModalContentEl.classList.remove("modal-slide-in");
-    errorModalContentEl.classList.add("modal-slide-out");
-    // Return user to homepage
-    logoBtnHandler();
-}
-
-okBtnEl.addEventListener("click", createRipple);
-okBtnEl.addEventListener("click", function() { 
-    setTimeout(okBtnHandler,300);
-});
-
-
-searchBtnEl.addEventListener("click", createRipple);
-// Timeouts added so you can see the ripple effect before the function is called
-searchBtnEl.addEventListener("click", function () {
-    setTimeout(searchBtnHandler, 350);
-});
-
-modalChooseBtnEl.addEventListener("click", createRipple);
-modalChooseBtnEl.addEventListener("click", function () {
-    setTimeout(modalChooseBtnHandler, 350)
-});
-
-modalSearchBtnEl.addEventListener("click", createRipple);
-modalSearchFormEl.addEventListener("submit", function () {
-    setTimeout(modalSearchHandler, 300);
-});
-
-nextBtnEl.addEventListener("click", createRipple);
-nextBtnEl.addEventListener("click", function () {
-    setTimeout(nextBtnHandler, 300)
-});
-
-surpriseBtnEl.addEventListener("click", createRipple);
-surpriseBtnEl.addEventListener("click", function() {
-    setTimeout(surpriseBtnHandler, 300)
-}); 
-
-closeModalBtnEl.addEventListener("click", closeModalBtnHandler);
-
-// Function Handlers that will play audio on button click 
-
-let playingSounds = []; 
-
+// Function to delete the current playingSound array to prevent accumulation of unneccesary sounds
 const clearSounds = function () {
     playingSounds = [];
 }
 
+// Function to save the current sounds that are playing and their volume 
 const saveSoundSettings = function () {
     // Grab all playing audio
     const playingAudios = soundModalContentEl.querySelectorAll(".play");
@@ -696,32 +667,32 @@ const saveSoundSettings = function () {
         // Grab volume from volume slider
         const playingSoundVolEl = soundModalContentEl.querySelector(`#${soundName}-vol`);
         const soundVolume = playingSoundVolEl.value; 
-
+        // Store the soundObj in the playingSounds array 
         const soundObj = {name: soundName, volume: soundVolume}; 
         playingSounds.push(soundObj); 
     }
     
 }
 
+// Function to load the sounds and their volume that should currently be playing on the webpage
 const loadSoundSettings = function() {
+    // Iterate through the array of objects 
     playingSounds.forEach(playingSound => {
 
+        // Add .play class to enable button fill-in
         const playingSoundBtnEl = soundModalContentEl.querySelector(`#${playingSound.name}-btn`);
         playingSoundBtnEl.classList.add("play"); 
         const playingSoundAudioEl = soundModalContentEl.querySelector(`#${playingSound.name}-audio`);
-
+        // Add volume and play to audio 
         const playingSoundVolumeEl = soundModalContentEl.querySelector(`#${playingSound.name}-vol`);
         playingSoundVolumeEl.value = playingSound.volume; 
         playingSoundAudioEl.volume = Number(playingSound.volume) / 100; 
         playingSoundAudioEl.play();
         playingSoundAudioEl.loop = true; 
-
-
     });
-    // Clear values to remove any residual buttons 
-    //playingSounds = []; 
 }
 
+// Function to change the volume when the volume slider is either dragged or clicked on 
 const setVolume = function (event) {
     // Get the new volume 
     const newVolume = event.target.value / 100; 
@@ -733,6 +704,7 @@ const setVolume = function (event) {
 
 }
 
+// Function to handle enabling the audio of the sound and changing the display on button click 
 const soundBtnHandler = function (event) {
     // Grab the sound button of the icon that was clicked
     const selectedSoundBtnEl = event.target.closest("button");
@@ -762,56 +734,14 @@ const soundBtnHandler = function (event) {
 
 }
 
-
-// Close modal on background click
-document.addEventListener("click", function (event) {
-    const displayedModal = event.target.querySelector(".modal-content"); 
-    // Do nothing if the target doesn't match
-    if (!event.target.matches('.modal-backdrop')) {
-        return;
-    }
-    // If off-screen is clicked, and it is the error-modal 
-    else if (event.target.getAttribute("id") === "error-modal") {
-        okBtnHandler(); 
-    }
-    else if (event.target.getAttribute("id") === "sound-modal") {
-        saveSoundSettings(); 
-        event.target.classList.remove("show");
-        displayedModal.classList.remove("modal-slide-in");
-        displayedModal.classList.add("modal-slide-out");
-        presetWarningEl.textContent = ""; 
-    }
-    // If off-screen is clicked for the search modal 
-    else {
-        event.target.classList.remove("show");
-        displayedModal.classList.remove("modal-slide-in");
-        displayedModal.classList.add("modal-slide-out");
-    }
-})
-
-// Sound functions 
-
-soundBtnEl.addEventListener("click", function() {
-    // Make sound modal pop-up 
-    soundModalEl.classList.add("show");
-    soundModalContentEl.classList.add("modal-slide-in"); 
-    soundModalContentEl.classList.remove("modal-slide-out"); 
-    // Display sound options 
-    displaySounds();
-    // Add presets to list 
-    loadPresets(); 
-    if (presets != "") {
-        generatePresetList(); 
-    }
-});
-
-// Display sound options in sound modal
-
+// Function to dynamically generate the the sound mixer display 
 const displaySounds = function() {
     // reset modal content
 
+    // Reset the sound mixer content 
     soundOptionsWrapperEl.textContent = "";
 
+    // Iterate through the sound options objects array and generate buttons, audio, and volume mixers
     soundOptions.forEach(soundOption => {
         const soundButtonWrapperEl = document.createElement("div");
         soundButtonWrapperEl.classList = "flex flex-col content-center";
@@ -848,27 +778,36 @@ const displaySounds = function() {
 
     })
 
+    // Call function to load the current sounds that should be playing or that were playing when the mixer was last opened
     loadSoundSettings();
+    // Remove the current playing sounds, as they will be re-saved when the mixer is closed to prevent overaccumulation 
     clearSounds();
 }
 
-
-
+// Function to handle changing the option in the drop-down menu of presets 
 const presetSelectHandler = function () {
     // Reset which buttons are actually toggled and volume sliders
     resetSoundBtnHandler(); 
     // Grab the appropraite value and then grab the preset from localStorage
     selectedPreset = presetSelectEl.value; 
+    // Grabs the preset that is selected in the preset object array 
     const desiredPreset = presets.find(preset => preset.name === selectedPreset)
+    // Adds the found sounds name to the current playing sounds
     playingSounds = desiredPreset.sounds; 
-    loadSoundSettings(); 
+    // Call function to load the current playing sounds array 
+    loadSoundSettings();
+    // Stop sounds from double accumulating 
+    clearSounds();  
+    // Resets preset dropdown 
     presetSelectEl.selectedIndex = 0;
 
 }
 
+// Function to populate the preset list on the sound display 
 const generatePresetList = function() {
-  
+    // Adds the default option
     presetSelectEl.innerHTML = "<option value='' selected disabled hidden>preset</option>"
+    // Parses through the presets object array and adds them as options to the list 
     presets.forEach(preset => {
         const optionEl = document.createElement("option");
         optionEl.setAttribute("value",preset.name); 
@@ -877,8 +816,10 @@ const generatePresetList = function() {
         presetSelectEl.appendChild(optionEl); 
     })
 }
+
+// Function to save preset when button is clicked 
 const savePresetBtnHandler = function(event) {
-    // Add button ani
+    // Add button animation 
     event.target.classList.add("animate-preset-btn"); 
     setTimeout(function() {savePresetBtnEl.classList.remove("animate-preset-btn")},400);
     // Check if the user has input a name for the preset
@@ -918,26 +859,34 @@ const savePresetBtnHandler = function(event) {
 
 }
 
+// Function handler to reset the current sounds that are selected and the volumes on button click
 const resetSoundBtnHandler = function() {
+    // Empty currently playing sounds array
     playingSounds = [];
+    // Generate display again 
     displaySounds();  
 }
 
+// Removes the presets from the list and clears localStorage
 const clearPresetBtnHandler = function() {
     localStorage.removeItem("presets");
+    // Grab preset from localStorage
     loadPresets(); 
+     // Updates preset list
     generatePresetList(); 
 }
 
+// Function to close the sound modal on button click 
 const closeSoundBtnHandler = function() {
-      // Remove Sound Modal
+      // Call function to save the sounds that are currently displayed 
       saveSoundSettings(); 
+      // Remove Sound Modal
       soundModalEl.classList.remove("show");
       soundModalContentEl.classList.remove("modal-slide-in");
       soundModalContentEl.classList.add("modal-slide-out");
 }
 
-
+// Function to grab preset item in localStorage 
 const loadPresets = function() {
     presets = JSON.parse(localStorage.getItem("presets"),presets); 
     // if null re-initialize as empty array
@@ -946,18 +895,95 @@ const loadPresets = function() {
     }
 }
 
+// Event Listeners Below 
+
+logoBtnEl.addEventListener("click", logoBtnHandler);
+
+// Timeouts added so you can see the ripple effect before the function is called
+
+okBtnEl.addEventListener("click", createRipple);
+okBtnEl.addEventListener("click", function() { 
+    setTimeout(okBtnHandler,300);
+});
+
+
+searchBtnEl.addEventListener("click", createRipple);
+searchBtnEl.addEventListener("click", function () {
+    setTimeout(searchBtnHandler, 350);
+});
+
+modalChooseBtnEl.addEventListener("click", createRipple);
+modalChooseBtnEl.addEventListener("click", function () {
+    setTimeout(modalChooseBtnHandler, 350)
+});
+
+modalSearchBtnEl.addEventListener("click", createRipple);
+modalSearchFormEl.addEventListener("submit", function () {
+    setTimeout(modalSearchHandler, 300);
+});
+
+nextBtnEl.addEventListener("click", createRipple);
+nextBtnEl.addEventListener("click", function () {
+    setTimeout(nextBtnHandler, 300)
+});
+
+surpriseBtnEl.addEventListener("click", createRipple);
+surpriseBtnEl.addEventListener("click", function() {
+    setTimeout(surpriseBtnHandler, 300)
+}); 
+
+closeModalBtnEl.addEventListener("click", closeModalBtnHandler);
+
+// Close modal on background click
+document.addEventListener("click", function (event) {
+    const displayedModal = event.target.querySelector(".modal-content"); 
+    // Do nothing if the target doesn't match
+    if (!event.target.matches('.modal-backdrop')) {
+        return;
+    }
+    // If off-screen is clicked, and it is the error-modal 
+    else if (event.target.getAttribute("id") === "error-modal") {
+        okBtnHandler(); 
+    }
+    else if (event.target.getAttribute("id") === "sound-modal") {
+        saveSoundSettings(); 
+        event.target.classList.remove("show");
+        displayedModal.classList.remove("modal-slide-in");
+        displayedModal.classList.add("modal-slide-out");
+        presetWarningEl.textContent = ""; 
+    }
+    // If off-screen is clicked for the search modal 
+    else {
+        event.target.classList.remove("show");
+        displayedModal.classList.remove("modal-slide-in");
+        displayedModal.classList.add("modal-slide-out");
+    }
+})
+
+// Sound btn in navbar event listener to open up mixer 
+
+soundBtnEl.addEventListener("click", function() {
+    // Make sound modal pop-up 
+    soundModalEl.classList.add("show");
+    soundModalContentEl.classList.add("modal-slide-in"); 
+    soundModalContentEl.classList.remove("modal-slide-out"); 
+    // Display sound options 
+    displaySounds();
+    // Add presets to list 
+    loadPresets(); 
+    if (presets != "") {
+        generatePresetList(); 
+    }
+});
+
+// Sound Mixer Related Event Listeners 
+
 soundOptionsWrapperEl.addEventListener("click", soundBtnHandler);
 
 soundOptionsWrapperEl.addEventListener("input", setVolume);
 soundOptionsWrapperEl.addEventListener("change", setVolume);
 
 presetSelectEl.addEventListener("change",presetSelectHandler); 
-
-
-// savePresetBtnEl.addEventListener("click", createRipple);
-// savePresetBtnEl.addEventListener("click", function() {
-//     setTimeout(savePresetBtnHandler, 300);
-// }); 
 
 savePresetBtnEl.addEventListener("click", savePresetBtnHandler);
 

@@ -795,7 +795,9 @@ const presetSelectHandler = function () {
     // Adds the found sounds name to the current playing sounds
     playingSounds = desiredPreset.sounds; 
     // Call function to load the current playing sounds array 
-    loadSoundSettings(); 
+    loadSoundSettings();
+    // Stop sounds from double accumulating 
+    clearSounds();  
     // Resets preset dropdown 
     presetSelectEl.selectedIndex = 0;
 
@@ -934,6 +936,7 @@ closeModalBtnEl.addEventListener("click", closeModalBtnHandler);
 
 // Close modal on background click
 document.addEventListener("click", function (event) {
+    console.log(playingSounds); 
     const displayedModal = event.target.querySelector(".modal-content"); 
     // Do nothing if the target doesn't match
     if (!event.target.matches('.modal-backdrop')) {

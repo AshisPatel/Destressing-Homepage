@@ -332,8 +332,7 @@ input:focus {
 
 
 .sound-option-btn {
-    /* max-width: 32px; Limit width on Firefox */
-    /* display:block;  */
+    -moz-max-width: 32px; /* Limit width on Firefox */
     color: rgba(70,65,62,0.4); 
     margin: 0.8rem 0.4rem;   
     transition: color 250ms ease-in; 
@@ -347,6 +346,7 @@ input:focus {
 
  .sound-option-btn:hover {
     background-color: var(--background);
+    cursor: auto; 
 } 
 
 .sound-option-btn:focus {
@@ -368,7 +368,7 @@ input:focus {
 
 @keyframes presetsave {
     0.0% {background-color: transparent}
-    50.0% {background-color:rgba(70,65,62,0.5)}
+    50.0% {background-color:rgba(70,65,62,0.2)}
     100.0% {background-color: transparent}
 }
 /* Styling for volume slider */

@@ -68,19 +68,18 @@ const getCurrentTime = function () {
   
     const currentDate = new Date();
     const hour = currentDate.getHours();
-    // Call function to get the welcome message from the time 
-    getWelcomeMessage(hour);
+    return hour; 
 
 }
 
 // Grab the welcome message based on the time 
-const getWelcomeMessage = function (hour) {
+const getWelcomeMessage = function () {
+    const hour = getCurrentTime();
     // Initalize message variables
     // Potential messages array to grab for header 
     let relaxMsg = ["It’s okay to take a break.", "Disconnect to reconnect.", "Relax. Nothing is under control.", "Rest your mind. Calm your heart.", "If you’re tired, learn to rest not quit.", "For the love of your work, take a break!", "Rest and be thankful.", "Sometimes a break is the very thing you need.", "Taking a break can lead to breakthroughs.", "Take a break and have fun.", "Life isn’t as serious as we think.", "Take a deep breath.", "Turn off your mind, relax, and float downstream.", "Nature does not hurry, yet everything is accomplished."];
     let headerText = "";
     let msgText = selectRandom(relaxMsg, 1);
-    let time = "";
     //Early-hours 
     if (hour >= 0 && hour < 6) {
         headerText = "Night Owl or Early Bird?";
@@ -105,7 +104,6 @@ const getWelcomeMessage = function (hour) {
     // Call function to display welcome message 
     displayWelcomeMessage(headerText, msgText);
     // Call function to change color theme
-    colorChange(time);
 }
 
 // Function to populate the content-section with the welcome function 
@@ -136,7 +134,8 @@ const displayWelcomeMessage = function (headerText, msgText) {
 // Handler functions regarding welcome page generation
 const logoBtnHandler = function (event) {
     // Grab time and message based on time
-    getCurrentTime();
+    getWelcomeMessage();
+    colorChange(); 
     // Reset selected menu to default option
     contentOptionsEl.selectedIndex = 0;
 }
@@ -305,6 +304,9 @@ const displayGifs = function (gif) {
     nextBtnEl.classList.add("show", "my-10");
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
+    
+    // Get color 
+    colorChange(); 
 }
 
 
@@ -325,7 +327,7 @@ const getArt = async function (searchTag) {
     blobContainerEl.classList.remove("show");
 
     contentEl.appendChild(loader);
-
+    colorChange(); 
     // Get all objects that have an image and matches the query 'Painting'
     // Use try/catch to catch any errors
     try {
@@ -420,7 +422,7 @@ const closeModalBtnHandler = function (event) {
 
 // Function to grab a quote from the quotable API 
 const startQuotes = function (event) {
-
+    colorChange(); 
     fetch("https://api.quotable.io/random").then(function (response) {
 
         if (response.ok) {
@@ -548,11 +550,12 @@ const getjoke = async function () {
 
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
+    colorChange(); 
 }
 
 //call for search
 async function searchJoke(searchTag) {
-
+    colorChange(); 
     //call Api
     const jokefetch = await fetch('https://icanhazdadjoke.com/search?term=' + searchTag, {
         headers: {
@@ -907,8 +910,28 @@ const loadPresets = function() {
 
 
 // Functions related to color variation
-const colorChange = function(time) {
+const colorChange = function() {
    
+    const hour = getCurrentTime();
+    let time = ""; 
+     //Early-hours 
+     if (hour >= 0 && hour < 6) {
+        time = "late-night";
+    }
+    // Morning-hours
+    if (hour >= 6 && hour < 12) {
+        time = "morning";
+    }
+    // Afternoon-hours
+    if (hour >= 12 && hour < 18) {
+        time ="afternoon";
+    }
+
+    // Evenning-hours
+    if (hour >= 18 && hour < 24) {
+        time = "evening";
+    }
+
     const colorSets = [{time: "morning", colors: {background: "#FBF7F2", primary: "70, 65, 62", accent: "#F5D8B4"}},{time: "afternoon" , colors: {background: "#445F87", primary: "255, 170, 118", accent: "#FFE0BE"}}, {time: "evening", colors: {background:"#403A37", primary: "228, 122, 88", accent: "#DA6A74"}}, {time:"late-night",colors: {background: "#5E4980", primary: "236, 214, 179", accent: "#9268A1"}}];
 
     const desiredColorSet = colorSets.find(colorSet => colorSet.time === time);

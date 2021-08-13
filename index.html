@@ -94,8 +94,8 @@
                 <h5 class="text-center">Sound Mixer</h5>
                 <div class="flex flex-col mt-8">
 
-                    <div class="flex flex-row justify-between">
-                        <div class="flex flex-row justify-center">
+                    <div class="flex flex-col lg:flex-row justify-between">
+                        <div class="flex flex-row justify-center mb-4 lg:mb-0">
                             <label for="preset-options" class="mr-4 mt-2">Select a </label>
                             <select name="preset-options" id="preset-select" class="pl-2 py-2 mr-3 rounded-sm">
                                 <option value="" selected disabled hidden>preset</option>
@@ -113,7 +113,7 @@
                     <p id="preset-warning" class="mt-4 text-center warning-text"></p>
                 </div>
                 <div id="sound-options-wrapper"
-                    class="h-64 mt-8 grid grid-cols-2 gap-y-8 justify-items-center overflow-y-auto">
+                    class="h-64 mt-8 grid grid-cols-1 lg:grid-cols-2 gap-y-8 justify-items-center overflow-y-auto">
                 </div>
 
                 <div class="flex flex-col mt-8">

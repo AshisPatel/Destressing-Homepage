@@ -514,7 +514,8 @@ const createRipple = function (event) {
 //Joke section
 
 const getjoke = async function () {
-
+    
+    colorChange(); 
     currentContent = "joke";
 
 
@@ -550,7 +551,7 @@ const getjoke = async function () {
 
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
-    colorChange(); 
+   
 }
 
 //call for search
@@ -936,9 +937,6 @@ const colorChange = function() {
 
     const desiredColorSet = colorSets.find(colorSet => colorSet.time === time);
     
-    const cssRootStyles= getComputedStyle(cssRoot);
-    const cssBGColor = cssRootStyles.getPropertyValue("--background");
-    console.log(cssBGColor);
     cssRoot.style.setProperty(`--background`,desiredColorSet.colors.background);
     cssRoot.style.setProperty(`--primary`,desiredColorSet.colors.primary);
     cssRoot.style.setProperty(`--accent`,desiredColorSet.colors.accent);

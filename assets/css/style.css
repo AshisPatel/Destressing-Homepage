@@ -56,6 +56,15 @@ select:focus {
     outline: 2px solid var(--accent);
 }
 
+select {
+    background-color: var(--background);
+    border: 1px solid rgb(var(--primary));  
+}
+
+select option {
+    background-color: var(--background); 
+}
+
 
 img {
     width: 100%;
@@ -201,6 +210,15 @@ input:focus {
     background-color: rgb(var(--primary));
     opacity: 0.85;
     transition: opacity 0.25s; 
+}
+
+#modal-search-input {
+    background-color: var(--background); 
+    color: rgb(var(--primary));
+}
+
+#modal-search-input::placeholder {
+    color: rgb(var(--primary));
 }
 
 .modal-backdrop {
@@ -381,6 +399,7 @@ input:focus {
 }
 
 #preset-name-input {
+    background-color: var(--background); 
     color: rgb(var(--primary));
 }
 

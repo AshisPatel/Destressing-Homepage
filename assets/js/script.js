@@ -534,6 +534,30 @@ const displayGifs = function (gif) {
     // Append the blob
     contentEl.appendChild(createBlobSvg());
 
+    let mqTransformOrigin;
+
+    // Media query checking if the viewport is at least 750px
+    const mediaQuery = window.matchMedia('(min-width: 750px)');
+
+    function handleMediaChange(event) {
+        if (event.matches) {
+            blobMaskPath.setAttribute("transform", "scale(1)");
+            blobMaskPath.setAttribute("width", "700px");
+            blobMaskPath.setAttribute("height", "740px");
+            mqTransformOrigin = '50% 50%';
+            console.log("check1");
+        } else {
+            blobMaskPath.setAttribute("transform", "scale(0.5)");
+            blobMaskPath.setAttribute("width", "390px");
+            blobMaskPath.setAttribute("height", "332px");
+            mqTransformOrigin = '25% 25%';
+            console.log("check2");
+        }
+    }
+
+    mediaQuery.addListener(handleMediaChange);
+    handleMediaChange(mediaQuery);
+
     // Check if user prefers reduced motion. If not, animate the blob
     if (prefersReducedMotionQuery && !prefersReducedMotionQuery.matches) {
         // const scaleAmount = window.innerWidth < 769 ? 0.5 : 1;
@@ -550,11 +574,11 @@ const displayGifs = function (gif) {
         });
 
         gifWrapper.addEventListener('mouseover', (event) => {
-            gsap.to("#blobMask", {duration: 1, scale: 2, ease: 'power3.inOut', transformOrigin: "50% 50%"});
+            gsap.to("#blobMask", {duration: 1.3, scale: 3, ease: 'power3.inOut', transformOrigin: mqTransformOrigin});
             });
     
         gifWrapper.addEventListener('mouseout', (event) => {
-        gsap.to("#blobMask", {duration: 1, scale: 1, ease: 'power3.inOut', transformOrigin: "50% 50%"});
+        gsap.to("#blobMask", {duration: 1.3, scale: 1, ease: 'power3.inOut', transformOrigin: mqTransformOrigin});
         });
     }
 
@@ -673,11 +697,11 @@ const getArt = async function (searchTag) {
             });
 
             artWrapper.addEventListener('mouseover', (event) => {
-                gsap.to("#blobMask", {duration: 1, scale: 2.5, ease: 'power3.inOut', transformOrigin: mqTransformOrigin});
+                gsap.to("#blobMask", {duration: 1.3, scale: 3, ease: 'power3.inOut', transformOrigin: mqTransformOrigin});
              });
         
              artWrapper.addEventListener('mouseout', (event) => {
-                gsap.to("#blobMask", {duration: 1, scale: 1, ease: 'power3.inOut', transformOrigin: mqTransformOrigin});
+                gsap.to("#blobMask", {duration: 1.3, scale: 1, ease: 'power3.inOut', transformOrigin: mqTransformOrigin});
              });
         }
 

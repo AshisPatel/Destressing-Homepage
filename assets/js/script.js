@@ -1287,9 +1287,9 @@ const colorChange = function() {
 
     const colorSets = [
         {time: "morning", colors: {background: "#FBF7F2", primary: "70, 65, 62", accent: "#F5D8B4"}},
-        {time: "afternoon" , colors: {background: "#EDF3F2", primary: "70, 65, 62", accent: "#F5CEB5"}}, 
-        {time: "evening", colors: {background:"#4C4E63", primary: "234, 223, 203", accent: "#637186"}}, 
-        {time: "late-night", colors: {background: "#3D3C59", primary: "243, 220, 202", accent: "#6C587D"}}
+        {time: "afternoon" , colors: {background: "#EDF3F2", primary: "73, 63, 58", accent: "#F5CEB5"}}, 
+        {time: "evening", colors: {background:"#4C4E63", primary: "238, 223, 206", accent: "#637186"}}, 
+        {time: "late-night", colors: {background: "#3D3C59", primary: "239, 223, 211", accent: "#6C587D"}}
     ];
 
     const desiredColorSet = colorSets.find(colorSet => colorSet.time === time);

@@ -25,16 +25,12 @@
                 <!-- Wrapping the sound input for layout purposes -->
                 <div class="sound-btn"><i class="fas fa-music fa-lg"></i></div>
                 <div class="flex flex-row">
-
-                    <!-- 
-                <input type="range" aria-label="volume" id="volume-slider" name="volume" min="0" max="100"
-                        class="mr-0 md:mr-8 bg-transparent" /> -->
                 </div>
 
                 <!-- absolute -->
                 <div class="dropdown-container mt-5 ml-7 md:mt-0">
                     <label for="content-options" class="pr-1">Show me a...</label>
-                    <select name="content-options" id="content-options" class="pl-2 py-2 rounded-sm">
+                    <select name="content-options" id="content-options" class="pl-2 rounded-sm">
                         <option value="" selected disabled hidden>choose</option>
                         <option value="gif">gif</option>
                         <option value="painting">painting</option>
@@ -67,8 +63,12 @@
 
             <div id="search-modal-content" class="modal-content p-4 rounded shadow-lg">
                 <div class="flex flex-col">
-                    <button id="close-modal-btn" class="close-modal-btn self-end"><img src="assets/img/close.svg"
-                            alt="close icon"></button>
+                    <button id="close-modal-btn" class="close-modal-btn self-end">
+                        <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <path d="M12.7170716,9.90872897 L18.9415025,16.1331599 C19.7225511,16.9142085 19.7225511,18.1805384 18.9415025,18.961587 C18.1604539,19.7426356 16.894124,19.7426356 16.1130754,18.961587 L9.88864448,12.7371561 L3.66421356,18.961587 C2.88316498,19.7426356 1.61683502,19.7426356 0.835786438,18.961587 C0.0547378541,18.1805384 0.0547378541,16.9142085 0.835786438,16.1331599 L7.06021736,9.90872897 L1.01288391,3.86139553 C0.231835329,3.08034695 0.231835329,1.81401699 1.01288391,1.0329684 C1.7939325,0.25191982 3.06026245,0.25191982 3.84131104,1.0329684 L9.88864448,7.08030185 L15.9359779,1.0329684 C16.7170265,0.25191982 17.9833565,0.25191982 18.764405,1.0329684 C19.5454536,1.81401699 19.5454536,3.08034695 18.764405,3.86139553 L12.7170716,9.90872897 Z" fill="" fill-rule="nonzero">
+                            </path>
+                        </svg>
+                    </button>
                     <h5 class="text-left">Search For A <span id="search-category"></span> or Choose For Me!</h5>
                 </div>
                 <!-- Search Modal Content Body -->
@@ -147,14 +147,23 @@
 
         <!-- Blobs -->
         <div class="blob-container show" id="blobContainer">
-            <img class="blob1" src="./assets/img/blob1.svg">
-            <!-- <svg class="blob1"><path d="M559.224853,179.730404 C635.482787,242.749114 733.982619,297.29472 752.517534,369.845672 C770.52288,442.926192 708.563308,533.482489 631.775804,620.861373 C554.988301,708.240256 464.432004,791.912156 361.69562,803.562674 C258.959236,815.213192 145.101903,754.842327 79.9649174,667.463444 C15.3575007,580.08456 0,466.227228 0,351.840326 C0,237.982993 15.3575007,123.596091 80.4944864,61.1069506 C145.101903,-1.9117591 259.488805,-13.5622769 343.690274,16.0935865 C427.891744,46.2790189 482.437349,117.241264 559.224853,179.730404 Z"></path></svg> -->
-
-            <img class="blob2" src="./assets/img/blob2.svg">
+            <svg class="blob1" width="700px" height="740px" viewBox="0 0 700 780" fill"none" xmlns="http://www.w3.org/2000/svg">
+                <path id="blob1" d="M504.328993,179.01371 C568.644604,232.163416 651.718934,278.166943 667.3512,339.356101 C682.536831,400.991894 630.280397,477.366681 565.51815,551.061652 C500.755904,624.756622 424.381116,695.325139 337.733697,705.151135 C251.086277,714.977131 155.059497,664.060606 100.123247,590.365636 C45.6336322,516.670666 21.4820588,457.578412 32.6811828,324.17047 C56.3857948,41.7927142 251.532913,15.9915033 322.548066,41.0031296 C393.56322,66.4613921 439.566746,126.310641 504.328993,179.01371 Z">
+                </path>
+            </svg>
+            <svg class="blob2" width="700px" height="740px" viewBox="0 0 700 780" fill"none" xmlns="http://www.w3.org/2000/svg">
+                <path id="blob2" d="M504.328993,179.01371 C568.644604,232.163416 651.718934,278.166943 667.3512,339.356101 C682.536831,400.991894 630.280397,477.366681 565.51815,551.061652 C500.755904,624.756622 424.381116,695.325139 337.733697,705.151135 C251.086277,714.977131 155.059497,664.060606 100.123247,590.365636 C45.6336322,516.670666 21.4820588,457.578412 32.6811828,324.17047 C56.3857948,41.7927142 251.532913,15.9915033 322.548066,41.0031296 C393.56322,66.4613921 439.566746,126.310641 504.328993,179.01371 Z">
+                </path>
+            </svg>
         </div>
     </main>
 
-    <script src="./assets/js/script.js"></script>
+    <script scr="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+    <script type="text/module" src="./assets/js/spline.js"></script>
+    <script type="text/module" src="./assets/js/pointsInPath.js"></script>
+    <script type="text/module" src="./assets/js/createCoordsTransformer.js"></script>
+    <script type="module" src="./assets/js/script.js"></script>
 </body>
 
 </html>

@@ -58,13 +58,13 @@ select:focus {
 
 select {
     background-color: var(--background);
-    border: 1px solid rgb(var(--primary));  
+    border: 2px solid rgb(var(--primary)); 
+    padding: 10px 0px; 
 }
 
 select option {
     background-color: var(--background); 
 }
-
 
 img {
     width: 100%;
@@ -127,20 +127,62 @@ button:focus {
 
 /* For wrapping the images and gifs */
 .media-wrapper {
-    width: 92vw;
-    max-height: 400px;
+    width: 350px;
+    height: 260px;
+    overflow: hidden;
 }
 
 /* Masking the images and gifs */
 .image-mask {
-    -webkit-mask-image: url(../img/mask.png);
-    mask-image: url(../img/mask.png);
-    -webkit-mask-size: contain;
-    mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    mask-position: center;
+    z-index: 1;
+    -webkit-clip-path: url(#blobMask);
+    clip-path: url(#blobMask);
+    overflow: hidden;
 }
+
+/* For the loading spinner */
+.loader-svg {
+    margin-top: 10em;
+    animation: 2s linear infinite rotate;
+}
+
+.loader-circle {
+    stroke: var(--accent);
+    stroke-dasharray: 283;
+    stroke-dashoffset: 280;
+    animation: 1.5s ease-in-out infinite both dash;
+    transform-origin: 50% 50%;
+    stroke-linecap: round;
+}
+  
+@keyframes rotate {
+    0% {
+        transform: rotateZ(0deg);
+    }
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+
+@keyframes dash {
+    0%,
+    25% {
+      stroke-dashoffset: 280;
+      transform: rotate(0);
+    }
+    
+    50%,
+    75% {
+      stroke-dashoffset: 75;
+      transform: rotate(45deg);
+    }
+    
+    100% {
+      stroke-dashoffset: 280;
+      transform: rotate(360deg);
+    }
+}
+
 
 /* Blobs */ 
 svg {
@@ -161,20 +203,16 @@ svg {
     position: absolute;
     top: 0;
     right: 0;
-    width: 90%;
-    height: auto;
-    margin-right: -220px; 
-    margin-top: -220px; 
+    transform-origin: center;
+    transform: translate(400px, -400px);
 }
 
 .blob2 {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 90%;
-    height: auto;
-    margin-left: -220px; 
-    margin-bottom: -220px; 
+    transform-origin: center;
+    transform: translate(-350px, 420px);
 }
 
 /* Navbar specific */
@@ -202,6 +240,10 @@ input:focus {
 }
 
 /* Modals */
+.close-modal-btn svg {
+    fill: rgb(var(--primary));
+}
+
 .close-modal-btn:hover {
     background-color: transparent;
 }
@@ -228,7 +270,7 @@ input:focus {
     /* Keep Modal in same position */
     position:fixed;
     /* Make sure Modal will be displayed on top of other content */
-    z-index: 1;
+    z-index: 2;
     /* Position that modal will slide down */
     padding-top: 200px; 
     left: 0;
@@ -239,6 +281,11 @@ input:focus {
     background-color: rgba(0,0,0,0.4); 
     opacity: 0;
     transition: all 0.3s ease-in-out;
+}
+
+/* Position the sound modal */
+#sound-modal.modal-backdrop {
+    padding-top: 70px; 
 }
 
 .modal-backdrop.show {
@@ -275,7 +322,7 @@ input:focus {
 
 .modal-or::before, .modal-or::after {
     display: inline-block;
-    background-color: rgba(0,0,0,0.35);
+    background-color: rgba(var(--primary), 0.3);
     content: '';
     height: 1px;
     flex: 1;
@@ -293,7 +340,7 @@ input:focus {
     justify-content: center;
     align-items: center;
     line-height: 1.42857;
-    color: rgba(0,0,0,0.6);
+    color: rgb(var(--primary));
 }
 
 .modal-search-btn {
@@ -358,7 +405,6 @@ input:focus {
 
 
 .sound-option-btn {
-    -moz-max-width: 32px; /* Limit width on Firefox */
     color: rgba(var(--primary),0.4); 
     margin: 0.8rem 0.4rem;   
     transition: color 250ms ease-in; 
@@ -495,11 +541,11 @@ input[type=range]:hover::-moz-range-thumb {
 }
 
 .space-top-text {
-    margin-top: 10vh;
+    margin-top: 7vh;
 }
 
 .space-top-image {
-    margin-top: 8vh;
+    margin-top: 6vh;
 }
 
 
@@ -510,79 +556,55 @@ input[type=range]:hover::-moz-range-thumb {
         max-height: 500px;
     }
 
-    .blob1, .blob2 {
-        width: 80%;
-        height: auto;
-    }
-
-    .blob1 {
-        margin-right: -250px; 
-        margin-top: -250px; 
-    }
-
-    .blob2 {
-        margin-left: -250px; 
-        margin-bottom: -250px; 
-    }
-
 }
 
 @media screen and (min-width: 768px) {
     .modal-content {
-        width: 50%;  
+        width: 50%; 
+        max-width: 600px;   
     }
 
     .media-wrapper {
-        width: 800px;
-        height: 600px;
-        max-height: 650px;
+        width: 700px;
+        height: 500px;
+        max-height: 550px;
     }
 
     .image-mask {
-        width: 800px;
-        height: 600px;
-    }
-
-    .blob1, .blob2 {
-        width: 50%;
-        height: auto;
+        width: 700px;
+        height: 500px;
     }
 
     .blob1 {
-        margin-right: -200px; 
-        margin-top: -200px; 
+        transform: translate(350px, -300px);
     }
-
+    
     .blob2 {
-        margin-left: -200px; 
-        margin-bottom: -200px; 
+        transform: translate(-300px, 360px);
     }
-
+    
     .space-top-text {
-        margin-top: 20vh;
+        margin-top: 18vh;
     }
 }
 
 @media screen and (min-width: 1024px) {
 
+    .modal-content {
+        max-width: 600px;  
+    }
+
     .media-wrapper {
         max-height: 100%;
     }
 
-    .blob1, .blob2 {
-        width: 35%;
-        height: auto;
-    }
-
     .blob1 {
-        margin-right: -260px; 
-        margin-top: -290px; 
+        transform: translate(270px, -280px);
     }
-
+    
     .blob2 {
-        margin-left: -260px; 
-        margin-bottom: -280px; 
+        transform: translate(-230px, 320px);
     }
-
+    
 }
 

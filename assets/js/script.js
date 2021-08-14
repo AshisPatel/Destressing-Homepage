@@ -1156,7 +1156,7 @@ const presetSelectHandler = function () {
     // Reset which buttons are actually toggled and volume sliders
     resetSoundBtnHandler(); 
     // Grab the appropraite value and then grab the preset from localStorage
-    selectedPreset = presetSelectEl.value; 
+    const selectedPreset = presetSelectEl.value; 
     // Grabs the preset that is selected in the preset object array 
     const desiredPreset = presets.find(preset => preset.name === selectedPreset)
     // Adds the found sounds name to the current playing sounds

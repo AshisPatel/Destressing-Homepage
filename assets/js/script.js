@@ -1,8 +1,19 @@
+// Import from other js files
+import {spline} from './spline.js';
+import {pointsInPath} from './pointsInPath.js';
+import {createCoordsTransformer} from './createCoordsTransformer.js';
+
 // DOM elements related to the main page static elements 
 const contentEl = document.querySelector("#content");
-const blobContainerEl = document.querySelector("#blobContainer");
 const logoBtnEl = document.querySelector("#logo-btn")
 const contentOptionsEl = document.querySelector('#content-options');
+let time = ""; 
+
+// DOM elements related to the blobs
+const blobContainerEl = document.querySelector("#blobContainer");
+const blob1 = document.querySelector('#blob1');
+const blob2 = document.querySelector('#blob2');
+
 // DOM elements related to Search-Modal 
 const nextBtnEl = document.querySelector("#next-btn");
 const searchBtnEl = document.querySelector("#search-btn");
@@ -140,6 +151,197 @@ const logoBtnHandler = function (event) {
     contentOptionsEl.selectedIndex = 0;
 }
 
+// Move the main blobs around and respond to mouse movement
+function createLiquidPath(path, options) {
+    // Split the path into equidistant x y points
+    const svgPoints = pointsInPath(path, options.detail);
+    // Stores the original points
+    let originPoints = svgPoints.map(({x,y}) => ({x,y}));
+    // Stores the points that will be moving around
+    const liquidPoints = svgPoints.map(({x,y}) => ({x,y}));
+
+    // Store the mapped and translated coordinates
+    const mousePos = {x:0, y:0};
+    // Takes the svg argument and returns a function that will take the mouse position relative to the screen and map them to the svg viewbox
+    const transformCoords = createCoordsTransformer(path.closest('svg'));
+
+    // Returns the square root of the sum of squares of the arguments
+    const pointDistance = Math.hypot(
+        originPoints[0].x - originPoints[1].x,
+        originPoints[0].y - originPoints[1].y    
+    );
+    // If the options include axis coordinates, set them to the point distance divided by 2. Otherwise, set them to 0. The point distance / 2 is the greatest distance a point can move
+    const maxDist = {
+        x: options.axis.includes('x') ? pointDistance/2 : 0,
+        y: options.axis.includes('y') ? pointDistance/2 : 0
+    }; 
+
+    // Move points around
+    const blobTimeline = new gsap.timeline();
+
+    const updateBlob = liquidPoints.forEach((point, index) => {
+        const pointOrigin = originPoints[index];
+        const duration = gsap.utils.random(1, 2);
+
+        const tween = gsap.to(point, {
+            duration,
+            x: pointOrigin.x - maxDist.x/2.2,
+            y: pointOrigin.y - maxDist.y/2.2,
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true,
+        })
+        blobTimeline.add(tween, -duration);
+        originPoints.push(liquidPoints);
+    });
+    
+    // If the path data changes, update the data value of the path element 60 times a second
+    gsap.ticker.add(() => {
+        gsap.set(path, {
+            attr: {
+                // Use spline to draw a smooth curve between the points in the liquidPoints array
+                d: spline(liquidPoints, options.tension, options.close)
+            }
+        });
+    });
+
+    // Listen for mousemove events, map the mouse position to the svg viewbox and update the mousePos point with transformed x and y values
+    window.addEventListener('mousemove', (event) => {
+        const {x,y} = transformCoords(event);
+
+        mousePos.x = x;
+        mousePos.y = y;
+
+        // Check how far the mouse points is from the point's origin. If the x and y between the point's origin and mouse position are less than the x and y values assigned to options.range, then calculate the difference between the point's origin and the current mouse position. Store this as a new variable. Create a target variable which stores the point's origin minus the difference between the point's origin and mouse position. Clamp the target's x and y to the maxDist properties to keep the points from moving too far
+        liquidPoints.forEach((point, index) => {
+            const pointOrigin = originPoints[index];
+            const distX = Math.abs(pointOrigin.x - mousePos.x);
+            const distY = Math.abs(pointOrigin.y - mousePos.y);
+
+            if (distX <= options.range.x && distY <= options.range.y) {
+                const difference = {
+                    x: pointOrigin.x - mousePos.x,
+                    y: pointOrigin.y - mousePos.y
+                };
+
+                const target = {
+                    x: pointOrigin.x + difference.x,
+                    y: pointOrigin.y + difference.y
+                };
+
+                const x = gsap.utils.clamp(
+                    pointOrigin.x - maxDist.x,
+                    pointOrigin.x + maxDist.x,
+                    target.x
+                );
+
+                const y = gsap.utils.clamp(
+                    pointOrigin.y - maxDist.y,
+                    pointOrigin.y + maxDist.y,
+                    target.y
+                );
+
+                // Animate x and y points using gsap
+                gsap.to(point, {
+                    x: x,
+                    y: y,
+                    ease: 'sine.inOut', // use sine easing 
+                    duration: 0.175,
+                    onComplete() {
+                        gsap.to(point, {
+                            x: pointOrigin.x,
+                            y: pointOrigin.y,
+                            ease: 'elastic.out(1, 0.8', // once update is complete, spring the point back to its origin
+                            duration: 1.25
+                        });
+                    }
+                });
+
+            }
+        });
+
+    });
+}
+
+// Move the blob mask around and expand when hovered
+function createLiquidBlobMask(path, options) {
+     // Split the path into equidistant x y points
+     const svgPoints = pointsInPath(path, options.detail);
+     // Stores the original points
+     let originPoints = svgPoints.map(({x,y}) => ({x,y}));
+     // Stores the points that will be moving around
+     const liquidPoints = svgPoints.map(({x,y}) => ({x,y}));
+ 
+     // Returns the square root of the sum of squares of the arguments
+     const pointDistance = Math.hypot(
+         originPoints[0].x - originPoints[1].x,
+         originPoints[0].y - originPoints[1].y    
+     );
+     // If the options include axis coordinates, set them to the point distance divided by 2. Otherwise, set them to 0. The point distance / 2 is the greatest distance a point can move
+     const maxDist = {
+         x: options.axis.includes('x') ? pointDistance/2.2 : 0,
+         y: options.axis.includes('y') ? pointDistance/2.2 : 0
+     }; 
+ 
+     // Move points around
+     const blobTimeline = new gsap.timeline();
+ 
+     const updateBlob = liquidPoints.forEach((point, index) => {
+         const pointOrigin = originPoints[index];
+         const duration = gsap.utils.random(1, 2);
+ 
+         const tween = gsap.to(point, {
+             duration,
+             x: pointOrigin.x - maxDist.x/4,
+             y: pointOrigin.y - maxDist.y/4,
+             ease: 'sine.inOut',
+             repeat: -1,
+             yoyo: true,
+         })
+         blobTimeline.add(tween, -duration);
+         originPoints.push(liquidPoints);
+     });
+     
+     // If the path data changes, update the data value of the path element 60 times a second
+     gsap.ticker.add(() => {
+         gsap.set(path, {
+             attr: {
+                 // Use spline to draw a smooth curve between the points in the liquidPoints array
+                 d: spline(liquidPoints, options.tension, options.close)
+             }
+         });
+     });
+}
+
+// Check the user's motion preferences and call the function if they are ok with motion. Otherwise, do nothing
+const prefersReducedMotionQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+);
+
+if (prefersReducedMotionQuery && !prefersReducedMotionQuery.matches) {
+    createLiquidPath(blob1, {
+      detail: 25,
+      tension: 1,
+      close: true,
+      range: {
+        x: 60,
+        y: 60
+      },
+      axis: ["y"]
+    });
+
+    createLiquidPath(blob2, {
+        detail: 25,
+        tension: 1,
+        close: true,
+        range: {
+          x: 60,
+          y: 60
+        },
+        axis: ["y"]
+    });
+}
+
 // Functions regarding modals 
 
 // Error Modal functions
@@ -239,6 +441,34 @@ const modalSearchHandler = function (event) {
     }
 }
 
+// Mask path is here so we can access it later
+let blobMaskPath;
+
+// Creating the mask shape
+const createBlobSvg = function() {
+    // Variable for the namespace 
+    const svgns = "http://www.w3.org/2000/svg";
+
+    // Make the svg
+    let blobSvg = document.createElementNS(svgns, "svg");
+    blobSvg.setAttribute("viewBox", "0 0 800 750");
+    blobSvg.setAttribute("width", "0");
+    blobSvg.setAttribute("height", "0");
+    blobSvg.id = "mediaBlob";
+
+    const blobDefs = document.createElementNS(svgns, "defs");
+    const blobMask = document.createElementNS(svgns, "clipPath");
+    blobMaskPath = document.createElementNS(svgns, "path");
+    blobMaskPath.setAttribute("d", "M140.992124,78.5578217 C82.1126165,116.05677 40.1082803,190.605246 29.272668,226.519652 C12.1678644,283.213159 13.1189807,384.333429 81.1767645,453.920056 C149.027465,523.294948 282.113034,534.478642 352.622397,534.478642 C423.13176,534.478642 598.569047,521.616629 668.024598,441.058043 C737.480148,360.499457 736.706244,256.098503 722.021497,194.217781 C707.336749,132.337059 670.694658,66.5526 583.348235,37.0529097 C496.001812,7.55321933 268.056449,-2.36640581 140.992124,78.5578217 Z");
+    blobMask.id = "blobMask";
+
+    blobSvg.appendChild(blobDefs);
+    blobDefs.appendChild(blobMask);
+    blobMask.appendChild(blobMaskPath);
+
+    return blobSvg;
+}
+
 // Functions related to gif generation 
 
 // Function to grab a random gif
@@ -300,6 +530,31 @@ const displayGifs = function (gif) {
     gifWrapper.appendChild(gifImg);
     contentEl.appendChild(gifWrapper);
 
+    // Append the blob
+    contentEl.appendChild(createBlobSvg());
+
+    // Check if user prefers reduced motion. If not, animate the blob
+    if (prefersReducedMotionQuery && !prefersReducedMotionQuery.matches) {
+        createLiquidBlobMask(blobMaskPath, {
+            detail: 20,
+            tension: 1,
+            close: true,
+            range: {
+            x: 30,
+            y: 30
+            },
+            axis: ["y"]
+        });
+
+        gifWrapper.addEventListener('mouseover', (event) => {
+            gsap.to("#blobMask", {duration: 1, scale: 2, ease: 'power3.inOut', transformOrigin: "50% 50%"});
+            });
+    
+        gifWrapper.addEventListener('mouseout', (event) => {
+        gsap.to("#blobMask", {duration: 1, scale: 1, ease: 'power3.inOut', transformOrigin: "50% 50%"});
+        });
+    }
+
     //Show buttons for navigating content 
     nextBtnEl.classList.add("show", "my-10");
     searchBtnEl.classList.remove("hide");
@@ -336,7 +591,7 @@ const getArt = async function (searchTag) {
         );
         const museumData = await allMuseumResponse.json();
 
-            // Get IDs of the objects
+        // Get IDs of the objects
         const museumArray = museumData.objectIDs;
 
         // Check if no IDs returned
@@ -363,28 +618,51 @@ const getArt = async function (searchTag) {
         // Remove loader to show image
         contentEl.removeChild(loader);
 
-        const artSource = artData.primaryImageSmall;
+        // Append the blob
+        contentEl.appendChild(createBlobSvg());
 
+        const artSource = artData.primaryImageSmall;
         const artWrapper = document.createElement("div");
         const artImg = document.createElement("img");
+
         artImg.src = artSource;
         artWrapper.classList = 'media-wrapper';
-
         contentEl.appendChild(artWrapper);
         artWrapper.appendChild(artImg);
         contentEl.classList.add("space-top-image");
         artImg.classList.add("image-mask");
 
-        // Show the next buttona and hide the blobs
-        nextBtnEl.classList.add("show", "my-10");
+        // Check if user prefers reduced motion. If not, animate the blob
+        if (prefersReducedMotionQuery && !prefersReducedMotionQuery.matches) {
+            createLiquidBlobMask(blobMaskPath, {
+                detail: 20,
+                tension: 1,
+                close: true,
+                range: {
+                x: 30,
+                y: 30
+                },
+                axis: ["y"]
+            });
 
+            artWrapper.addEventListener('mouseover', (event) => {
+                gsap.to("#blobMask", {duration: 1, scale: 2, ease: 'power3.inOut', transformOrigin: "50% 50%"});
+             });
+        
+             artWrapper.addEventListener('mouseout', (event) => {
+                gsap.to("#blobMask", {duration: 1, scale: 1, ease: 'power3.inOut', transformOrigin: "50% 50%"});
+             });
+        }
+
+        // Show the next button and hide the blobs
+        nextBtnEl.classList.add("show", "my-10");
         nextBtnEl.textContent = `More artwork`;
 
         searchBtnEl.classList.remove("hide");
         searchBtnEl.classList.add("show", "my-10");
 
         } catch (error) {
-            //console.log(`There was a problem grabbing the artwork! Error: ${error}`);
+            console.log(`There was a problem grabbing the artwork! Error: ${error}`);
             displayErrorModal();
             return; 
         }
@@ -913,7 +1191,7 @@ const loadPresets = function() {
 const colorChange = function() {
    
     const hour = getCurrentTime();
-    let time = ""; 
+
      //Early-hours 
      if (hour >= 0 && hour < 6) {
         time = "late-night";

@@ -133,13 +133,11 @@ button:focus {
 
 /* Masking the images and gifs */
 .image-mask {
-    -webkit-mask-image: url(../img/mask.png);
-    mask-image: url(../img/mask.png);
-    -webkit-mask-size: contain;
-    mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    mask-position: center;
+    z-index: 1;
+    -webkit-clip-path: url(#blobMask);
+    clip-path: url(#blobMask);
+    overflow: hidden;
+
 }
 
 /* Blobs */ 
@@ -161,20 +159,14 @@ svg {
     position: absolute;
     top: 0;
     right: 0;
-    width: 90%;
-    height: auto;
-    margin-right: -220px; 
-    margin-top: -220px; 
+    transform: translate(280px, -280px);
 }
 
 .blob2 {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 90%;
-    height: auto;
-    margin-left: -220px; 
-    margin-bottom: -220px; 
+    transform: translate(-230px, 300px);
 }
 
 /* Navbar specific */
@@ -228,7 +220,7 @@ input:focus {
     /* Keep Modal in same position */
     position:fixed;
     /* Make sure Modal will be displayed on top of other content */
-    z-index: 1;
+    z-index: 2;
     /* Position that modal will slide down */
     padding-top: 200px; 
     left: 0;
@@ -510,20 +502,15 @@ input[type=range]:hover::-moz-range-thumb {
         max-height: 500px;
     }
 
-    .blob1, .blob2 {
-        width: 80%;
-        height: auto;
-    }
-
-    .blob1 {
+    /* .blob1 {
         margin-right: -250px; 
         margin-top: -250px; 
-    }
+    } */
 
-    .blob2 {
+    /* .blob2 {
         margin-left: -250px; 
         margin-bottom: -250px; 
-    }
+    } */
 
 }
 
@@ -533,30 +520,26 @@ input[type=range]:hover::-moz-range-thumb {
     }
 
     .media-wrapper {
-        width: 800px;
-        height: 600px;
-        max-height: 650px;
+        width: 750px;
+        height: 550px;
+        max-height: 550px;
     }
 
     .image-mask {
-        width: 800px;
-        height: 600px;
+        width: 750px;
+        height: 550px;
     }
 
-    .blob1, .blob2 {
-        width: 50%;
-        height: auto;
-    }
 
-    .blob1 {
+    /* .blob1 {
         margin-right: -200px; 
         margin-top: -200px; 
-    }
+    } */
 
-    .blob2 {
+    /* .blob2 {
         margin-left: -200px; 
         margin-bottom: -200px; 
-    }
+    } */
 
     .space-top-text {
         margin-top: 20vh;
@@ -569,20 +552,15 @@ input[type=range]:hover::-moz-range-thumb {
         max-height: 100%;
     }
 
-    .blob1, .blob2 {
-        width: 35%;
-        height: auto;
-    }
-
-    .blob1 {
+    /* .blob1 {
         margin-right: -260px; 
         margin-top: -290px; 
-    }
-
+    } */
+/* 
     .blob2 {
         margin-left: -260px; 
         margin-bottom: -280px; 
-    }
+    } */
 
 }
 

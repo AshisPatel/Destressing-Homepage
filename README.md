@@ -2,17 +2,13 @@
 
 ## Description
 
-
+### Webpage Preview Part 1: 
 
 https://user-images.githubusercontent.com/20442901/129452800-3a324660-dc10-4258-a61d-1456ef05972f.mp4
 
-
-
-
+### Webpage Preview Part 2: 
 
 https://user-images.githubusercontent.com/20442901/129452814-a476d177-75ed-4fae-8dab-abd3ea02f0c9.mp4
-
-![Preview of destressing homepage functionality, including sound mixer, gifs, artwork, quotes, jokes, suprise button, and home screen](https://github.com/AshisPatel/Project-1-DS-Homepage/blob/main/assets/videos/DS-Preview.mp4)
 
 The Destressing Home Page is a responsive webpage that is intended to be visited by a user who needs to take a small break and unwind. Upon arrival to the webpage, the user is greeted with a dynamic time-based welcome message and color theme. The website allows you to view gifs, artwork, quotes, and jokes. The content for the gifs, artwork, and quotes is normally delivered at random but the user can choose to search for specific tags if they would like. Additionally, the user can create ambient sound mixes (and save presets to localStorage) to listen to while they have the page open. 
 

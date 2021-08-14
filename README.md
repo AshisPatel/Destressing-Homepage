@@ -68,7 +68,7 @@ https://ashispatel.github.io/Project-1-DS-Homepage/
 * Giphy API ([Link](https://developers.giphy.com/))
 * I Can Haz Dad Jokes API ([Link](https://icanhazdadjoke.com/api))
 * Quotable API ([Link](https://github.com/lukePeavey/quotable))
-* Metropolitain Museum API ([Link](https://metmuseum.github.io/))
+* Metropolitan Museum API ([Link](https://metmuseum.github.io/))
 
 ## End Note - A Thank You To The Reader
 

@@ -263,54 +263,54 @@ function createLiquidPath(path, options) {
     });
 }
 
-// Move the blob mask around and expand when hovered
+// Move the blob mask around
 function createLiquidBlobMask(path, options) {
-     // Split the path into equidistant x y points
-     const svgPoints = pointsInPath(path, options.detail);
-     // Stores the original points
-     let originPoints = svgPoints.map(({x,y}) => ({x,y}));
-     // Stores the points that will be moving around
-     const liquidPoints = svgPoints.map(({x,y}) => ({x,y}));
- 
-     // Returns the square root of the sum of squares of the arguments
-     const pointDistance = Math.hypot(
-         originPoints[0].x - originPoints[1].x,
-         originPoints[0].y - originPoints[1].y    
-     );
-     // If the options include axis coordinates, set them to the point distance divided by 2. Otherwise, set them to 0. The point distance / 2 is the greatest distance a point can move
-     const maxDist = {
-         x: options.axis.includes('x') ? pointDistance/2.2 : 0,
-         y: options.axis.includes('y') ? pointDistance/2.2 : 0
-     }; 
- 
-     // Move points around
-     const blobTimeline = new gsap.timeline();
- 
-     const updateBlob = liquidPoints.forEach((point, index) => {
-         const pointOrigin = originPoints[index];
-         const duration = gsap.utils.random(1, 2);
- 
-         const tween = gsap.to(point, {
-             duration,
-             x: pointOrigin.x - maxDist.x/4,
-             y: pointOrigin.y - maxDist.y/4,
-             ease: 'sine.inOut',
-             repeat: -1,
-             yoyo: true,
-         })
-         blobTimeline.add(tween, -duration);
-         originPoints.push(liquidPoints);
-     });
-     
-     // If the path data changes, update the data value of the path element 60 times a second
-     gsap.ticker.add(() => {
-         gsap.set(path, {
-             attr: {
-                 // Use spline to draw a smooth curve between the points in the liquidPoints array
-                 d: spline(liquidPoints, options.tension, options.close)
-             }
-         });
-     });
+    // Split the path into equidistant x y points
+    const svgPoints = pointsInPath(path, options.detail);
+    // Stores the original points
+    let originPoints = svgPoints.map(({x,y}) => ({x,y}));
+    // Stores the points that will be moving around
+    const liquidPoints = svgPoints.map(({x,y}) => ({x,y}));
+
+    // Returns the square root of the sum of squares of the arguments
+    const pointDistance = Math.hypot(
+        originPoints[0].x - originPoints[1].x,
+        originPoints[0].y - originPoints[1].y    
+    );
+    // If the options include axis coordinates, set them to the point distance divided by 2. Otherwise, set them to 0. The point distance / 2 is the greatest distance a point can move
+    const maxDist = {
+        x: options.axis.includes('x') ? pointDistance/2.2 : 0,
+        y: options.axis.includes('y') ? pointDistance/2.2 : 0
+    }; 
+
+    // Move points around
+    const blobTimeline = new gsap.timeline();
+
+    const updateBlob = liquidPoints.forEach((point, index) => {
+        const pointOrigin = originPoints[index];
+        const duration = gsap.utils.random(1, 2);
+
+        const tween = gsap.to(point, {
+            duration,
+            x: pointOrigin.x - maxDist.x/4,
+            y: pointOrigin.y - maxDist.y/4,
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true,
+        })
+        blobTimeline.add(tween, -duration);
+        originPoints.push(liquidPoints);
+    });
+
+    // If the path data changes, update the data value of the path element 60 times a second
+    gsap.ticker.add(() => {
+        gsap.set(path, {
+            attr: {
+                // Use spline to draw a smooth curve between the points in the liquidPoints array
+                d: spline(liquidPoints, options.tension, options.close)
+            }
+        });
+    });
 }
 
 // Check the user's motion preferences and call the function if they are ok with motion. Otherwise, do nothing
@@ -320,23 +320,23 @@ const prefersReducedMotionQuery = window.matchMedia(
 
 if (prefersReducedMotionQuery && !prefersReducedMotionQuery.matches) {
     createLiquidPath(blob1, {
-      detail: 25,
+      detail: 20,
       tension: 1,
       close: true,
       range: {
-        x: 60,
-        y: 60
+        x: 30,
+        y: 30
       },
       axis: ["y"]
     });
 
     createLiquidPath(blob2, {
-        detail: 25,
+        detail: 20,
         tension: 1,
         close: true,
         range: {
-          x: 60,
-          y: 60
+          x: 30,
+          y: 30
         },
         axis: ["y"]
     });
@@ -454,13 +454,14 @@ const createBlobSvg = function() {
     blobSvg.setAttribute("viewBox", "0 0 800 750");
     blobSvg.setAttribute("width", "0");
     blobSvg.setAttribute("height", "0");
-    blobSvg.id = "mediaBlob";
 
     const blobDefs = document.createElementNS(svgns, "defs");
     const blobMask = document.createElementNS(svgns, "clipPath");
     blobMaskPath = document.createElementNS(svgns, "path");
-    blobMaskPath.setAttribute("d", "M140.992124,78.5578217 C82.1126165,116.05677 40.1082803,190.605246 29.272668,226.519652 C12.1678644,283.213159 13.1189807,384.333429 81.1767645,453.920056 C149.027465,523.294948 282.113034,534.478642 352.622397,534.478642 C423.13176,534.478642 598.569047,521.616629 668.024598,441.058043 C737.480148,360.499457 736.706244,256.098503 722.021497,194.217781 C707.336749,132.337059 670.694658,66.5526 583.348235,37.0529097 C496.001812,7.55321933 268.056449,-2.36640581 140.992124,78.5578217 Z");
+
     blobMask.id = "blobMask";
+    blobMask.classList.add("media-blob");
+    blobMaskPath.setAttribute("d", "M140.992124,78.5578217 C82.1126165,116.05677 40.1082803,190.605246 29.272668,226.519652 C12.1678644,283.213159 13.1189807,384.333429 81.1767645,453.920056 C149.027465,523.294948 282.113034,534.478642 352.622397,534.478642 C423.13176,534.478642 598.569047,521.616629 668.024598,441.058043 C737.480148,360.499457 736.706244,256.098503 722.021497,194.217781 C707.336749,132.337059 670.694658,66.5526 583.348235,37.0529097 C496.001812,7.55321933 268.056449,-2.36640581 140.992124,78.5578217 Z");
 
     blobSvg.appendChild(blobDefs);
     blobDefs.appendChild(blobMask);
@@ -535,6 +536,8 @@ const displayGifs = function (gif) {
 
     // Check if user prefers reduced motion. If not, animate the blob
     if (prefersReducedMotionQuery && !prefersReducedMotionQuery.matches) {
+        // const scaleAmount = window.innerWidth < 769 ? 0.5 : 1;
+
         createLiquidBlobMask(blobMaskPath, {
             detail: 20,
             tension: 1,
@@ -632,6 +635,30 @@ const getArt = async function (searchTag) {
         contentEl.classList.add("space-top-image");
         artImg.classList.add("image-mask");
 
+        let mqTransformOrigin;
+
+        // Media query checking if the viewport is at least 750px
+        const mediaQuery = window.matchMedia('(min-width: 750px)');
+
+        function handleMediaChange(event) {
+            if (event.matches) {
+                blobMaskPath.setAttribute("transform", "scale(1)");
+                blobMaskPath.setAttribute("width", "700px");
+                blobMaskPath.setAttribute("height", "740px");
+                mqTransformOrigin = '50% 50%';
+                console.log("check1");
+            } else {
+                blobMaskPath.setAttribute("transform", "scale(0.5)");
+                blobMaskPath.setAttribute("width", "390px");
+                blobMaskPath.setAttribute("height", "332px");
+                mqTransformOrigin = '25% 25%';
+                console.log("check2");
+            }
+        }
+
+        mediaQuery.addListener(handleMediaChange);
+        handleMediaChange(mediaQuery);
+
         // Check if user prefers reduced motion. If not, animate the blob
         if (prefersReducedMotionQuery && !prefersReducedMotionQuery.matches) {
             createLiquidBlobMask(blobMaskPath, {
@@ -646,11 +673,11 @@ const getArt = async function (searchTag) {
             });
 
             artWrapper.addEventListener('mouseover', (event) => {
-                gsap.to("#blobMask", {duration: 1, scale: 2, ease: 'power3.inOut', transformOrigin: "50% 50%"});
+                gsap.to("#blobMask", {duration: 1, scale: 2.5, ease: 'power3.inOut', transformOrigin: mqTransformOrigin});
              });
         
              artWrapper.addEventListener('mouseout', (event) => {
-                gsap.to("#blobMask", {duration: 1, scale: 1, ease: 'power3.inOut', transformOrigin: "50% 50%"});
+                gsap.to("#blobMask", {duration: 1, scale: 1, ease: 'power3.inOut', transformOrigin: mqTransformOrigin});
              });
         }
 
@@ -662,7 +689,7 @@ const getArt = async function (searchTag) {
         searchBtnEl.classList.add("show", "my-10");
 
         } catch (error) {
-            console.log(`There was a problem grabbing the artwork! Error: ${error}`);
+            //console.log(`There was a problem grabbing the artwork! Error: ${error}`);
             displayErrorModal();
             return; 
         }

@@ -127,8 +127,9 @@ button:focus {
 
 /* For wrapping the images and gifs */
 .media-wrapper {
-    width: 92vw;
-    max-height: 400px;
+    width: 390px;
+    height: 290px;
+    overflow: hidden;
 }
 
 /* Masking the images and gifs */
@@ -137,7 +138,6 @@ button:focus {
     -webkit-clip-path: url(#blobMask);
     clip-path: url(#blobMask);
     overflow: hidden;
-
 }
 
 /* Blobs */ 
@@ -159,14 +159,16 @@ svg {
     position: absolute;
     top: 0;
     right: 0;
-    transform: translate(280px, -280px);
+    transform-origin: center;
+    transform: translate(400px, -400px);
 }
 
 .blob2 {
     position: absolute;
     bottom: 0;
     left: 0;
-    transform: translate(-230px, 300px);
+    transform-origin: center;
+    transform: translate(-350px, 420px);
 }
 
 /* Navbar specific */
@@ -502,16 +504,6 @@ input[type=range]:hover::-moz-range-thumb {
         max-height: 500px;
     }
 
-    /* .blob1 {
-        margin-right: -250px; 
-        margin-top: -250px; 
-    } */
-
-    /* .blob2 {
-        margin-left: -250px; 
-        margin-bottom: -250px; 
-    } */
-
 }
 
 @media screen and (min-width: 768px) {
@@ -530,17 +522,14 @@ input[type=range]:hover::-moz-range-thumb {
         height: 550px;
     }
 
-
-    /* .blob1 {
-        margin-right: -200px; 
-        margin-top: -200px; 
-    } */
-
-    /* .blob2 {
-        margin-left: -200px; 
-        margin-bottom: -200px; 
-    } */
-
+    .blob1 {
+        transform: translate(350px, -300px);
+    }
+    
+    .blob2 {
+        transform: translate(-300px, 360px);
+    }
+    
     .space-top-text {
         margin-top: 20vh;
     }
@@ -552,15 +541,13 @@ input[type=range]:hover::-moz-range-thumb {
         max-height: 100%;
     }
 
-    /* .blob1 {
-        margin-right: -260px; 
-        margin-top: -290px; 
-    } */
-/* 
+    .blob1 {
+        transform: translate(280px, -280px);
+    }
+    
     .blob2 {
-        margin-left: -260px; 
-        margin-bottom: -280px; 
-    } */
-
+        transform: translate(-230px, 320px);
+    }
+    
 }
 

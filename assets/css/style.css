@@ -127,8 +127,8 @@ button:focus {
 
 /* For wrapping the images and gifs */
 .media-wrapper {
-    width: 390px;
-    height: 290px;
+    width: 350px;
+    height: 260px;
     overflow: hidden;
 }
 
@@ -541,11 +541,11 @@ input[type=range]:hover::-moz-range-thumb {
 }
 
 .space-top-text {
-    margin-top: 10vh;
+    margin-top: 7vh;
 }
 
 .space-top-image {
-    margin-top: 8vh;
+    margin-top: 6vh;
 }
 
 
@@ -565,14 +565,14 @@ input[type=range]:hover::-moz-range-thumb {
     }
 
     .media-wrapper {
-        width: 750px;
-        height: 550px;
+        width: 700px;
+        height: 500px;
         max-height: 550px;
     }
 
     .image-mask {
-        width: 750px;
-        height: 550px;
+        width: 700px;
+        height: 500px;
     }
 
     .blob1 {
@@ -584,7 +584,7 @@ input[type=range]:hover::-moz-range-thumb {
     }
     
     .space-top-text {
-        margin-top: 20vh;
+        margin-top: 18vh;
     }
 }
 

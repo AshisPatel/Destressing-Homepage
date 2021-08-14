@@ -451,7 +451,7 @@ const createBlobSvg = function() {
 
     // Make the svg
     let blobSvg = document.createElementNS(svgns, "svg");
-    blobSvg.setAttribute("viewBox", "0 0 800 750");
+    blobSvg.setAttribute("viewBox", "0 0 750 600");
     blobSvg.setAttribute("width", "0");
     blobSvg.setAttribute("height", "0");
 
@@ -461,7 +461,7 @@ const createBlobSvg = function() {
 
     blobMask.id = "blobMask";
     blobMask.classList.add("media-blob");
-    blobMaskPath.setAttribute("d", "M140.992124,78.5578217 C82.1126165,116.05677 40.1082803,190.605246 29.272668,226.519652 C12.1678644,283.213159 13.1189807,384.333429 81.1767645,453.920056 C149.027465,523.294948 282.113034,534.478642 352.622397,534.478642 C423.13176,534.478642 598.569047,521.616629 668.024598,441.058043 C737.480148,360.499457 736.706244,256.098503 722.021497,194.217781 C707.336749,132.337059 670.694658,66.5526 583.348235,37.0529097 C496.001812,7.55321933 268.056449,-2.36640581 140.992124,78.5578217 Z");
+    blobMaskPath.setAttribute("d", "M139.063323,72.089743 C85.9888374,106.051124 48.1257738,173.566861 38.3584613,206.093181 C22.9400468,257.438347 23.7973911,349.019155 85.1452525,412.041133 C146.306448,474.871351 266.270904,485 329.828639,485 C393.386375,485 551.527028,473.351361 614.134848,400.392494 C676.742669,327.433627 676.045065,232.881629 662.80811,176.838597 C649.571154,120.795565 616.541664,61.2170674 537.80686,34.5003127 C459.072056,7.78355799 253.60018,-1.20027163 139.063323,72.089743 Z");
 
     blobSvg.appendChild(blobDefs);
     blobDefs.appendChild(blobMask);
@@ -548,8 +548,8 @@ const displayGifs = function (gif) {
             console.log("check1");
         } else {
             blobMaskPath.setAttribute("transform", "scale(0.5)");
-            blobMaskPath.setAttribute("width", "390px");
-            blobMaskPath.setAttribute("height", "332px");
+            blobMaskPath.setAttribute("width", "350px");
+            blobMaskPath.setAttribute("height", "300px");
             mqTransformOrigin = '25% 25%';
             console.log("check2");
         }

@@ -28,8 +28,8 @@ The sound mixer is opened as a modal whenever the user clicks on the music butto
 
 All presets can be cleared from the list and user’s localStorage by clicking the “Clear Presets” button on the modal. Additionally, clicking on the “Reset” button will remove all currently selected sounds and return all sound volumes to the default value of 50. The “Close” button will close the moda*l. All sounds that were playing when the modal is closed will continue to play in the background. When the user re-opens the modal, the sounds will continue to play but will restart from the beginning of their tracks. Furthermore, all the sounds will loop indefinitely!  
 
-**SN: All modals, including the sound modal, can be closed by clicking off the modal.* 
-** *SN: All audio files come from [Zapsplat](https://www.zapsplat.com/).*
+* *SN: All modals, including the sound modal, can be closed by clicking off the modal.* 
+* *SN: All audio files come from [Zapsplat](https://www.zapsplat.com/).*
 
 
 ### Content Options
@@ -80,3 +80,11 @@ https://ashispatel.github.io/Project-1-DS-Homepage/
 * Metropolitan Museum API ([Link](https://metmuseum.github.io/))
 
 ## End Note - A Thank You To The Reader
+
+Thank you for checking out our webpage and README! If you have not already, please take a few momenets to visit our webpage and unwind from your day. :smile: As to not ruin the theme of this project, the fun fact and gif will also be of the destressing nature! Consider yourself lucky that you get a break from my attempts at funny-tomfoolery. 
+
+*Fun Fact:* Not only does serotonin (the "happiness hormone") have a significant impact on mental well-being and balance, but it also plays a role in regulating sleep-wakefulness, cognition, memory and pain perception, gastrointestinal activity, and controls tension in the vessels (thus impacting cardiovascular health). Thus, might I suggest that if you have a stomache ache, visit the Destressing Homepage! 
+
+![Animated girl studying while listening to music, or more commonly known as the lofi girl](https://github.com/AshisPatel/Project-1-DS-Homepage/blob/main/assets/videos/lofi-girl.gif)
+
+*This is a hint that I will somehow get lofi music on this website in the future*

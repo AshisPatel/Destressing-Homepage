@@ -2,7 +2,7 @@
 
 ## Description
 
-![Preview of destressing homepage functionality, including sound mixer, gifs, artwork, quotes, jokes, suprise button, and home screen](https://github.com/AshisPatel/Project-1-DS-Homepage/blob/main/assets/videos/DS-Preview.gif)
+![Preview of destressing homepage functionality, including sound mixer, gifs, artwork, quotes, jokes, suprise button, and home screen](https://github.com/AshisPatel/Project-1-DS-Homepage/blob/main/assets/videos/DS-Preview.mp4)
 
 The Destressing Home Page is a responsive webpage that is intended to be visited by a user who needs to take a small break and unwind. Upon arrival to the webpage, the user is greeted with a dynamic time-based welcome message and color theme. The website allows you to view gifs, artwork, quotes, and jokes. The content for the gifs, artwork, and quotes is normally delivered at random but the user can choose to search for specific tags if they would like. Additionally, the user can create ambient sound mixes (and save presets to localStorage) to listen to while they have the page open. 
 
@@ -23,7 +23,7 @@ The sound mixer is opened as a modal whenever the user clicks on the music butto
 All presets can be cleared from the list and user’s localStorage by clicking the “Clear Presets” button on the modal. Additionally, clicking on the “Reset” button will remove all currently selected sounds and return all sound volumes to the default value of 50. The “Close” button will close the moda*l. All sounds that were playing when the modal is closed will continue to play in the background. When the user re-opens the modal, the sounds will continue to play but will restart from the beginning of their tracks. Furthermore, all the sounds will loop indefinitely!  
 
 **SN: All modals, including the sound modal, can be closed by clicking off the modal.* 
-** *SN: All audio files come from ![Zapsplat](https://www.zapsplat.com/).*
+** *SN: All audio files come from [Zapsplat](https://www.zapsplat.com/).*
 
 
 ### Content Options

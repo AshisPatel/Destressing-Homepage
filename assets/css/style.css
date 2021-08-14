@@ -2,7 +2,9 @@
 :root {
     --background: #FBF7F2;
     --accent: #F5D8B4;
-    --primary: #46413E;
+    /* --primary: #46413E; */
+    --primary: 70, 65, 62; 
+    /* primary defined as RGB for use in rgba */
     --red: #F1381B;
 }
 
@@ -12,7 +14,7 @@ body {
 
 h1, h2, h3, h4, h5, p, label, button, select {
     font-family: 'Lexend', sans-serif;
-    color: var(--primary);
+    color: rgb(var(--primary));
     font-weight: 600;
 }
 
@@ -54,6 +56,15 @@ select:focus {
     outline: 2px solid var(--accent);
 }
 
+select {
+    background-color: var(--background);
+    border: 2px solid rgb(var(--primary)); 
+    padding: 10px 0px; 
+}
+
+select option {
+    background-color: var(--background); 
+}
 
 img {
     width: 100%;
@@ -66,7 +77,7 @@ img {
 
 /* Buttons */
 button {
-    border: 2px solid var(--primary); 
+    border: 2px solid rgb(var(--primary)); 
     position: relative;
     overflow: hidden;
     transition: background-color 400ms;
@@ -78,7 +89,7 @@ span.ripple {
     border-radius: 50%;
     transform: scale(0);
     animation: ripple 500ms linear;
-    background-color: rgba(70,65,62,0.5);
+    background-color: rgba(var(--primary),0.5);
 }
 
 span.light-ripple {
@@ -102,7 +113,7 @@ button:hover, button:focus {
 
 button:hover {
     transition: opacity 0.25s; 
-    background-color: rgba(70,65,62,0.05);
+    background-color: rgba(var(--primary),0.05);
 }
 
 
@@ -116,22 +127,68 @@ button:focus {
 
 /* For wrapping the images and gifs */
 .media-wrapper {
-    width: 92vw;
-    max-height: 400px;
+    width: 350px;
+    height: 260px;
+    overflow: hidden;
 }
 
 /* Masking the images and gifs */
 .image-mask {
-    -webkit-mask-image: url(../img/mask.png);
-    mask-image: url(../img/mask.png);
-    -webkit-mask-size: contain;
-    mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    mask-position: center;
+    z-index: 1;
+    -webkit-clip-path: url(#blobMask);
+    clip-path: url(#blobMask);
+    overflow: hidden;
 }
 
+/* For the loading spinner */
+.loader-svg {
+    margin-top: 10em;
+    animation: 2s linear infinite rotate;
+}
+
+.loader-circle {
+    stroke: var(--accent);
+    stroke-dasharray: 283;
+    stroke-dashoffset: 280;
+    animation: 1.5s ease-in-out infinite both dash;
+    transform-origin: 50% 50%;
+    stroke-linecap: round;
+}
+  
+@keyframes rotate {
+    0% {
+        transform: rotateZ(0deg);
+    }
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+
+@keyframes dash {
+    0%,
+    25% {
+      stroke-dashoffset: 280;
+      transform: rotate(0);
+    }
+    
+    50%,
+    75% {
+      stroke-dashoffset: 75;
+      transform: rotate(45deg);
+    }
+    
+    100% {
+      stroke-dashoffset: 280;
+      transform: rotate(360deg);
+    }
+}
+
+
 /* Blobs */ 
+svg {
+    fill: var(--accent);
+}
+
 .blob-container {
     visibility: hidden;
     position: absolute;
@@ -146,27 +203,24 @@ button:focus {
     position: absolute;
     top: 0;
     right: 0;
-    width: 90%;
-    height: auto;
-    margin-right: -220px; 
-    margin-top: -220px; 
+    transform-origin: center;
+    transform: translate(400px, -400px);
 }
 
 .blob2 {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 90%;
-    height: auto;
-    margin-left: -220px; 
-    margin-bottom: -220px; 
+    transform-origin: center;
+    transform: translate(-350px, 420px);
 }
 
 /* Navbar specific */
 .home-btn {
     border: initial;
-    width: 28px;
-    height: 28px;
+    color: rgb(var(--primary));
+    /* width: 28px;
+    height: 28px; */
 }
 
 .home-btn:hover  {
@@ -176,24 +230,37 @@ button:focus {
 }
 
 input {
-    border: 2px solid rgba(70,65,62,0.4);
+    border: 2px solid rgba(var(--primary),0.4);
     transition: all 0.15s;
 }
 
 input:focus {
     outline: none;
-    border: 2px solid var(--primary);
+    border: 2px solid rgb(var(--primary));
 }
 
 /* Modals */
+.close-modal-btn svg {
+    fill: rgb(var(--primary));
+}
+
 .close-modal-btn:hover {
     background-color: transparent;
 }
 
 .modal-search-btn:hover {
-    background-color: var(--primary);
+    background-color: rgb(var(--primary));
     opacity: 0.85;
     transition: opacity 0.25s; 
+}
+
+#modal-search-input {
+    background-color: var(--background); 
+    color: rgb(var(--primary));
+}
+
+#modal-search-input::placeholder {
+    color: rgb(var(--primary));
 }
 
 .modal-backdrop {
@@ -203,7 +270,7 @@ input:focus {
     /* Keep Modal in same position */
     position:fixed;
     /* Make sure Modal will be displayed on top of other content */
-    z-index: 1;
+    z-index: 2;
     /* Position that modal will slide down */
     padding-top: 200px; 
     left: 0;
@@ -214,6 +281,11 @@ input:focus {
     background-color: rgba(0,0,0,0.4); 
     opacity: 0;
     transition: all 0.3s ease-in-out;
+}
+
+/* Position the sound modal */
+#sound-modal.modal-backdrop {
+    padding-top: 70px; 
 }
 
 .modal-backdrop.show {
@@ -250,7 +322,7 @@ input:focus {
 
 .modal-or::before, .modal-or::after {
     display: inline-block;
-    background-color: rgba(0,0,0,0.35);
+    background-color: rgba(var(--primary), 0.3);
     content: '';
     height: 1px;
     flex: 1;
@@ -268,12 +340,13 @@ input:focus {
     justify-content: center;
     align-items: center;
     line-height: 1.42857;
-    color: rgba(0,0,0,0.6);
+    color: rgb(var(--primary));
 }
 
 .modal-search-btn {
-    background-color: var(--primary);
-    color: #fff;
+    background-color: rgb(var(--primary));
+    /* color: #fff; */
+    color: var(--background);
 }
 
 #modal-choose-btn {
@@ -325,15 +398,14 @@ input:focus {
 /* Sound button classes */
 
 .sound-btn {
-    color: var(--primary); 
+    color: rgb(var(--primary)); 
     transition: all 250ms ease-in; 
      
 }
 
 
 .sound-option-btn {
-    -moz-max-width: 32px; /* Limit width on Firefox */
-    color: rgba(70,65,62,0.4); 
+    color: rgba(var(--primary),0.4); 
     margin: 0.8rem 0.4rem;   
     transition: color 250ms ease-in; 
     border: none; 
@@ -354,11 +426,11 @@ input:focus {
 } 
 
 .sound-option-icon:hover {
-    color: rgba(70,65,62,0.8);
+    color: rgba(var(--primary),0.8);
     cursor: pointer;
 }
 .play {
-    color: var(--primary) !important; 
+    color: rgb(var(--primary)) !important; 
 }
 
 .animate-preset-btn {
@@ -368,9 +440,19 @@ input:focus {
 
 @keyframes presetsave {
     0.0% {background-color: transparent}
-    50.0% {background-color:rgba(70,65,62,0.2)}
+    50.0% {background-color:rgba(var(--primary),0.2)}
     100.0% {background-color: transparent}
 }
+
+#preset-name-input {
+    background-color: var(--background); 
+    color: rgb(var(--primary));
+}
+
+#preset-name-input::placeholder {
+    color: rgb(var(--primary));
+}
+
 /* Styling for volume slider */
 /* Style for entire general input */
 input[type="range"] {
@@ -385,7 +467,7 @@ input[type="range"]::-webkit-slider-thumb{
     height: 16px;
     width: 16px;
     border-radius: 50%;
-    background-color: var(--primary); 
+    background-color: rgb(var(--primary)); 
     /* Moves thumb over the center of the track */
     margin-top: -4.5px; 
 }
@@ -394,7 +476,7 @@ input[type="range"]::-webkit-slider-thumb{
 input[type="range"]::-webkit-slider-runnable-track {
     height: 5px;
     width: 300px; 
-    background-color: var(--primary); 
+    background-color: rgb(var(--primary)); 
     border: none;
     border-radius: 0.5rem; 
 }
@@ -420,7 +502,7 @@ input[type=range]::-moz-range-thumb {
     height: 16px;
     width: 16px;
     border-radius: 50%;
-    background-color: var(--primary); 
+    background-color: rgb(var(--primary)); 
     /* Moves thumb over the center of the track */
     margin-top: -4.5px; 
 }
@@ -428,7 +510,7 @@ input[type=range]::-moz-range-thumb {
 input[type=range]::-moz-range-track {
     height: 5px;
     width: 200px; 
-    background-color: var(--primary); 
+    background-color: rgb(var(--primary)); 
     border: none;
     border-radius: 0.5rem; 
 }
@@ -459,11 +541,11 @@ input[type=range]:hover::-moz-range-thumb {
 }
 
 .space-top-text {
-    margin-top: 10vh;
+    margin-top: 7vh;
 }
 
 .space-top-image {
-    margin-top: 8vh;
+    margin-top: 6vh;
 }
 
 
@@ -474,79 +556,55 @@ input[type=range]:hover::-moz-range-thumb {
         max-height: 500px;
     }
 
-    .blob1, .blob2 {
-        width: 80%;
-        height: auto;
-    }
-
-    .blob1 {
-        margin-right: -250px; 
-        margin-top: -250px; 
-    }
-
-    .blob2 {
-        margin-left: -250px; 
-        margin-bottom: -250px; 
-    }
-
 }
 
 @media screen and (min-width: 768px) {
     .modal-content {
-        width: 50%;  
+        width: 50%; 
+        max-width: 600px;   
     }
 
     .media-wrapper {
-        width: 800px;
-        height: 600px;
-        max-height: 650px;
+        width: 700px;
+        height: 500px;
+        max-height: 550px;
     }
 
     .image-mask {
-        width: 800px;
-        height: 600px;
-    }
-
-    .blob1, .blob2 {
-        width: 50%;
-        height: auto;
+        width: 700px;
+        height: 500px;
     }
 
     .blob1 {
-        margin-right: -200px; 
-        margin-top: -200px; 
+        transform: translate(350px, -300px);
     }
-
+    
     .blob2 {
-        margin-left: -200px; 
-        margin-bottom: -200px; 
+        transform: translate(-300px, 360px);
     }
-
+    
     .space-top-text {
-        margin-top: 20vh;
+        margin-top: 18vh;
     }
 }
 
 @media screen and (min-width: 1024px) {
 
+    .modal-content {
+        max-width: 600px;  
+    }
+
     .media-wrapper {
         max-height: 100%;
     }
 
-    .blob1, .blob2 {
-        width: 35%;
-        height: auto;
-    }
-
     .blob1 {
-        margin-right: -260px; 
-        margin-top: -290px; 
+        transform: translate(270px, -280px);
     }
-
+    
     .blob2 {
-        margin-left: -260px; 
-        margin-bottom: -280px; 
+        transform: translate(-230px, 320px);
     }
-
+    
 }
 

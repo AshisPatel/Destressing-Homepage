@@ -1,8 +1,19 @@
+// Import from other js files
+import {spline} from './spline.js';
+import {pointsInPath} from './pointsInPath.js';
+import {createCoordsTransformer} from './createCoordsTransformer.js';
+
 // DOM elements related to the main page static elements 
 const contentEl = document.querySelector("#content");
-const blobContainerEl = document.querySelector("#blobContainer");
 const logoBtnEl = document.querySelector("#logo-btn")
 const contentOptionsEl = document.querySelector('#content-options');
+let time = ""; 
+
+// DOM elements related to the blobs
+const blobContainerEl = document.querySelector("#blobContainer");
+const blob1 = document.querySelector('#blob1');
+const blob2 = document.querySelector('#blob2');
+
 // DOM elements related to Search-Modal 
 const nextBtnEl = document.querySelector("#next-btn");
 const searchBtnEl = document.querySelector("#search-btn");
@@ -43,6 +54,9 @@ const closeSoundBtnEl = document.querySelector("#close-sound-modal-btn");
 
 let presets = []; 
 let playingSounds = []; 
+
+// DOM elements related to CSS / Color Variation
+const cssRoot = document.querySelector(":root");
 //  Utility function
 
 // Function to grab a random items x amount of times from an array 
@@ -65,38 +79,42 @@ const getCurrentTime = function () {
   
     const currentDate = new Date();
     const hour = currentDate.getHours();
-    // Call function to get the welcome message from the time 
-    getWelcomeMessage(hour);
+    return hour; 
 
 }
 
 // Grab the welcome message based on the time 
-const getWelcomeMessage = function (hour) {
+const getWelcomeMessage = function () {
+    const hour = getCurrentTime();
     // Initalize message variables
     // Potential messages array to grab for header 
     let relaxMsg = ["It’s okay to take a break.", "Disconnect to reconnect.", "Relax. Nothing is under control.", "Rest your mind. Calm your heart.", "If you’re tired, learn to rest not quit.", "For the love of your work, take a break!", "Rest and be thankful.", "Sometimes a break is the very thing you need.", "Taking a break can lead to breakthroughs.", "Take a break and have fun.", "Life isn’t as serious as we think.", "Take a deep breath.", "Turn off your mind, relax, and float downstream.", "Nature does not hurry, yet everything is accomplished."];
     let headerText = "";
     let msgText = selectRandom(relaxMsg, 1);
-
     //Early-hours 
     if (hour >= 0 && hour < 6) {
         headerText = "Night Owl or Early Bird?";
+        time = "late-night";
     }
     // Morning-hours
     if (hour >= 6 && hour < 12) {
         headerText = "Good Morning";
+        time = "morning";
     }
     // Afternoon-hours
     if (hour >= 12 && hour < 18) {
         headerText = "Good Afternoon";
+        time ="afternoon";
     }
 
     // Evenning-hours
     if (hour >= 18 && hour < 24) {
         headerText = "Good Evening";
+        time = "evening";
     }
     // Call function to display welcome message 
     displayWelcomeMessage(headerText, msgText);
+    // Call function to change color theme
 }
 
 // Function to populate the content-section with the welcome function 
@@ -127,9 +145,201 @@ const displayWelcomeMessage = function (headerText, msgText) {
 // Handler functions regarding welcome page generation
 const logoBtnHandler = function (event) {
     // Grab time and message based on time
-    getCurrentTime();
+    getWelcomeMessage();
+    colorChange(); 
     // Reset selected menu to default option
     contentOptionsEl.selectedIndex = 0;
+}
+
+// Move the main blobs around and respond to mouse movement
+function createLiquidPath(path, options) {
+    // Split the path into equidistant x y points
+    const svgPoints = pointsInPath(path, options.detail);
+    // Stores the original points
+    let originPoints = svgPoints.map(({x,y}) => ({x,y}));
+    // Stores the points that will be moving around
+    const liquidPoints = svgPoints.map(({x,y}) => ({x,y}));
+
+    // Store the mapped and translated coordinates
+    const mousePos = {x:0, y:0};
+    // Takes the svg argument and returns a function that will take the mouse position relative to the screen and map them to the svg viewbox
+    const transformCoords = createCoordsTransformer(path.closest('svg'));
+
+    // Returns the square root of the sum of squares of the arguments
+    const pointDistance = Math.hypot(
+        originPoints[0].x - originPoints[1].x,
+        originPoints[0].y - originPoints[1].y    
+    );
+    // If the options include axis coordinates, set them to the point distance divided by 2. Otherwise, set them to 0. The point distance / 2 is the greatest distance a point can move
+    const maxDist = {
+        x: options.axis.includes('x') ? pointDistance/2 : 0,
+        y: options.axis.includes('y') ? pointDistance/2 : 0
+    }; 
+
+    // Move points around
+    const blobTimeline = new gsap.timeline();
+
+    const updateBlob = liquidPoints.forEach((point, index) => {
+        const pointOrigin = originPoints[index];
+        const duration = gsap.utils.random(1, 2);
+
+        const tween = gsap.to(point, {
+            duration,
+            x: pointOrigin.x - maxDist.x/2.2,
+            y: pointOrigin.y - maxDist.y/2.2,
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true,
+        })
+        blobTimeline.add(tween, -duration);
+        originPoints.push(liquidPoints);
+    });
+    
+    // If the path data changes, update the data value of the path element 60 times a second
+    gsap.ticker.add(() => {
+        gsap.set(path, {
+            attr: {
+                // Use spline to draw a smooth curve between the points in the liquidPoints array
+                d: spline(liquidPoints, options.tension, options.close)
+            }
+        });
+    });
+
+    // Listen for mousemove events, map the mouse position to the svg viewbox and update the mousePos point with transformed x and y values
+    window.addEventListener('mousemove', (event) => {
+        const {x,y} = transformCoords(event);
+
+        mousePos.x = x;
+        mousePos.y = y;
+
+        // Check how far the mouse points is from the point's origin. If the x and y between the point's origin and mouse position are less than the x and y values assigned to options.range, then calculate the difference between the point's origin and the current mouse position. Store this as a new variable. Create a target variable which stores the point's origin minus the difference between the point's origin and mouse position. Clamp the target's x and y to the maxDist properties to keep the points from moving too far
+        liquidPoints.forEach((point, index) => {
+            const pointOrigin = originPoints[index];
+            const distX = Math.abs(pointOrigin.x - mousePos.x);
+            const distY = Math.abs(pointOrigin.y - mousePos.y);
+
+            if (distX <= options.range.x && distY <= options.range.y) {
+                const difference = {
+                    x: pointOrigin.x - mousePos.x,
+                    y: pointOrigin.y - mousePos.y
+                };
+
+                const target = {
+                    x: pointOrigin.x + difference.x,
+                    y: pointOrigin.y + difference.y
+                };
+
+                const x = gsap.utils.clamp(
+                    pointOrigin.x - maxDist.x,
+                    pointOrigin.x + maxDist.x,
+                    target.x
+                );
+
+                const y = gsap.utils.clamp(
+                    pointOrigin.y - maxDist.y,
+                    pointOrigin.y + maxDist.y,
+                    target.y
+                );
+
+                // Animate x and y points using gsap
+                gsap.to(point, {
+                    x: x,
+                    y: y,
+                    ease: 'sine.inOut', // use sine easing 
+                    duration: 0.175,
+                    onComplete() {
+                        gsap.to(point, {
+                            x: pointOrigin.x,
+                            y: pointOrigin.y,
+                            ease: 'elastic.out(1, 0.8', // once update is complete, spring the point back to its origin
+                            duration: 1.25
+                        });
+                    }
+                });
+
+            }
+        });
+
+    });
+}
+
+// Move the blob mask around
+function createLiquidBlobMask(path, options) {
+    // Split the path into equidistant x y points
+    const svgPoints = pointsInPath(path, options.detail);
+    // Stores the original points
+    let originPoints = svgPoints.map(({x,y}) => ({x,y}));
+    // Stores the points that will be moving around
+    const liquidPoints = svgPoints.map(({x,y}) => ({x,y}));
+
+    // Returns the square root of the sum of squares of the arguments
+    const pointDistance = Math.hypot(
+        originPoints[0].x - originPoints[1].x,
+        originPoints[0].y - originPoints[1].y    
+    );
+    // If the options include axis coordinates, set them to the point distance divided by 2. Otherwise, set them to 0. The point distance / 2 is the greatest distance a point can move
+    const maxDist = {
+        x: options.axis.includes('x') ? pointDistance/2.2 : 0,
+        y: options.axis.includes('y') ? pointDistance/2.2 : 0
+    }; 
+
+    // Move points around
+    const blobTimeline = new gsap.timeline();
+
+    const updateBlob = liquidPoints.forEach((point, index) => {
+        const pointOrigin = originPoints[index];
+        const duration = gsap.utils.random(1, 2);
+
+        const tween = gsap.to(point, {
+            duration,
+            x: pointOrigin.x - maxDist.x/4,
+            y: pointOrigin.y - maxDist.y/4,
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true,
+        })
+        blobTimeline.add(tween, -duration);
+        originPoints.push(liquidPoints);
+    });
+
+    // If the path data changes, update the data value of the path element 60 times a second
+    gsap.ticker.add(() => {
+        gsap.set(path, {
+            attr: {
+                // Use spline to draw a smooth curve between the points in the liquidPoints array
+                d: spline(liquidPoints, options.tension, options.close)
+            }
+        });
+    });
+}
+
+// Check the user's motion preferences and call the function if they are ok with motion. Otherwise, do nothing
+const prefersReducedMotionQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+);
+
+if (prefersReducedMotionQuery && !prefersReducedMotionQuery.matches) {
+    createLiquidPath(blob1, {
+      detail: 20,
+      tension: 1,
+      close: true,
+      range: {
+        x: 30,
+        y: 30
+      },
+      axis: ["y"]
+    });
+
+    createLiquidPath(blob2, {
+        detail: 20,
+        tension: 1,
+        close: true,
+        range: {
+          x: 30,
+          y: 30
+        },
+        axis: ["y"]
+    });
 }
 
 // Functions regarding modals 
@@ -231,6 +441,35 @@ const modalSearchHandler = function (event) {
     }
 }
 
+// Mask path is here so we can access it later
+let blobMaskPath;
+
+// Creating the mask shape
+const createBlobSvg = function() {
+    // Variable for the namespace 
+    const svgns = "http://www.w3.org/2000/svg";
+
+    // Make the svg
+    let blobSvg = document.createElementNS(svgns, "svg");
+    blobSvg.setAttribute("viewBox", "0 0 750 600");
+    blobSvg.setAttribute("width", "0");
+    blobSvg.setAttribute("height", "0");
+
+    const blobDefs = document.createElementNS(svgns, "defs");
+    const blobMask = document.createElementNS(svgns, "clipPath");
+    blobMaskPath = document.createElementNS(svgns, "path");
+
+    blobMask.id = "blobMask";
+    blobMask.classList.add("media-blob");
+    blobMaskPath.setAttribute("d", "M143.551337,75.8750676 C91.6060962,109.113866 54.5486297,175.193098 44.9891323,207.027369 C29.8987692,257.280085 30.7378721,346.912364 90.7804599,408.59345 C150.640353,470.086854 268.052374,480 330.257817,480 C392.46326,480 547.239219,468.599204 608.514958,397.192654 C669.790697,325.786103 669.107936,233.24585 656.152618,178.395223 C643.1973,123.544596 610.870564,65.2337255 533.810969,39.0854124 C456.751374,12.9370993 255.65124,4.14441501 143.551337,75.8750676 Z");
+
+    blobSvg.appendChild(blobDefs);
+    blobDefs.appendChild(blobMask);
+    blobMask.appendChild(blobMaskPath);
+
+    return blobSvg;
+}
+
 // Functions related to gif generation 
 
 // Function to grab a random gif
@@ -292,10 +531,90 @@ const displayGifs = function (gif) {
     gifWrapper.appendChild(gifImg);
     contentEl.appendChild(gifWrapper);
 
+    // Append the blob
+    contentEl.appendChild(createBlobSvg());
+
+    let mqTransformOrigin;
+
+    // Media query checking if the viewport is at least 750px
+    const mediaQuery = window.matchMedia('(min-width: 750px)');
+
+    function handleMediaChange(event) {
+        if (event.matches) {
+            blobMaskPath.setAttribute("transform", "scale(1)");
+            blobMaskPath.setAttribute("width", "700px");
+            blobMaskPath.setAttribute("height", "740px");
+            mqTransformOrigin = '50% 50%';
+            console.log("check1");
+        } else {
+            blobMaskPath.setAttribute("transform", "scale(0.5)");
+            blobMaskPath.setAttribute("width", "350px");
+            blobMaskPath.setAttribute("height", "300px");
+            mqTransformOrigin = '25% 25%';
+            console.log("check2");
+        }
+    }
+
+    mediaQuery.addListener(handleMediaChange);
+    handleMediaChange(mediaQuery);
+
+    // Check if user prefers reduced motion. If not, animate the blob
+    if (prefersReducedMotionQuery && !prefersReducedMotionQuery.matches) {
+        // const scaleAmount = window.innerWidth < 769 ? 0.5 : 1;
+
+        createLiquidBlobMask(blobMaskPath, {
+            detail: 20,
+            tension: 1,
+            close: true,
+            range: {
+            x: 30,
+            y: 30
+            },
+            axis: ["y"]
+        });
+
+        gifWrapper.addEventListener('mouseover', (event) => {
+            gsap.to("#blobMask", {duration: 1.3, scale: 3, ease: 'power3.inOut', transformOrigin: mqTransformOrigin});
+            });
+    
+        gifWrapper.addEventListener('mouseout', (event) => {
+        gsap.to("#blobMask", {duration: 1.3, scale: 1, ease: 'power3.inOut', transformOrigin: mqTransformOrigin});
+        });
+    }
+
     //Show buttons for navigating content 
     nextBtnEl.classList.add("show", "my-10");
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
+    
+    // Get color 
+    colorChange(); 
+}
+
+// Create svg loader
+const createLoader = function() {
+     // Variable for the namespace 
+     const svgns = "http://www.w3.org/2000/svg";
+
+     // Make the svg
+     let loaderSvg = document.createElementNS(svgns, "svg");
+     loaderSvg.setAttribute("viewBox", "0 0 100 100");
+     loaderSvg.setAttribute("width", "100");
+     loaderSvg.setAttribute("height", "100");
+     loaderSvg.classList.add("loader-svg");
+ 
+     const loaderCircle = document.createElementNS(svgns, "circle");
+     loaderCircle.setAttribute("cx", "50");
+     loaderCircle.setAttribute("cy", "50");
+     loaderCircle.setAttribute("r", "45");
+     loaderCircle.setAttribute("fill", "none");
+     loaderCircle.setAttribute("stroke", "");
+     loaderCircle.setAttribute("stroke-width", "7");
+     loaderCircle.classList.add("loader-circle");
+
+     loaderSvg.appendChild(loaderCircle);
+
+     return loaderSvg;
 }
 
 
@@ -307,16 +626,14 @@ const getArt = async function (searchTag) {
     searchBtnEl.classList.remove("show");
 
     // Create loader
-    const loader = document.createElement("img");
-    loader.src = "assets/img/loader.gif";
-    loader.setAttribute("style", "width:350px;height:350px");
+    const loader = createLoader();
 
     contentEl.innerHTML = '';
     currentContent = "painting";
     blobContainerEl.classList.remove("show");
 
     contentEl.appendChild(loader);
-
+    colorChange(); 
     // Get all objects that have an image and matches the query 'Painting'
     // Use try/catch to catch any errors
     try {
@@ -325,7 +642,7 @@ const getArt = async function (searchTag) {
         );
         const museumData = await allMuseumResponse.json();
 
-            // Get IDs of the objects
+        // Get IDs of the objects
         const museumArray = museumData.objectIDs;
 
         // Check if no IDs returned
@@ -352,28 +669,75 @@ const getArt = async function (searchTag) {
         // Remove loader to show image
         contentEl.removeChild(loader);
 
-        const artSource = artData.primaryImageSmall;
+        // Append the blob
+        contentEl.appendChild(createBlobSvg());
 
+        const artSource = artData.primaryImageSmall;
         const artWrapper = document.createElement("div");
         const artImg = document.createElement("img");
+
         artImg.src = artSource;
         artWrapper.classList = 'media-wrapper';
-
         contentEl.appendChild(artWrapper);
         artWrapper.appendChild(artImg);
         contentEl.classList.add("space-top-image");
         artImg.classList.add("image-mask");
 
-        // Show the next buttona and hide the blobs
-        nextBtnEl.classList.add("show", "my-10");
+        let mqTransformOrigin;
 
+        // Media query checking if the viewport is at least 750px
+        const mediaQuery = window.matchMedia('(min-width: 750px)');
+
+        function handleMediaChange(event) {
+            if (event.matches) {
+                blobMaskPath.setAttribute("transform", "scale(1)");
+                blobMaskPath.setAttribute("width", "700px");
+                blobMaskPath.setAttribute("height", "740px");
+                mqTransformOrigin = '50% 50%';
+                console.log("check1");
+            } else {
+                blobMaskPath.setAttribute("transform", "scale(0.5)");
+                blobMaskPath.setAttribute("width", "390px");
+                blobMaskPath.setAttribute("height", "332px");
+                mqTransformOrigin = '25% 25%';
+                console.log("check2");
+            }
+        }
+
+        mediaQuery.addListener(handleMediaChange);
+        handleMediaChange(mediaQuery);
+
+        // Check if user prefers reduced motion. If not, animate the blob
+        if (prefersReducedMotionQuery && !prefersReducedMotionQuery.matches) {
+            createLiquidBlobMask(blobMaskPath, {
+                detail: 20,
+                tension: 1,
+                close: true,
+                range: {
+                x: 30,
+                y: 30
+                },
+                axis: ["y"]
+            });
+
+            artWrapper.addEventListener('mouseover', (event) => {
+                gsap.to("#blobMask", {duration: 1.3, scale: 3, ease: 'power3.inOut', transformOrigin: mqTransformOrigin});
+             });
+        
+             artWrapper.addEventListener('mouseout', (event) => {
+                gsap.to("#blobMask", {duration: 1.3, scale: 1, ease: 'power3.inOut', transformOrigin: mqTransformOrigin});
+             });
+        }
+
+        // Show the next button and hide the blobs
+        nextBtnEl.classList.add("show", "my-10");
         nextBtnEl.textContent = `More artwork`;
 
         searchBtnEl.classList.remove("hide");
         searchBtnEl.classList.add("show", "my-10");
 
         } catch (error) {
-            //console.log(`There was a problem grabbing the artwork! Error: ${error}`);
+            console.log(`There was a problem grabbing the artwork! Error: ${error}`);
             displayErrorModal();
             return; 
         }
@@ -411,7 +775,7 @@ const closeModalBtnHandler = function (event) {
 
 // Function to grab a quote from the quotable API 
 const startQuotes = function (event) {
-
+    colorChange(); 
     fetch("https://api.quotable.io/random").then(function (response) {
 
         if (response.ok) {
@@ -503,7 +867,8 @@ const createRipple = function (event) {
 //Joke section
 
 const getjoke = async function () {
-
+    
+    colorChange(); 
     currentContent = "joke";
 
 
@@ -539,11 +904,12 @@ const getjoke = async function () {
 
     searchBtnEl.classList.remove("hide");
     searchBtnEl.classList.add("show", "my-10");
+   
 }
 
 //call for search
 async function searchJoke(searchTag) {
-
+    colorChange(); 
     //call Api
     const jokefetch = await fetch('https://icanhazdadjoke.com/search?term=' + searchTag, {
         headers: {
@@ -790,7 +1156,7 @@ const presetSelectHandler = function () {
     // Reset which buttons are actually toggled and volume sliders
     resetSoundBtnHandler(); 
     // Grab the appropraite value and then grab the preset from localStorage
-    selectedPreset = presetSelectEl.value; 
+    const selectedPreset = presetSelectEl.value; 
     // Grabs the preset that is selected in the preset object array 
     const desiredPreset = presets.find(preset => preset.name === selectedPreset)
     // Adds the found sounds name to the current playing sounds
@@ -894,6 +1260,44 @@ const loadPresets = function() {
     if(!presets) {
         presets = []; 
     }
+}
+
+
+// Functions related to color variation
+const colorChange = function() {
+   
+    const hour = getCurrentTime();
+
+     //Early-hours 
+     if (hour >= 0 && hour < 6) {
+        time = "late-night";
+    }
+    // Morning-hours
+    if (hour >= 6 && hour < 12) {
+        time = "morning";
+    }
+    // Afternoon-hours
+    if (hour >= 12 && hour < 18) {
+        time ="afternoon";
+    }
+
+    // Evenning-hours
+    if (hour >= 18 && hour < 24) {
+        time = "evening";
+    }
+
+    const colorSets = [
+        {time: "morning", colors: {background: "#FBF7F2", primary: "70, 65, 62", accent: "#F5D8B4"}},
+        {time: "afternoon" , colors: {background: "#EDF3F2", primary: "73, 63, 58", accent: "#F5CEB5"}}, 
+        {time: "evening", colors: {background:"#4C4E63", primary: "238, 223, 206", accent: "#637186"}}, 
+        {time: "late-night", colors: {background: "#3D3C59", primary: "239, 223, 211", accent: "#6C587D"}}
+    ];
+
+    const desiredColorSet = colorSets.find(colorSet => colorSet.time === time);
+    
+    cssRoot.style.setProperty(`--background`,desiredColorSet.colors.background);
+    cssRoot.style.setProperty(`--primary`,desiredColorSet.colors.primary);
+    cssRoot.style.setProperty(`--accent`,desiredColorSet.colors.accent);
 }
 
 // Event Listeners Below 

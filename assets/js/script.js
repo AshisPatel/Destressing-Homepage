@@ -591,6 +591,32 @@ const displayGifs = function (gif) {
     colorChange(); 
 }
 
+// Create svg loader
+const createLoader = function() {
+     // Variable for the namespace 
+     const svgns = "http://www.w3.org/2000/svg";
+
+     // Make the svg
+     let loaderSvg = document.createElementNS(svgns, "svg");
+     loaderSvg.setAttribute("viewBox", "0 0 100 100");
+     loaderSvg.setAttribute("width", "100");
+     loaderSvg.setAttribute("height", "100");
+     loaderSvg.classList.add("loader-svg");
+ 
+     const loaderCircle = document.createElementNS(svgns, "circle");
+     loaderCircle.setAttribute("cx", "50");
+     loaderCircle.setAttribute("cy", "50");
+     loaderCircle.setAttribute("r", "45");
+     loaderCircle.setAttribute("fill", "none");
+     loaderCircle.setAttribute("stroke", "");
+     loaderCircle.setAttribute("stroke-width", "7");
+     loaderCircle.classList.add("loader-circle");
+
+     loaderSvg.appendChild(loaderCircle);
+
+     return loaderSvg;
+}
+
 
 // Functions regarding artwork generation 
 
@@ -600,9 +626,7 @@ const getArt = async function (searchTag) {
     searchBtnEl.classList.remove("show");
 
     // Create loader
-    const loader = document.createElement("img");
-    loader.src = "assets/img/loader.gif";
-    loader.setAttribute("style", "width:350px;height:350px");
+    const loader = createLoader();
 
     contentEl.innerHTML = '';
     currentContent = "painting";
@@ -713,7 +737,7 @@ const getArt = async function (searchTag) {
         searchBtnEl.classList.add("show", "my-10");
 
         } catch (error) {
-            //console.log(`There was a problem grabbing the artwork! Error: ${error}`);
+            console.log(`There was a problem grabbing the artwork! Error: ${error}`);
             displayErrorModal();
             return; 
         }
@@ -1261,7 +1285,12 @@ const colorChange = function() {
         time = "evening";
     }
 
-    const colorSets = [{time: "morning", colors: {background: "#FBF7F2", primary: "70, 65, 62", accent: "#F5D8B4"}},{time: "afternoon" , colors: {background: "#445F87", primary: "255, 170, 118", accent: "#FFE0BE"}}, {time: "evening", colors: {background:"#403A37", primary: "228, 122, 88", accent: "#DA6A74"}}, {time:"late-night",colors: {background: "#5E4980", primary: "236, 214, 179", accent: "#9268A1"}}];
+    const colorSets = [
+        {time: "morning", colors: {background: "#FBF7F2", primary: "70, 65, 62", accent: "#F5D8B4"}},
+        {time: "afternoon" , colors: {background: "#EDF3F2", primary: "70, 65, 62", accent: "#F5CEB5"}}, 
+        {time: "evening", colors: {background:"#4C4E63", primary: "234, 223, 203", accent: "#637186"}}, 
+        {time: "late-night", colors: {background: "#3D3C59", primary: "243, 220, 202", accent: "#6C587D"}}
+    ];
 
     const desiredColorSet = colorSets.find(colorSet => colorSet.time === time);
     

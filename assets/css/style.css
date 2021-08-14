@@ -58,13 +58,13 @@ select:focus {
 
 select {
     background-color: var(--background);
-    border: 1px solid rgb(var(--primary));  
+    border: 2px solid rgb(var(--primary)); 
+    padding: 10px 0px; 
 }
 
 select option {
     background-color: var(--background); 
 }
-
 
 img {
     width: 100%;
@@ -140,6 +140,50 @@ button:focus {
     overflow: hidden;
 }
 
+/* For the loading spinner */
+.loader-svg {
+    margin-top: 10em;
+    animation: 2s linear infinite rotate;
+}
+
+.loader-circle {
+    stroke: var(--accent);
+    stroke-dasharray: 283;
+    stroke-dashoffset: 280;
+    animation: 1.5s ease-in-out infinite both dash;
+    transform-origin: 50% 50%;
+    stroke-linecap: round;
+}
+  
+@keyframes rotate {
+    0% {
+        transform: rotateZ(0deg);
+    }
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+
+@keyframes dash {
+    0%,
+    25% {
+      stroke-dashoffset: 280;
+      transform: rotate(0);
+    }
+    
+    50%,
+    75% {
+      stroke-dashoffset: 75;
+      transform: rotate(45deg);
+    }
+    
+    100% {
+      stroke-dashoffset: 280;
+      transform: rotate(360deg);
+    }
+}
+
+
 /* Blobs */ 
 svg {
     fill: var(--accent);
@@ -196,6 +240,10 @@ input:focus {
 }
 
 /* Modals */
+.close-modal-btn svg {
+    fill: rgb(var(--primary));
+}
+
 .close-modal-btn:hover {
     background-color: transparent;
 }
@@ -235,6 +283,11 @@ input:focus {
     transition: all 0.3s ease-in-out;
 }
 
+/* Position the sound modal */
+#sound-modal.modal-backdrop {
+    padding-top: 70px; 
+}
+
 .modal-backdrop.show {
     visibility: visible;
     opacity: 1;
@@ -269,7 +322,7 @@ input:focus {
 
 .modal-or::before, .modal-or::after {
     display: inline-block;
-    background-color: rgba(0,0,0,0.35);
+    background-color: rgba(var(--primary), 0.3);
     content: '';
     height: 1px;
     flex: 1;
@@ -287,7 +340,7 @@ input:focus {
     justify-content: center;
     align-items: center;
     line-height: 1.42857;
-    color: rgba(0,0,0,0.6);
+    color: rgb(var(--primary));
 }
 
 .modal-search-btn {
@@ -352,7 +405,6 @@ input:focus {
 
 
 .sound-option-btn {
-    -moz-max-width: 32px; /* Limit width on Firefox */
     color: rgba(var(--primary),0.4); 
     margin: 0.8rem 0.4rem;   
     transition: color 250ms ease-in; 
@@ -508,7 +560,8 @@ input[type=range]:hover::-moz-range-thumb {
 
 @media screen and (min-width: 768px) {
     .modal-content {
-        width: 50%;  
+        width: 50%; 
+        max-width: 600px;   
     }
 
     .media-wrapper {
@@ -536,6 +589,10 @@ input[type=range]:hover::-moz-range-thumb {
 }
 
 @media screen and (min-width: 1024px) {
+
+    .modal-content {
+        max-width: 600px;  
+    }
 
     .media-wrapper {
         max-height: 100%;

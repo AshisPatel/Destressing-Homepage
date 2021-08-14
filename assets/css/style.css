@@ -599,7 +599,7 @@ input[type=range]:hover::-moz-range-thumb {
     }
 
     .blob1 {
-        transform: translate(280px, -280px);
+        transform: translate(270px, -280px);
     }
     
     .blob2 {

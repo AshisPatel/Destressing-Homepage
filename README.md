@@ -1,4 +1,4 @@
-# Project-1-DS-Homepage
+# Destressing-Homepage
 
 ## Description
 

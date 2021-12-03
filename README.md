@@ -62,7 +62,7 @@ The colors on the website change based on the time of day. These colors are desi
 
 ## Website
 
-https://ashispatel.github.io/Project-1-DS-Homepage/
+ https://ashispatel.github.io/Destressing-Homepage/
 
 ## Built With
 
